@@ -23,8 +23,7 @@ if (is_user_logged_in()) {
     // Member
     if (in_array('member', $user_roles, true)) {
         $message = '<div class="wpum-message information">
-                    <p>Gå till ditt område:</p>
-                    <p><span class="link"><a href="'.esc_url( home_url( '/12845/' ) ).'">📍 Bagarmossen</a></span>&nbsp;<span class="link"><a href="'.esc_url( home_url( '/12833/' ) ).'">📍 Skarpnäck</a></span></p>
+                    <p>Gå till ditt område: <span class="link"><a href="'.esc_url( home_url( '/12845/' ) ).'">📍 Bagarmossen</a></span>&nbsp;<span class="link"><a href="'.esc_url( home_url( '/12833/' ) ).'">📍 Skarpnäck</a></span></p>
                     </div>';
     }
 
@@ -48,7 +47,7 @@ if (is_user_logged_in()) {
     elseif (in_array('member_outside', $user_roles, true)) {
         $message = '<div class="wpum-message information">
                     <p>🙏 Tack för att du stöttar LOOPIS med ditt medlemskap!</p>
-                    <p>Vi hoppas att du i framtiden kan använda föreningens tjänster där du bor.</p>
+                    <p>Vi hoppas att du snart kan använda LOOPIS där du bor.</p>
                     <p><span class="link"><a href="'.esc_url( $bagis_link ).'">📌 Varför måste jag bo i Bagarmossen?</a></span></p>
                     </div>';
     }
@@ -56,16 +55,14 @@ if (is_user_logged_in()) {
     // Admin
     elseif (in_array('administrator', $user_roles, true)) {
         $message = '<div class="wpum-message information">
-                    <p>🐙 Du är inloggad som superadmin.</p>
+                    <p>🐙 Du är inloggad som administratör.</p>
                     <p><span class="link"><a href="'.esc_url( home_url( '/12845/' ) ).'">📍 Bagarmossen</a></span>&nbsp;<span class="link"><a href="'.esc_url( home_url( '/12833/' ) ).'">📍 Skarpnäck</a></span>&nbsp;<span class="link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span></p>
                     </div>';
     }
 
 } else {
     // Not logged in
-    $message = '<p><span class="link"><a href="'.esc_url(wp_login_url(home_url())).'">👤 Logga in</a></span> om du är medlem.</p>
-                <p><span class="link"><a href="'.esc_url(wp_registration_url()).'">📋 Bli medlem</a></span> för att kunna logga in.</p>
-                <p><span class="link"><a href="'.esc_url( $bagis_link ).'">📌 Nyfiken?</a></span> Läs hur LOOPIS funkar.</p>';
+    $message = '<p><span class="link"><a href="'.esc_url(wp_login_url(home_url())).'">👤 Logga in</a></span> om du är medlem.</p>';
 }
 
 // Output the message if it exists

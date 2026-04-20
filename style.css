@@ -608,7 +608,7 @@ input[name="submit_registration"].button { display: inline-block !important; }
 }
 
 .frontpage-interest-form {
-  padding: 30px 0 100px; /* bottom padding clears fixed footer-menu */
+  padding: 30px 0;
   text-align: center;
 }
 
