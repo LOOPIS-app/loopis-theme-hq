@@ -8,8 +8,9 @@ get_header(); ?>
 
 <div class="content">
     <div class="page-padding">
-<p>Vill du ge &amp; få saker på ett enkelt &amp; roligt sätt? LOOPIS fixar det.</p>
+<h1>Ge &amp; få saker med LOOPIS</h1>
 <hr>
+<p>LOOPIS gör det enkelt & roligt att ge & få saker i ditt grannskap.</p>
 
 <?php include_once LOOPIS_HQ_THEME_DIR . '/templates/access/message.php'; ?>
 
