@@ -17,6 +17,8 @@ LOOPIS gör det enkelt & roligt att ge & få saker i ditt grannskap.</p>
 
 <div class="frontpage-map">
             <div class="frontpage-map__legend">
+                <h5>📍 Områden</h5>
+                <hr>
                 <p>❤ Här finns LOOPIS</p>
                 <p>🧡 Här öppnar snart LOOPIS</p>
                 <p>💚 Här finns intresse för LOOPIS</p>
