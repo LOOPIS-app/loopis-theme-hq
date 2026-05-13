@@ -1,12 +1,12 @@
 /**
- * Theme Name:  LOOPIS HQ Theme
- * Version:     0.0
+ * Theme Name:  LOOPIS Theme HQ
+ * Version:     0.02
  * Description: Theme providing all frontend design and functionality for LOOPIS main page
  * Author:      The Develoopers
  * Author URI:  https://loopis.org
  * License:     GPL-3.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain: loopis-hq-theme
+ * Text Domain: loopis-theme-hq
  */
 
 /**
@@ -135,8 +135,14 @@ a:hover { color:#333; }
 
 /* Paragraph */
 p { margin:0 0 10px 0; }
-hr { width:100%; padding:0px; margin:0 0 9px 0; background-color:#000; height:1px; border:0; }
-.hidden { visibility: hidden }
+hr, .wp-block-separator {
+  width: 100%;
+  padding: 0;
+  margin: 0 0 9px 0;
+  background-color: #000;
+  height: 0px;
+  border-top: 1px solid #000 !important;
+}
 
 /* Special fonts */
 .small { font-size: 13px; line-height: 1.5em; margin:2px 0 10px 0; }

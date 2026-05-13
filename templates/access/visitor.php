@@ -13,13 +13,12 @@ if (!defined('ABSPATH')) {
 // Initialize message
 $message = '';
 $renew_link = home_url("/renew/");
-$bagis_link = home_url("/faq/varfor-bagis/");
 
 
 // Not logged in
-$message = '<p><span class="link"><a href="'.esc_url(wp_login_url(home_url())).'">👤 Logga in</a></span> om du är medlem.</p>
-            <p><span class="link"><a href="'.esc_url(wp_registration_url()).'">📋 Bli medlem</a></span> för att kunna logga in.</p>
-            <p><span class="link"><a href="'.esc_url( $bagis_link ).'">📌 Nyfiken?</a></span> Läs hur LOOPIS funkar.</p>';
+$message = '<p><span class="big-link"><a href="'.esc_url(wp_login_url(home_url())).'">👤 Logga in</a></span> om du är medlem.</p>
+            <p><span class="big-link"><a href="'.esc_url(wp_registration_url()).'">📋 Bli medlem</a></span> för att kunna logga in.</p>
+            <p><span class="big-link"><a href="/faq/hur-funkar-LOOPIS">📌 Nyfiken?</a></span> Läs hur LOOPIS funkar.</p>';
 
 // Output the message if it exists
 if (!empty($message)) {

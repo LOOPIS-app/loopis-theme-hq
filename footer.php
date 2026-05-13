@@ -12,16 +12,11 @@
         <nav>
             <a href="<?php echo $site_url ?>" class="footer-button">
                 <span class="emoji">️🗺</span>
-                <span class="text">Start</span>
+                <span class="text">Karta</span>
             </a>
-
-            <a href="<?php echo $site_url . 'activity/' ?>" class="footer-button">
-                <span class="emoji">📍</span>
-                <span class="text">Områden</span>
-            </a>
-
+            
             <a href="<?php echo esc_url($site_url . 'submit/'); ?>" class="footer-button">
-                <span class="emoji">📰</span>
+                <span class="emoji">📈</span>
                 <span class="text">Nyheter</span>
             </a>
 

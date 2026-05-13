@@ -62,7 +62,8 @@ if (is_user_logged_in()) {
 
 } else {
     // Not logged in
-    $message = '<p><span class="link"><a href="'.esc_url(wp_login_url(home_url())).'">👤 Logga in</a></span> om du är medlem.</p>';
+    $message = '<p><span class="big-link"><a href="'.esc_url(wp_login_url(home_url())).'">👤 Logga in</a></span></p>
+                <p><span class="big-link"><a href="'.esc_url(wp_registration_url()).'">📋 Bli medlem</a></span></p>';
 }
 
 // Output the message if it exists

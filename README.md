@@ -1,8 +1,8 @@
-# 🎡 LOOPIS HQ Theme
-**Theme providing all frontend design and functionality for LOOPIS main page**
+# 🎡 LOOPIS Theme HQ
+**Theme providing all frontend design and functionality for LOOPIS.app main page**
 
 ## 💡 Status
-We are working on adding the right content and functions.
+We are working on adding the right content and functions for multisite environment.
 
 ## 📋 Changelog
 See [CHANGELOG.md](CHANGELOG.md)
