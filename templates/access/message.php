@@ -22,14 +22,14 @@ if (is_user_logged_in()) {
 
     // Member
     if (in_array('member', $user_roles, true)) {
-        $message = '<div class="wpum-message information">
+        $message = '<div class="loopis-message information">
                     <p>Gå till ditt område: <span class="link"><a href="'.esc_url( home_url( '/12845/' ) ).'">📍 Bagarmossen</a></span>&nbsp;<span class="link"><a href="'.esc_url( home_url( '/12833/' ) ).'">📍 Skarpnäck</a></span></p>
                     </div>';
     }
 
     // Member pending
     if (in_array('member_pending', $user_roles, true)) {
-        $message = '<div class="wpum-message information">
+        $message = '<div class="loopis-message information">
                     <p>🙏 Tack för din ansökan om medlemskap!</p>
                     <p class="small">När vi har registrerat din medlemsavgift får du ett mail.</p>
                     </div>';
@@ -37,7 +37,7 @@ if (is_user_logged_in()) {
 
     // Member earlier
     elseif (in_array('member_earlier', $user_roles, true)) {
-        $message = '<div class="wpum-message warning">
+        $message = '<div class="loopis-message warning">
                     <p>Du behöver förnya ditt medlemskap för att fortsätta använda LOOPIS. ✨</p>
                     <p><span class="big-link"><a href="'.esc_url( $renew_link ).'">🌈 Förnya medlemskap</a></span></p>
                     </div>';
@@ -45,7 +45,7 @@ if (is_user_logged_in()) {
 
     // Member outside
     elseif (in_array('member_outside', $user_roles, true)) {
-        $message = '<div class="wpum-message information">
+        $message = '<div class="loopis-message information">
                     <p>🙏 Tack för att du stöttar LOOPIS med ditt medlemskap!</p>
                     <p>Vi hoppas att du snart kan använda LOOPIS där du bor.</p>
                     <p><span class="link"><a href="'.esc_url( $bagis_link ).'">📌 Varför måste jag bo i Bagarmossen?</a></span></p>
@@ -54,7 +54,7 @@ if (is_user_logged_in()) {
 
     // Admin
     elseif (in_array('administrator', $user_roles, true)) {
-        $message = '<div class="wpum-message information">
+        $message = '<div class="loopis-message information">
                     <p>🐙 Du är inloggad som administratör.</p>
                     <p><span class="link"><a href="'.esc_url( home_url( '/12845/' ) ).'">📍 Bagarmossen</a></span>&nbsp;<span class="link"><a href="'.esc_url( home_url( '/12833/' ) ).'">📍 Skarpnäck</a></span>&nbsp;<span class="link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span></p>
                     </div>';

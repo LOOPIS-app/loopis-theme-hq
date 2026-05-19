@@ -4,17 +4,9 @@
     <div class="page-padding">
         <h1>💢 Hoppsan!</h1>
         <hr>
-        <p>Här fanns ingen sida...</p>
-        <p><span><a href="javascript:history.back()"><i class="fas fa-chevron-left"></i> Gå tillbaka</a></span></p>
-        
-        <?php if (is_user_logged_in()) : ?>
-            <div class="wpum-message information">
-                <h5>Har du hittat ett fel?</h5>
-                <hr>
-                <p>⬇ Berätta gärna hur du hamnade här i formuläret längst ner!</p>
-            </div>
-            
-        <?php endif; ?>
+        <p class="small">💡 Något gick fel...</p>
+        <?php include LOOPIS_THEME_HQ_DIR . '/templates/access/loopis-404.php'; ?>
+
     </div><!--page-padding-->
 </div><!--content-->
 

@@ -18,7 +18,7 @@ get_header(); ?>
 
 <h1>📡 Nyheter</h1>						
 <hr>
-<p class="small">💡 Här hittar du de senaste nyheterna från föreningen</p>
+<p class="small">💡 Här hittar du de senaste nyheterna om LOOPIS</p>
 
 <?php
 // Arguments

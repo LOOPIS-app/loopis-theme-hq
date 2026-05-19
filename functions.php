@@ -16,7 +16,7 @@ if (is_admin()) { return; }
  */
 
 // Define theme version
-define('LOOPIS_THEME_HQ_VERSION', '0.02'); // Update version number here + in style.css
+define('LOOPIS_THEME_HQ_VERSION', '0.03'); // Update version number here + in style.css
 
 // Define theme folder path constants
 define('LOOPIS_THEME_HQ_DIR', get_template_directory());       // Server-side path to /wp-content/themes/loopis-theme-hq/

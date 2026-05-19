@@ -12,23 +12,7 @@ get_header(); ?>
 
 <h1>💡 Frågor & svar</h1>
 <hr>
-<p class="small">💡 Här finns svar på nästan allt</p>
-
-<?php if ( is_user_logged_in() ) : ?>
-<h3>För medlemmar</h3>
-<hr>
-<div class="wrapped">
-    <p style="margin-bottom: 0px; font-weight: 400;">🎁 Har du problem med en annons?</p>
-    <p>→ Skriv en kommentar på annonsen och pinga @LOOPIS</p>
-</div>
-
-<div class="wrapped">
-    <p style="margin-bottom: 0px; font-weight: 400;">⛔ Har du problem med en sida?</p>
-    <p>→ Fråga admin i rutan längst ner på sidan det handlar om.</p>
-</div>
-<?php endif; ?>
-
-<p>Titta på listan nedanför innan du frågar admin!</p>
+<p>Hur funkar LOOPIS? Hur får jag LOOPIS till mitt område? Här finns svaren på de vanligaste frågorna.</p>
 
 <!--List of all FAQ tags and posts-->
 <?php
@@ -95,9 +79,6 @@ endif;
 <?php endif; ?>
 
 <div style="height:25px" aria-hidden="true" class="wp-block-spacer"></div>
-
-<!-- More questions? -->
-<?php include LOOPIS_THEME_HQ_DIR . '/templates/faq/questions-faq.php'; ?>
 
 </div><!--page-padding-->
 </div><!--content-->

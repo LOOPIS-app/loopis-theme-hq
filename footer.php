@@ -11,18 +11,18 @@
     <div class="footer-menu">
         <nav>
             <a href="<?php echo $site_url ?>" class="footer-button">
-                <span class="emoji">️🗺</span>
-                <span class="text">Karta</span>
-            </a>
-            
-            <a href="<?php echo esc_url($site_url . 'submit/'); ?>" class="footer-button">
-                <span class="emoji">📈</span>
-                <span class="text">Nyheter</span>
+                <span class="emoji">🗺</span>
+                <span class="text">Start</span>
             </a>
 
             <a href="<?php echo $site_url . 'faq/' ?>" class="footer-button">
                 <span class="emoji">💡</span>
                 <span class="text">Frågor & svar</span>
+            </a>
+
+            <a href="<?php echo $site_url . 'news/' ?>" class="footer-button">
+                <span class="emoji">📰</span>
+                <span class="text">Nyheter</span>
             </a>
 
             <?php if (is_user_logged_in()) : ?>
