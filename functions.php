@@ -1,6 +1,6 @@
 <?php
 /**
- * Theme bootstrap for LOOPIS main site (aka. HQ)
+ * Theme bootstrap for LOOPIS HQ (main site)
  *
  * Loads all frontend core files.
  */
@@ -16,7 +16,7 @@ if (is_admin()) { return; }
  */
 
 // Define theme version
-define('LOOPIS_THEME_HQ_VERSION', '0.03'); // Update version number here + in style.css
+define('LOOPIS_THEME_HQ_VERSION', '0.04'); // Update version number here + in style.css
 
 // Define theme folder path constants
 define('LOOPIS_THEME_HQ_DIR', get_template_directory());       // Server-side path to /wp-content/themes/loopis-theme-hq/
@@ -66,6 +66,7 @@ function loopis_theme_hq_load_files() {
     loopis_theme_hq_include_folder('shortcodes');
     loopis_theme_hq_include_folder('filters');
     loopis_theme_hq_include_folder('functions/everyone');
+    loopis_theme_hq_include_folder('functions/payment');
 
     // For user
     if (is_user_logged_in()) { 

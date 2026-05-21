@@ -32,13 +32,13 @@
                         <span class="text">Admin</span>
                     </a>
                 <?php else : ?>
-                    <a href="<?php echo $site_url . 'profile/' ?>" class="footer-button">
+                    <a href="<?php echo $site_url . 'user/' ?>" class="footer-button">
                         <span class="emoji">👤️</span>
                         <span class="text">Min profil</span>
                     </a>
                 <?php endif; ?>
             <?php else : ?>
-                <a href="<?php echo $site_url . 'log-in/' ?>" class="footer-button">
+                <a href="<?php echo $site_url . 'wp-login.php' ?>" class="footer-button">
                     <span class="emoji">👤️</span>
                     <span class="text">Logga in</span>
                 </a>

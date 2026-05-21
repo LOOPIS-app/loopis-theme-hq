@@ -3,48 +3,25 @@
  * Front page template
  * Displays sweden map + form for sign-up.
  */
+?>
 
-get_header(); ?>
+<?php get_header(); ?>
+<div class="page-padding">
 
-<div class="content">
-    <div class="page-padding">
-<h5>Det nya sättet att ge & få saker</h5>
-<hr>
-<p>Paxa i appen, hämta i skåpet. Enkelt och roligt!</p>
-<p><span class="big-link"><a href="/faq/hur-funkar-LOOPIS">📌 Hur funkar LOOPIS?</a></span></p>
+<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/role-welcome.php'; ?>
+<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/role-status.php'; ?>
 
 <div class="frontpage-map">
             <div class="frontpage-map__legend">
-                <h5>🗺 Karta</h5>
+                <h3>🗺 Karta</h3>
                 <hr>
                 <p>❤ Här finns LOOPIS</p>
                 <p>🧡 Här öppnar snart LOOPIS</p>
-                <p>💚 Här finns intresse för LOOPIS</p>
+                <!--p>💚 Här finns intresse för LOOPIS</p-->
             </div>
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/sweden.svg" alt="Sverige" class="sweden-map">
+            <img src="<?php echo esc_url(LOOPIS_THEME_HQ_URI . '/assets/img/map_sweden.svg'); ?>" alt="Sverige" class="sweden-map">
         </div><!-- frontpage-map -->
 
-        <div class="frontpage-interest-form">
-            <h2>Vill du ha LOOPIS i ditt område?</h2>
-            <hr>
-            <p>Vi behöver 100 personer med ditt postnummer för att börja planera.</p>
-            <form class="interest-form" method="post" action="" novalidate>
-                <?php wp_nonce_field( 'loopis_interest_form', 'loopis_interest_nonce' ); ?>
-                <div class="interest-form__field">
-                    <label for="interest-postal" class="interest-form__label">Mitt postnummer</label>
-                    <input type="text" id="interest-postal" name="loopis_postal" class="interest-form__input" placeholder="12345" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required>
-                </div>
-                <div class="interest-form__field">
-                    <label for="interest-email" class="interest-form__label">Min e-postadress</label>
-                    <input type="email" id="interest-email" name="loopis_email" class="interest-form__input" placeholder="jag@internet.se" required>
-                </div>
-                <button type="submit">Anmäl intresse</button>
-            </form>
-        </div><!-- frontpage-interest-form -->
-
-        <?php if (!is_user_logged_in()) include_once LOOPIS_THEME_HQ_DIR . '/templates/access/visitor.php'; ?>
-
-    </div><!--page-padding-->
-</div><!--content-->
+</div><!--page-padding-->
 
 <?php get_footer(); ?>

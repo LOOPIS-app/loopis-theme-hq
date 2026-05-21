@@ -7,7 +7,6 @@
 
 get_header(); ?>
 
-<div class="content">
 <div class="page-padding">
 
 <?php the_content(); ?>
@@ -17,6 +16,5 @@ get_header(); ?>
 <?php include LOOPIS_THEME_HQ_DIR . '/templates/faq/questions-faq.php'; ?>
 
 </div><!--page-padding-->
-</div><!--content-->
 
 <?php get_footer(); ?>

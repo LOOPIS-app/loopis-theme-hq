@@ -30,7 +30,6 @@ if ($terms && !is_wp_error($terms)) {
 ?>
 
 <!-- POST CONTENT -->
-<div class="content">
     <div class="post-wrapper">
         <div class="post-padding">
 			<p><span class="rounded"><a href="<?php echo get_post_type_archive_link('news'); ?>">📡 Nyheter</a></span> <span class="rounded"><?php if ($category_name) { echo esc_html($category_name); } ?></span></p>
@@ -72,6 +71,5 @@ if ( current_user_can('member') || current_user_can('administrator') ) {
 		} ?>
 
 	</div><!--page-padding-->				
-</div><!--content-->
 
 <?php get_footer(); ?>

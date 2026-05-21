@@ -1,5 +1,10 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 0.04 (2026-05-21)
+- New signup/login customized without WPUM
+- Pages and functions for payments included (/shop)
+- Foundation for profile page (/user)
+
 ## 0.03 (2026-05-19)
 - Preparing for live deployment
 

@@ -1,0 +1,175 @@
+/* Custom styles for login page
+ *
+ * Loads from login-filters.php
+ */
+
+/* Global login page canvas and typography */
+body.login {
+    background: #fff !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-align: center;
+}
+
+/* Twemoji inherit local text scale */
+body.login img.emoji,
+body.login img.wp-smiley {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.1em;
+}
+
+/* Replace WP logo with LOOPIS logo asset */
+body.login .wp-login-logo a {
+    background-image: url('../img/LOOPIS_logo.png') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    width: 141px !important;
+    height: 91px !important;
+    display: block !important;
+}
+
+/* Constrain the login module width and panel appearance */
+body.login #login {
+    width: 380px;
+    padding: 10px 0;
+}
+
+body.login #login form {
+    background: #f5f5f5;
+    border: none;
+    box-shadow: none;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Form inputs */
+body.login input[type="text"],
+body.login input[type="password"],
+body.login input[type="email"] {
+    border: 1px solid #c8d7d2;
+    border-radius: 3px;
+    padding: 8px 10px;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+/* Fix vertical alignment for the password visibility toggle */
+body.login .wp-pwd .button.wp-hide-pw {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    min-height: 0;
+    line-height: 1;
+}
+
+body.login .wp-pwd .button.wp-hide-pw .dashicons {
+    line-height: 1;
+}
+
+/* Labels and primary login button */
+body.login label {
+    color: #333;
+    font-weight: 300;
+    text-align: center;
+}
+
+body.login .button-primary,
+body.login #wp-submit {
+    background: #78b159;
+    font-size: 22px;
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+body.login .button-primary:hover {
+    background: #17493f;
+    border-color: #17493f;
+}
+
+/* Center key login text containers */
+body.login #loginform,
+body.login #loginform p,
+body.login #loopis-login-register,
+body.login #loopis-login-lostpassword,
+body.login #backtoblog,
+body.login .privacy-policy-page-link {
+    text-align: center;
+}
+
+/* Language switcher row layout */
+body.login #language-switcher,
+body.login #language-switcher-locales {
+    text-align: center;
+}
+
+body.login #language-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+body.login #language-switcher label {
+    display: inline;
+    margin: 0;
+}
+
+/* Hide default translation icon (replaced by custom emoji button text) */
+body.login .language-switcher .dashicons {
+    display: none;
+}
+
+body.login #language-switcher-locales {
+    text-align-last: center;
+    margin: 0;
+}
+
+/* Language switcher button sizing */
+body.login .language-switcher .button {
+    font-size: 16px;
+}
+
+/* Remember-me and submit row layout */
+body.login p.forgetmenot,
+body.login p.submit {
+    float: none;
+    text-align: center;
+    margin: 0;
+    width: 100%;
+}
+
+body.login p.submit {
+    clear: both;
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Override WP core large-button metrics for login submit */
+body.login #loginform #wp-submit {
+    display: block;
+    float: none;
+    margin: 10px auto 0;
+    min-height: 0;
+    line-height: 1.2;
+}
+
+/* Top spacing for standard login action state */
+body.login .login-action-login #login {
+    margin-top: 100px;
+}
+
+/* Standalone nav paragraphs inserted via login footer script */
+body.login #loopis-login-register,
+body.login #loopis-login-lostpassword {
+    margin: 0 0 10px 0;
+}
+
+/* Add readable rhythm for optional custom HTML blocks */
+body.login .loopis-login-custom-html {
+    line-height: 1.5;
+    margin: 0 0 10px 0;
+}
