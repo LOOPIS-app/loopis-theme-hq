@@ -23,10 +23,20 @@ define('LOOPIS_THEME_HQ_URI', get_template_directory_uri());   // Client-side pa
  */
 
 function loopis_theme_hq_assets() {
-    // Enqueue CSS theme styles
-    wp_enqueue_style('loopis-theme-hq-style', get_stylesheet_uri(), array(), LOOPIS_THEME_HQ_VERSION);
-    wp_enqueue_style('loopis-theme-hq-forms', LOOPIS_THEME_HQ_URI . '/assets/css/forms.css', array('loopis-theme-hq-style'), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/forms.css'));
-    wp_enqueue_style('loopis-theme-hq-responsive', LOOPIS_THEME_HQ_URI . '/assets/css/responsive.css', array(), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/responsive.css'));
+    // Enqueue shared CSS from "LOOPIS Theme" (single source of truth).
+    $shared_theme_slug = 'loopis-theme';
+    $shared_theme_dir  = trailingslashit( get_theme_root() ) . $shared_theme_slug;
+    $shared_theme_uri  = content_url( 'themes/' . $shared_theme_slug );
+
+    $shared_style_path      = $shared_theme_dir . '/assets/css/base.css';
+    $shared_forms_path      = $shared_theme_dir . '/assets/css/forms.css';
+    $shared_responsive_path = $shared_theme_dir . '/assets/css/responsive.css';
+    $local_extra_path       = LOOPIS_THEME_HQ_DIR . '/assets/css/extra.css';
+
+    wp_enqueue_style( 'loopis-theme-hq-style', $shared_theme_uri . '/assets/css/base.css', array(), filemtime( $shared_style_path ) );
+    wp_enqueue_style( 'loopis-theme-hq-forms', $shared_theme_uri . '/assets/css/forms.css', array( 'loopis-theme-hq-style' ), filemtime( $shared_forms_path ) );
+    wp_enqueue_style( 'loopis-theme-hq-responsive', $shared_theme_uri . '/assets/css/responsive.css', array(), filemtime( $shared_responsive_path ) );
+    wp_enqueue_style( 'loopis-theme-hq-extra', LOOPIS_THEME_HQ_URI . '/assets/css/extra.css', array( 'loopis-theme-hq-style', 'loopis-theme-hq-forms', 'loopis-theme-hq-responsive' ), filemtime( $local_extra_path ) );
     
     // Enqueue jQuery (default Wordpress version) + theme scripts
     wp_enqueue_script('jquery');
@@ -34,7 +44,8 @@ function loopis_theme_hq_assets() {
 
     // Enqueue CSS styles and JS for admin
     if (current_user_can('manage_options') || current_user_can('loopis_admin')) {
-        wp_enqueue_style('loopis-theme-hq-admin', LOOPIS_THEME_HQ_URI . '/assets/css/admin.css', array(), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/admin.css')); 
+        $shared_admin_path = $shared_theme_dir . '/assets/css/admin.css';
+        wp_enqueue_style('loopis-theme-hq-admin', $shared_theme_uri . '/assets/css/admin.css', array(), filemtime( $shared_admin_path )); 
         wp_enqueue_script('loopis-theme-hq-admin', LOOPIS_THEME_HQ_URI . '/assets/js/admin.js', array('jquery'), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/js/admin.js'), true);
     }
 }
