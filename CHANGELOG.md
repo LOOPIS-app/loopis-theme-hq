@@ -2,7 +2,7 @@
 
 ## 0.05 (2026-06-10)
 - Preparing for live deployment
-- Revised all css styling + synced with subsites
+- Now using shared styling from "LOOPIS Theme"
 
 ## 0.04 (2026-05-21)
 - New signup/login customized without WPUM
