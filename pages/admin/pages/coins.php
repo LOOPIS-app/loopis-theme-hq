@@ -9,8 +9,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Extra php functions
-include_once LOOPIS_THEME_DIR . '/includes/functions/admin-extra/admin_action_add_coins.php';
+// Extra php functions (not yet migrated)
+// include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action_add_coins.php';
 ?>
 
 <h1>🪙 Köp av mynt</h1>

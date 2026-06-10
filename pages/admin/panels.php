@@ -1,7 +1,8 @@
 <?php
 /**
- * ADMIN DASHBOARD (page-admin.php)
- * Overview with statistics, tools, and quick links
+ * Admin panels (default page of page-admin.php)
+ * 
+ * Admin overview with statistics, tools, and quick links
  */
 
 if (!defined('ABSPATH')) {
