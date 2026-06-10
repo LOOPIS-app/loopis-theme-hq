@@ -1,8 +1,6 @@
 <?php
 /**
- * Template for displaying WPUM profile tab content.
- *
- * Modified by LOOPIS.
+ * Template for displaying LOOPIS user tab content.
  */
 
 // Exit if accessed directly
@@ -13,16 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Get current user ID
 $user_id = get_current_user_id();
 $user = wp_get_current_user();
-
-//Get author link
-$authorlink = get_author_posts_url($user_id);
-
-// Settings page (use network aware URL if needed)
-$settings_link = network_site_url('profile-settings', 'https');
-
-// Logout link (WordPress logout function handles redirection)
-$logout_link = wp_logout_url(home_url());
-
 
 ?>
 
@@ -37,9 +25,9 @@ $logout_link = wp_logout_url(home_url());
 <p>📍 Område: <b><?php include_once LOOPIS_THEME_HQ_DIR . '/templates/user/profile/user-area.php'; ?></b></p>
 </div>
 
-<p><span class="big-link"><a href="<?php echo $authorlink ?>">👥 Din profil</a></span> som den visas för andra</p>
-<p><span class="big-link"><a href="<?php echo $settings_link ?>">⚙ Inställningar</a></span> för medlemskap</p>
-<p><span class="big-link"><a href="<?php echo $logout_link ?>">🚪 Logga ut</a></span> från LOOPIS.app</p>
+<p><span class="big-link"><a href="/user/?option=member-form">📋 Medlemsregister</a></span> för dina aktuella uppgifter</p>
+<p><span class="big-link"><a href="<?php echo get_author_posts_url($user_id) ?>">👥 Din profil</a></span> som den visas för andra</p>
+<p><span class="big-link"><a href="<?php echo wp_logout_url(home_url()) ?>">🚪 Logga ut</a></span> från LOOPIS.app</p>
 
 <!--h3>Integritet</h3>
 <hr>

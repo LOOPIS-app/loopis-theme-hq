@@ -1,9 +1,9 @@
 <?php
 /**
- * Stripe account activation handler
+ * Stripe membership activation handler
  * 
  * Created by CoPilot
- * Handles account activation after successful Stripe payment via webhook.
+ * Handles membership activation after successful Stripe payment via webhook.
  * This file must be loaded on all requests because Stripe webhooks can fire at any time via REST API callbacks.
  */
 
@@ -20,12 +20,12 @@ if (!defined('LOOPIS_STRIPE_WEBHOOK_SECRET_MEMBERSHIP')) {
 /**
  * Membership product identifiers for Stripe Checkout Session matching.
  *
- * Uses WP_TEST to switch between test and live IDs.
+ * Uses LOOPIS_TEST to switch between test and live IDs.
  *
  * @return array{payment_link_id:string,price_id:string}
  */
 function loopis_get_membership_stripe_product_ids() {
-    $is_test_mode = defined('WP_TEST') && WP_TEST;
+    $is_test_mode = defined('LOOPIS_TEST') && LOOPIS_TEST;
 
     if ($is_test_mode) {
         return array(

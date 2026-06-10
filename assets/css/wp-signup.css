@@ -1,0 +1,104 @@
+/* Custom styles for WP default signup page
+ *
+ * Loads from wp-signup-filters.php
+ */
+
+
+.mu_register {
+  width: unset !important;
+  margin: 0px !important;
+  text-align: center;
+}
+
+.mu_register form {
+  margin-top: 0px !important;
+}
+
+.mu_register #setupform {
+  text-align: center;
+}
+
+.mu_register #setupform p,
+.mu_register #setupform label {
+  text-align: center;
+}
+
+/* Match theme .error styling for signup helper/error copy */
+#wp-signup-email-description {
+  font-size: 14px;
+  line-height: 1.5em;
+  margin: 0 0 5px 0;
+  color: #ff969d;
+  font-weight: 600;
+}
+
+/* Override core wp-signup label sizing/spacing to match shared forms.css tokens */
+.mu_register #setupform label,
+.mu_register #setupform legend,
+.mu_register #setupform .label-heading {
+  color: var(--form-text);
+  font-size: var(--form-label-size);
+  font-weight: 600;
+  margin: 0 0 10px;
+  display: block;
+}
+
+.mu_register #setupform input[type="text"],
+.mu_register #setupform input[type="email"],
+.mu_register #setupform input[type="password"] {
+  width: min(100%, 380px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mu_register .loopis-password-toggle-wrap {
+  position: relative;
+  width: min(100%, 300px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mu_register .loopis-password-toggle-wrap input[type="password"],
+.mu_register .loopis-password-toggle-wrap input[type="text"] {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-right: 42px;
+}
+
+.mu_register .loopis-password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #777;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+}
+
+.mu_register .loopis-password-toggle:hover {
+  color: #333;
+}
+
+.mu_register #setupform p.submit {
+  text-align: center;
+}
+
+.mu_register #setupform p.submit input[type="submit"],
+.mu_register #setupform p.submit .submit {
+  display: inline-block;
+  width: auto !important;
+  min-width: 0;
+}
+
+/* On signup success, hide core confirmation copy when custom payment stage is rendered. */
+.mu_register:has(> .loopis-signup-payment-stage) > h2:first-of-type,
+.mu_register:has(> .loopis-signup-payment-stage) > h2:first-of-type + p,
+.mu_register:has(> .loopis-signup-payment-stage) > h2:first-of-type + p + p,
+.mu_register:has(> .loopis-signup-payment-stage) > h2:first-of-type + p + p + p {
+  display: none;
+}

@@ -1,13 +1,13 @@
 <?php get_header(); ?>
 
 <div class="content">
-    <div class="page-padding">
+    <div class="page-padding center">
         <h1>💢 Hoppsan!</h1>
         <hr>
         <p class="small">💡 Något gick fel...</p>
         <?php include LOOPIS_THEME_HQ_DIR . '/templates/access/loopis-404.php'; ?>
 
-    </div><!--page-padding-->
+    </div><!--page-padding center-->
 </div><!--content-->
 
 <?php get_footer(); ?>

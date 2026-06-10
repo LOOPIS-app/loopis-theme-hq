@@ -6,22 +6,50 @@
 ?>
 
 <?php get_header(); ?>
-<div class="page-padding">
+<div class="page-padding center">
 
-<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/role-welcome.php'; ?>
-<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/role-status.php'; ?>
+<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/role-greeting.php'; ?>
+<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/role-options.php'; ?>
+<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/member-data.php'; ?>
 
-<div class="frontpage-map">
-            <div class="frontpage-map__legend">
-                <h3>🗺 Karta</h3>
-                <hr>
-                <p>❤ Här finns LOOPIS</p>
-                <p>🧡 Här öppnar snart LOOPIS</p>
-                <!--p>💚 Här finns intresse för LOOPIS</p-->
-            </div>
-            <img src="<?php echo esc_url(LOOPIS_THEME_HQ_URI . '/assets/img/map_sweden.svg'); ?>" alt="Sverige" class="sweden-map">
-        </div><!-- frontpage-map -->
+<?php
+        wp_reset_postdata();        
+        // Fetch and count available posts
+        $args = array(
+            'post_type'      => 'post',
+            'posts_per_page' => 50,
+            'order'          => 'ASC',
+            'orderby'        => 'date',
+        );
 
-</div><!--page-padding-->
+        $the_query = new WP_Query($args);
+        $count_total = $the_query->found_posts;
+        ?>
+
+        <!-- List header -->
+        <div class="columns">
+            <div class="column1"><h3>📍 Områden</h3></div>
+            <div class="column2"></div>
+        </div>
+        <hr>
+
+        <!-- Posts output -->
+        <div class="post-list">
+            <?php if ($the_query->have_posts()) : ?>
+                <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
+                    <?php get_template_part('templates/post-list/area-posts'); ?>
+                <?php endwhile; ?>
+        </div><!--post-list-->
+        <?php endif; ?>
+
+        <?php wp_reset_postdata(); ?>
+
+<!--?php include_once LOOPIS_THEME_HQ_DIR . '/templates/front-page/map.php'; ?-->
+
+<!--?php if (!is_user_logged_in()) { 
+include LOOPIS_THEME_HQ_DIR . '/templates/forms/interest-form.php'; 
+} ?-->
+
+</div><!--page-padding center-->
 
 <?php get_footer(); ?>

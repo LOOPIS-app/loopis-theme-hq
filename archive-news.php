@@ -13,7 +13,7 @@
 
 get_header(); ?>
 
-	<div class="page-padding">
+	<div class="page-padding center">
 
 <h1>📡 Nyheter</h1>						
 <hr>
@@ -83,6 +83,6 @@ $count = $the_query->found_posts; ?>
 
 <?php wp_reset_postdata(); ?>
 
-</div><!--page-padding-->
+</div><!--page-padding center-->
 
 <?php get_footer(); ?>

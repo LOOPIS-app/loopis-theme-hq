@@ -1,0 +1,55 @@
+<?php
+/**
+ * Dynamic content for pages using url /admin/?view=
+ */
+
+// Check access
+if (current_user_can('loopis_admin') || current_user_can('manage_options')) : ?>
+
+    <?php get_template_part('templates/admin/header-admin'); ?>
+
+        <div class="page-padding admin-content">
+
+            <?php
+            // Dynamic admin page loader
+            $content_dir = get_template_directory() . '/pages/admin/';
+
+            // Get 'view' parameter from URL (default to 'start')
+            $content_name = isset($_GET['view']) ? sanitize_text_field($_GET['view']) : 'dashboard';
+            
+            // Additional sanitization - only allow alphanumeric, dash, underscore, and forward slash
+            $content_name = preg_replace('/[^a-zA-Z0-9_\/-]/', '', $content_name);
+            
+            // Prevent directory traversal
+            $content_name = str_replace(['../', '..\\', './'], '', $content_name);
+            
+            // Remove leading/trailing slashes
+            $content_name = trim($content_name, '/');
+            
+            // Prevent empty string after sanitization
+            if (empty($content_name)) {
+                $content_name = 'dashboard';
+            }
+            
+            // Define the full path to the PHP file
+            $php_file = $content_dir . $content_name . '.php';
+
+            // Check if file exists and is actually a file (not a directory)
+            if (file_exists($php_file) && is_file($php_file)) {
+                include $php_file;
+            } else {
+                echo '<h1>🦀 Admin HQ</h1><hr>';
+                echo '<p>💢 Filen hittades inte: <b>' . esc_html($php_file) . '</b></p>';
+            }
+            ?>
+
+            <div class="clear"></div>
+
+        </div><!--page-padding-->
+
+    <?php get_template_part('templates/admin/footer-admin'); ?>
+
+<!-- NO ACCESS -->
+<?php else : ?>
+    <?php get_template_part('templates/access/admin-only'); ?>
+<?php endif; ?>

@@ -1,8 +1,6 @@
 <?php
 /**
- * Template for displaying WPUM profile tab content.
- * 
- * Created by LOOPIS.
+ * Template for displaying LOOPIS user tab content.
  */
 
 // Exit if accessed directly
@@ -31,6 +29,7 @@ $clover_coins = $profile_economy['clover_coins'];
 $coins = $profile_economy['coins'];
 */
 
+// Mock data for now
 $payments_membership = 0;
 $payments_coins = 0;
 $membership_coins = 0;

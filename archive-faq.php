@@ -7,7 +7,7 @@
 
 get_header(); ?>
 
-	<div class="page-padding">
+	<div class="page-padding center">
 
 <h1>💡 Frågor & svar</h1>
 <hr>
@@ -79,6 +79,6 @@ endif;
 
 <div style="height:25px" aria-hidden="true" class="wp-block-spacer"></div>
 
-</div><!--page-padding-->
+</div><!--page-padding center-->
 
 <?php get_footer(); ?>

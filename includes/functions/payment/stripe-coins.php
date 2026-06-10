@@ -20,12 +20,12 @@ if (!defined('LOOPIS_STRIPE_WEBHOOK_SECRET_COINS')) {
 /**
  * Coins product identifiers for Stripe Checkout Session matching.
  *
- * Uses WP_TEST to switch between test and live IDs.
+ * Uses LOOPIS_TEST to switch between test and live IDs.
  *
  * @return array{payment_link_id:string,price_id:string}
  */
 function loopis_get_coins_stripe_product_ids() {
-    $is_test_mode = defined('WP_TEST') && WP_TEST;
+    $is_test_mode = defined('LOOPIS_TEST') && LOOPIS_TEST;
 
     if ($is_test_mode) {
         return array(

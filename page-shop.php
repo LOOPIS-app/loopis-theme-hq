@@ -6,7 +6,7 @@
 
 <?php get_header(); ?>
 
-<div class="page-padding">
+<div class="page-padding center">
 <?php if ( is_user_logged_in() ) : 
     // Dynamic page loader
     $page_dir = get_template_directory() . '/pages/shop/';
@@ -30,6 +30,6 @@
 include LOOPIS_THEME_HQ_DIR . '/templates/access/role-message.php';
 endif; ?>
 
-</div><!--page-padding-->
+</div><!--page-padding center-->
 
 <?php get_footer();

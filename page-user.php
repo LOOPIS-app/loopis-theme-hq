@@ -6,13 +6,14 @@
 
 <?php get_header(); ?>
 
-<div class="page-padding">
+<div class="page-padding center">
+    <h1>👤 Min profil</h1>
 <?php if ( is_user_logged_in() ) : 
     // Dynamic page loader
     $page_dir = get_template_directory() . '/pages/user/';
 
     // Get the 'option' parameter from URL
-    $page_option = isset($_GET['option']) ? sanitize_file_name($_GET['option']) : 'start';
+    $page_option = isset($_GET['option']) ? sanitize_file_name($_GET['option']) : 'tabs';
 
     $php_file = $page_dir . $page_option . '.php';
 
@@ -30,6 +31,6 @@
 include LOOPIS_THEME_HQ_DIR . '/templates/access/role-message.php';
 endif; ?>
 
-</div><!--page-padding-->
+</div><!--page-padding center-->
 
 <?php get_footer();

@@ -8,15 +8,11 @@
 // Prevent direct access
 if (!defined('ABSPATH')) { exit; }
 
-// Only run in frontend
-if (is_admin()) { return; }
-
-/** 
- * Define constants
- */
+// Maintenance?
+if (defined('LOOPIS_MAINTENANCE') && LOOPIS_MAINTENANCE) { require_once __DIR__ . '/includes/maintenance/bootstrap.php'; }
 
 // Define theme version
-define('LOOPIS_THEME_HQ_VERSION', '0.04'); // Update version number here + in style.css
+define('LOOPIS_THEME_HQ_VERSION', '0.05'); // Update version number here + in style.css
 
 // Define theme folder path constants
 define('LOOPIS_THEME_HQ_DIR', get_template_directory());       // Server-side path to /wp-content/themes/loopis-theme-hq/
@@ -29,6 +25,7 @@ define('LOOPIS_THEME_HQ_URI', get_template_directory_uri());   // Client-side pa
 function loopis_theme_hq_assets() {
     // Enqueue CSS theme styles
     wp_enqueue_style('loopis-theme-hq-style', get_stylesheet_uri(), array(), LOOPIS_THEME_HQ_VERSION);
+    wp_enqueue_style('loopis-theme-hq-forms', LOOPIS_THEME_HQ_URI . '/assets/css/forms.css', array('loopis-theme-hq-style'), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/forms.css'));
     wp_enqueue_style('loopis-theme-hq-responsive', LOOPIS_THEME_HQ_URI . '/assets/css/responsive.css', array(), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/responsive.css'));
     
     // Enqueue jQuery (default Wordpress version) + theme scripts
@@ -63,7 +60,6 @@ function loopis_theme_hq_load_files() {
     // For everyone
     loopis_theme_hq_include_folder('interface');
     loopis_theme_hq_include_folder('features');
-    loopis_theme_hq_include_folder('shortcodes');
     loopis_theme_hq_include_folder('filters');
     loopis_theme_hq_include_folder('functions/everyone');
     loopis_theme_hq_include_folder('functions/payment');
@@ -73,9 +69,5 @@ function loopis_theme_hq_load_files() {
         loopis_theme_hq_include_folder('functions/user');
     }
 
-    // For administrator and cron
-    if (current_user_can('manage_options')) { 
-        loopis_theme_hq_include_folder('functions/cron');
-    }
 }
 add_action('after_setup_theme', 'loopis_theme_hq_load_files');

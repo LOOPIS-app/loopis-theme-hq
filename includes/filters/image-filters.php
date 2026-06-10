@@ -2,7 +2,7 @@
 /**
  * Filters and actions affecting post thumbnails.
  * 
- * Migrated from earlier use in Code Snippets plugin.
+ * Exact copy from "LOOPIS Theme".
  * 
  * @package LOOPIS_Theme
  * @subpackage Frontend

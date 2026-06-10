@@ -50,7 +50,7 @@ if ($terms && !is_wp_error($terms)) {
 		</div><!--post-padding-->				
 	</div><!--post-wrapper-->							
 
-<div class="page-padding" style="padding-top: 5px;"> <!-- Logg close to post -->
+<div class="page-padding center" style="padding-top: 5px;"> <!-- Logg close to post -->
 
 <!-- POST LOG -->
 <div class="logg">
@@ -70,6 +70,6 @@ if ( current_user_can('member') || current_user_can('administrator') ) {
 		include_once LOOPIS_THEME_HQ_DIR . '/templates/access/no-comments.php'; 
 		} ?>
 
-	</div><!--page-padding-->				
+	</div><!--page-padding center-->				
 
 <?php get_footer(); ?>

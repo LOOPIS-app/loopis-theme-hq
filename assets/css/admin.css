@@ -1,3 +1,8 @@
+/* Custom styles for admin areas and elements
+ *
+ * Separated from style.css for clarity 
+ */
+
 /*  Admin bar */
 body.admin-bar #header { margin-top: 32px; }
 
@@ -7,7 +12,7 @@ body.admin-bar #header { margin-top: 32px; }
 /*  Admin emojis */
 .admin-content .emoji { filter: grayscale(40%); }
 .admin-block .emoji { filter: grayscale(40%); }
-.admin-footer .emoji { filter: grayscale(40%); }
+.footer-admin .emoji { filter: grayscale(40%); }
 
 /* Admin Tables */
 .admin-table { width: 100%; border-collapse: collapse; }

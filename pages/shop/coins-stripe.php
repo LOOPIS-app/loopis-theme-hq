@@ -22,10 +22,11 @@ $checkout_status = isset($_GET['checkout']) ? sanitize_key($_GET['checkout']) : 
 <?php if ('success' === $checkout_status) : ?>
 
 <div class="loopis-message success"><p>✅ Betalning mottagen!</p>
-<p>Gå till ditt område för att fortsätta loopa.</p>
+<p>Du har fått fem nya mynt att paxa saker för.</p>
+</div>
+
 <p><span class="link"><a href="<?php echo esc_url(add_query_arg('option', 'coins-stripe', home_url('/shop/'))); ?>">🛒 Köp 5 mynt till</a></span></p>
 <p><span class="big-link"><a href="<?php echo esc_url(home_url('/user/')); ?>" class="button-primary">👛 Mina mynt</a></span></p>
-</div>
 
 <?php elseif ('cancelled' === $checkout_status) : ?>
 
@@ -88,8 +89,7 @@ function loopis_start_coins_checkout_payment(event) {
 
 <?php
 // Develooper info
-if (defined('WP_TEST') && WP_TEST) {
-    include_once LOOPIS_THEME_HQ_DIR . '/templates/develooper/test-payment.php'; 
-    include LOOPIS_THEME_HQ_DIR . '/templates/develooper/add-coins-free.php'; 
+if (defined('LOOPIS_TEST') && LOOPIS_TEST) {
+    include_once LOOPIS_THEME_HQ_DIR . '/templates/develooper/test-coins.php'; 
     }
 ?>
