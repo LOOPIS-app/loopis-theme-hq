@@ -11,7 +11,9 @@
  */
 
 // Skip loading login-only hooks on non-login requests.
-if (!isset($GLOBALS['pagenow']) || 'wp-login.php' !== $GLOBALS['pagenow']) {
+$loopis_current_script = isset($_SERVER['SCRIPT_NAME']) ? (string) wp_unslash($_SERVER['SCRIPT_NAME']) : '';
+$loopis_is_login_request = (isset($GLOBALS['pagenow']) && 'wp-login.php' === $GLOBALS['pagenow']) || false !== strpos($loopis_current_script, 'wp-login.php');
+if (!$loopis_is_login_request) {
     return;
 }
 
@@ -42,11 +44,15 @@ function loopis_theme_hq_login_template_slot($slot) {
 
 // Enqueue LOOPIS styles on wp-login.php only.
 function loopis_theme_hq_login_assets() {
-    wp_enqueue_style('loopis-theme-hq-style', get_stylesheet_uri(), array(), LOOPIS_THEME_HQ_VERSION);
-    wp_enqueue_style('loopis-theme-hq-responsive', LOOPIS_THEME_HQ_URI . '/assets/css/responsive.css', array(), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/responsive.css'));
+    $shared_theme_slug = 'loopis-theme';
+    $shared_theme_dir  = trailingslashit( get_theme_root() ) . $shared_theme_slug;
+    $shared_theme_uri  = trailingslashit( get_theme_root_uri() ) . $shared_theme_slug;
+
+    wp_enqueue_style('loopis-theme-hq-style', $shared_theme_uri . '/assets/css/base.css', array(), filemtime($shared_theme_dir . '/assets/css/base.css'));
+    wp_enqueue_style('loopis-theme-hq-responsive', $shared_theme_uri . '/assets/css/responsive.css', array('loopis-theme-hq-style'), filemtime($shared_theme_dir . '/assets/css/responsive.css'));
     wp_enqueue_style('loopis-theme-hq-fa', LOOPIS_THEME_HQ_URI . '/assets/fonts/css/fontawesome.min.css', array(), LOOPIS_THEME_HQ_VERSION);
     wp_enqueue_style('loopis-theme-hq-fa-solid', LOOPIS_THEME_HQ_URI . '/assets/fonts/css/solid.min.css', array('loopis-theme-hq-fa'), LOOPIS_THEME_HQ_VERSION);
-    wp_enqueue_style('loopis-theme-hq-forms', LOOPIS_THEME_HQ_URI . '/assets/css/forms.css', array(), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/forms.css'));
+    wp_enqueue_style('loopis-theme-hq-forms', $shared_theme_uri . '/assets/css/forms.css', array('loopis-theme-hq-style'), filemtime($shared_theme_dir . '/assets/css/forms.css'));
     wp_enqueue_style('loopis-theme-hq-login', LOOPIS_THEME_HQ_URI . '/assets/css/wp-login.css', array('loopis-theme-hq-forms'), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/wp-login.css'));
 }
 add_action('login_enqueue_scripts', 'loopis_theme_hq_login_assets');
@@ -82,7 +88,8 @@ add_filter('login_redirect', 'loopis_theme_hq_login_redirect', 10, 3);
 // Inject LOOPIS heading and helper text above the login form.
 function loopis_theme_hq_login_message($message) {
     $action = isset($_REQUEST['action']) ? sanitize_key($_REQUEST['action']) : 'login';
-    if ('login' !== $action) {
+    $supported_actions = array('login', 'lostpassword', 'rp', 'resetpass', 'register');
+    if (!in_array($action, $supported_actions, true)) {
         return $message;
     }
 

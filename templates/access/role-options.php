@@ -22,7 +22,7 @@ if (is_user_logged_in()) {
     if (in_array('member', $user_roles, true)) {
         $message = '<p>Det här är LOOPIS startsida. Här ser du alla områden, din profil, samt frågor & svar.</p>
                     <div class="loopis-message success">
-                    <p>För att loopa, gå till ditt område:</p>
+                    <p>Gå till ditt område för att loopa:</p>
                     <p><span class="big-link"><a href="'.esc_url( home_url( '/12845/' ) ).'">📍 Bagarmossen</a></span>
                     </div>';
     }

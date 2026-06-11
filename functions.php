@@ -12,11 +12,19 @@ if (!defined('ABSPATH')) { exit; }
 if (defined('LOOPIS_MAINTENANCE') && LOOPIS_MAINTENANCE) { require_once __DIR__ . '/includes/maintenance/bootstrap.php'; }
 
 // Define theme version
-define('LOOPIS_THEME_HQ_VERSION', '0.05'); // Update version number here + in style.css
+define('LOOPIS_THEME_HQ_VERSION', '0.06'); // Update version number here + in style.css
 
 // Define theme folder path constants
 define('LOOPIS_THEME_HQ_DIR', get_template_directory());       // Server-side path to /wp-content/themes/loopis-theme-hq/
 define('LOOPIS_THEME_HQ_URI', get_template_directory_uri());   // Client-side path to https://loopis.app/wp-content/themes/loopis-theme-hq/
+
+/**
+ * Load theme translations.
+ */
+function loopis_theme_hq_load_textdomain() {
+    load_theme_textdomain('loopis-theme-hq', LOOPIS_THEME_HQ_DIR . '/languages');
+}
+add_action('after_setup_theme', 'loopis_theme_hq_load_textdomain', 0);
 
 /** 
  * Enqueue theme CSS and JavaScript
@@ -69,8 +77,6 @@ function loopis_theme_hq_include_folder($folder_name) {
 // Define folders to load
 function loopis_theme_hq_load_files() {
     // For everyone
-    loopis_theme_hq_include_folder('interface');
-    loopis_theme_hq_include_folder('features');
     loopis_theme_hq_include_folder('filters');
     loopis_theme_hq_include_folder('functions/everyone');
     loopis_theme_hq_include_folder('functions/payment');
@@ -78,7 +84,6 @@ function loopis_theme_hq_load_files() {
     // For user
     if (is_user_logged_in()) { 
         loopis_theme_hq_include_folder('functions/user');
-    }
-
+    } 
 }
 add_action('after_setup_theme', 'loopis_theme_hq_load_files');

@@ -50,10 +50,13 @@ if (!$area_launch_timestamp) {
             <h1 class="wrap"><?php the_title(); ?></h1>
 			<hr>
 			<div class="post-meta">
-				<p>🗺 <?php echo esc_html($area_city); ?><br>
+				<p>🗺 <?php echo esc_html($area_city); ?> (<?php echo esc_html($locker_postal_code); ?>)<br>
 				🎉 <?php echo esc_html($area_launch_text); ?></p>
 			</div><!--post-meta-->
-			<div class="post-content">
+
+				<h5><a href="<?php echo esc_url(home_url('/' . $locker_postal_code)); ?>">→ Gå till område</a></h5>
+
+				<div class="post-content">
 				<div class="wrapped">
 					<p>👤 Antal aktiva medlemmar: <?php echo esc_html($active_members); ?></p>
 					<p>🎁 Antal cirkulerade saker: <?php echo esc_html($circulated_things); ?></p>

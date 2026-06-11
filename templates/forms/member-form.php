@@ -105,7 +105,7 @@ $member_form_error_message = $member_form_field_messages['general'];
     </div>
 <?php endif; ?>
 
-<div class="loopis-form-wrapper">
+<div class="loopis-form-wrapper narrow" id="member-form">
     <form class="loopis-form" method="post" action="" novalidate>
         <?php // Nonce verified in member-form-handler.php before saving. ?>
         <?php wp_nonce_field('loopis_member_form', 'loopis_member_nonce'); ?>
@@ -199,7 +199,7 @@ $member_form_error_message = $member_form_field_messages['general'];
         </div>
 
         <div>
-            <label for="member-active">Aktiv medlem</label>
+            <label for="member-active">Fortsätt vara medlem</label>
             <input
                 type="checkbox"
                 id="member-active"

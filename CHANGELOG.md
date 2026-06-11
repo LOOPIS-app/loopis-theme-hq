@@ -1,7 +1,10 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 0.06 (2026-06-11)
+- Additions and improvements
+- Some translation activated with folder `languages`
+
 ## 0.05 (2026-06-10)
-- Preparing for live deployment
 - Now using shared styling from "LOOPIS Theme"
 
 ## 0.04 (2026-05-21)

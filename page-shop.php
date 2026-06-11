@@ -12,7 +12,7 @@
     $page_dir = get_template_directory() . '/pages/shop/';
 
     // Get the 'option' parameter from URL
-    $page_option = isset($_GET['option']) ? sanitize_file_name($_GET['option']) : 'coins';
+    $page_option = isset($_GET['option']) ? sanitize_file_name($_GET['option']) : 'start';
 
     $php_file = $page_dir . $page_option . '.php';
 
