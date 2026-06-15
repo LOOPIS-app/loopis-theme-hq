@@ -16,8 +16,10 @@ $post_id = get_the_ID();
 $thumbnail_id = get_post_thumbnail_id($post_id);
 $area_city = get_post_meta($post_id, 'area_city', true) ?: 'Stad saknas';
 $area_launch_date = get_post_meta($post_id, 'area_launch_date', true) ?: 'Lanseringsdatum saknas';
-$active_members = get_post_meta($post_id, 'active_members', true) ?: 'Antal saknas';
-$circulated_things = get_post_meta($post_id, 'circulated_things', true) ?: 'Antal saknas';
+$active_members_raw = get_post_meta($post_id, 'active_members', true);
+$active_members = '' === trim((string) $active_members_raw) ? 'Antal saknas' : $active_members_raw;
+$circulated_things_raw = get_post_meta($post_id, 'circulated_things', true);
+$circulated_things = '' === trim((string) $circulated_things_raw) ? 'Antal saknas' : $circulated_things_raw;
 $locker_postal_code = get_post_meta($post_id, 'locker_postal_code', true) ?: 'Postnummer saknas';
 $locker_address = get_post_meta($post_id, 'locker_address', true) ?: 'Adress saknas';
 $locker_link = get_post_meta($post_id, 'locker_link', true) ?: '#';
@@ -54,7 +56,9 @@ if (!$area_launch_timestamp) {
 				🎉 <?php echo esc_html($area_launch_text); ?></p>
 			</div><!--post-meta-->
 
-				<h5><a href="<?php echo esc_url(home_url('/' . $locker_postal_code)); ?>">→ Gå till område</a></h5>
+			<?php if (has_term('active', 'category')) { ?>
+			<h5><a href="<?php echo esc_url(home_url('/' . $locker_postal_code)); ?>">→ Gå till område</a></h5>
+			<?php } ?>
 
 				<div class="post-content">
 				<div class="wrapped">
