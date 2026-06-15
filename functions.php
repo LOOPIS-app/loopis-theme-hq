@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) { exit; }
 if (defined('LOOPIS_MAINTENANCE') && LOOPIS_MAINTENANCE) { require_once __DIR__ . '/includes/maintenance/bootstrap.php'; }
 
 // Define theme version
-define('LOOPIS_THEME_HQ_VERSION', '0.06'); // Update version number here + in style.css
+define('LOOPIS_THEME_HQ_VERSION', '0.07'); // Update version number here + in style.css
 
 // Theme folder constants are provided by MU plugin: LOOPIS Constants.
 
