@@ -36,7 +36,7 @@ if (is_user_logged_in()) {
                     <p><span class="link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut</a></span></p>
                     </div>';
     }
-
+}
 
 // Output the message if it exists
 if (!empty($message)) {

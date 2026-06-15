@@ -71,18 +71,23 @@ function loopis_theme_hq_include_folder($folder_name, $base_theme_dir = LOOPIS_T
         loopis_log_level1("LOOPIS Theme HQ failed to include folder: {$folder_name} ({$base_theme_dir})");
     }
 }
-// Define folders to load
+// Define folders to load (shared from LOOPIS Theme)
 function loopis_theme_hq_load_files() {
-    // Shared from LOOPIS Theme
+    // For everyone
     loopis_theme_hq_include_folder('filters', LOOPIS_THEME_DIR);
     loopis_theme_hq_include_folder('functions/everyone', LOOPIS_THEME_DIR);
     loopis_theme_hq_include_folder('functions/payment', LOOPIS_THEME_DIR);
 
+    if (is_user_logged_in()) { 
+        // For user
+        loopis_theme_hq_include_folder('functions/user', LOOPIS_THEME_DIR);
+    } else {
+        // For visitor
+        loopis_theme_hq_include_folder('functions/visitor', LOOPIS_THEME_DIR);
+    }
+
     // HQ-only additions
     loopis_theme_hq_include_folder('filters', LOOPIS_THEME_HQ_DIR);
 
-    if (is_user_logged_in()) {
-        loopis_theme_hq_include_folder('functions/user', LOOPIS_THEME_HQ_DIR);
-    }
 }
 add_action('after_setup_theme', 'loopis_theme_hq_load_files');
