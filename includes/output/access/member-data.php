@@ -1,6 +1,6 @@
 <?php
 /**
- * Status messages for user with missing member data
+ * Prompt for users with missing data in member registry.
  */
  
 if (!defined('ABSPATH')) {
@@ -11,6 +11,11 @@ if (!defined('ABSPATH')) {
 $message = '';
 
 if (is_user_logged_in()) { 
+
+    $current_user = wp_get_current_user();
+    $user_roles = (array) $current_user->roles;
+
+if (in_array('member', $user_roles, true) || in_array('member_pending', $user_roles, true)) {
 
     $user_id = get_current_user_id();
 
@@ -53,7 +58,7 @@ if (is_user_logged_in()) {
                     </div>';
     }
 
-    
+}
 }
 
 // Output the message if it exists

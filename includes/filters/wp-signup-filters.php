@@ -9,7 +9,9 @@
  */
 
 // Load on both signup and activation screens so activation hooks are available.
-if (!isset($GLOBALS['pagenow']) || !in_array($GLOBALS['pagenow'], array('wp-signup.php', 'wp-activate.php'), true)) {
+$loopis_current_script = isset($_SERVER['SCRIPT_NAME']) ? (string) wp_unslash($_SERVER['SCRIPT_NAME']) : '';
+$loopis_is_signup_request = (isset($GLOBALS['pagenow']) && in_array($GLOBALS['pagenow'], array('wp-signup.php', 'wp-activate.php'), true)) || false !== strpos($loopis_current_script, 'wp-signup.php') || false !== strpos($loopis_current_script, 'wp-activate.php');
+if (!$loopis_is_signup_request) {
     return;
 }
 
@@ -34,8 +36,15 @@ function loopis_theme_hq_render_signup_template($template_file, $vars = array())
 
 // Enqueue LOOPIS styles on wp-signup.php only.
 function loopis_theme_hq_signup_assets() {
-    wp_enqueue_style('loopis-theme-hq-style', get_stylesheet_uri(), array(), LOOPIS_THEME_HQ_VERSION);
-    wp_enqueue_style('loopis-theme-hq-forms', LOOPIS_THEME_HQ_URI . '/assets/css/forms.css', array('loopis-theme-hq-style'), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/forms.css'));
+    wp_enqueue_style('dashicons');
+
+    $shared_theme_slug = 'loopis-theme';
+    $shared_theme_dir  = trailingslashit( get_theme_root() ) . $shared_theme_slug;
+    $shared_theme_uri  = trailingslashit( get_theme_root_uri() ) . $shared_theme_slug;
+
+    wp_enqueue_style('loopis-theme-hq-style', $shared_theme_uri . '/assets/css/base.css', array(), filemtime($shared_theme_dir . '/assets/css/base.css'));
+    wp_enqueue_style('loopis-theme-hq-forms', $shared_theme_uri . '/assets/css/forms.css', array('loopis-theme-hq-style'), filemtime($shared_theme_dir . '/assets/css/forms.css'));
+    wp_enqueue_style('loopis-theme-hq-responsive', $shared_theme_uri . '/assets/css/responsive.css', array('loopis-theme-hq-style'), filemtime($shared_theme_dir . '/assets/css/responsive.css'));
     wp_enqueue_style('loopis-theme-hq-signup', LOOPIS_THEME_HQ_URI . '/assets/css/wp-signup.css', array('loopis-theme-hq-forms'), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/wp-signup.css'));
 }
 add_action('wp_enqueue_scripts', 'loopis_theme_hq_signup_assets');
@@ -364,6 +373,15 @@ function loopis_theme_hq_signup_username_ui_bridge() {
             }
         }
 
+        function normalizeEmailLabel() {
+            var userEmailLabel = document.querySelector('#setupform label[for="user_email"]');
+            if (!userEmailLabel) {
+                return;
+            }
+
+            userEmailLabel.innerHTML = userEmailLabel.innerHTML.replace(/:\s*$/, '');
+        }
+
         function hideUsernameRow() {
             var userNameInput = document.getElementById('user_name');
             var userNameDescription = document.getElementById('wp-signup-username-description');
@@ -412,7 +430,7 @@ function loopis_theme_hq_signup_username_ui_bridge() {
                 }
 
                 var wrapper = document.createElement('div');
-                wrapper.className = 'loopis-password-toggle-wrap';
+                wrapper.className = 'loopis-password-toggle-wrap wp-pwd';
 
                 var parent = input.parentNode;
                 parent.insertBefore(wrapper, input);
@@ -420,16 +438,23 @@ function loopis_theme_hq_signup_username_ui_bridge() {
 
                 var button = document.createElement('button');
                 button.type = 'button';
-                button.className = 'loopis-password-toggle';
+                button.className = 'button button-secondary wp-hide-pw hide-if-no-js';
+                button.setAttribute('data-toggle', '0');
                 button.setAttribute('aria-label', 'Visa lösenord');
                 button.setAttribute('aria-pressed', 'false');
-                button.textContent = '👁';
+                button.innerHTML = '<span class="dashicons dashicons-visibility" aria-hidden="true"></span>';
+
+                var icon = button.querySelector('.dashicons');
 
                 button.addEventListener('click', function() {
                     var isPassword = input.type === 'password';
                     input.type = isPassword ? 'text' : 'password';
+                    button.setAttribute('data-toggle', isPassword ? '1' : '0');
                     button.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
                     button.setAttribute('aria-label', isPassword ? 'Dölj lösenord' : 'Visa lösenord');
+                    if (icon) {
+                        icon.className = isPassword ? 'dashicons dashicons-hidden' : 'dashicons dashicons-visibility';
+                    }
                 });
 
                 wrapper.appendChild(button);
@@ -439,6 +464,7 @@ function loopis_theme_hq_signup_username_ui_bridge() {
 
         function initSignupFormUi() {
             moveNameFieldsToTop();
+            normalizeEmailLabel();
             hideUsernameRow();
             wrapSignupErrors();
             addPasswordVisibilityToggles();
