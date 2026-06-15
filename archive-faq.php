@@ -11,7 +11,9 @@ get_header(); ?>
 
 <h1>💡 Frågor & svar</h1>
 <hr>
-<p>Hur funkar LOOPIS? Hur får jag LOOPIS till mitt område? Här finns svaren på de vanligaste frågorna.</p>
+<p>Hur funkar LOOPIS?</p>
+<p>Hur får jag LOOPIS till mitt område?</p>
+<p>Här finns svaren på de vanligaste frågorna.</p>
 
 <!--List of all FAQ tags and posts-->
 <?php

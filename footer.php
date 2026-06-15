@@ -27,34 +27,26 @@
 
             <?php if (is_user_logged_in()) : ?>
 
-                    <a href="<?php echo home_url('/shop/'); ?>" class="footer-item">
-                        <span class="emoji">🛒</span>
-                        <span class="text">Shoppen</span>
-                    </a>
-
-                    <a href="<?php echo home_url('/user/'); ?>" class="footer-item">
-                        <span class="emoji">👤️</span>
-                        <span class="text">Min profil</span>
-                    </a>
+                <a href="<?php echo home_url('/user/'); ?>" class="footer-item">
+                    <span class="emoji">👤️</span>
+                    <span class="text">Min profil</span>
+                </a>
 
             <?php else : ?>
+
                 <a href="<?php echo home_url('/wp-login.php'); ?>" class="footer-item">
                     <span class="emoji">👤️</span>
                     <span class="text">Logga in</span>
                 </a>
 
             <?php endif; ?>
-
-            <?php if (current_user_can('loopis_admin') || current_user_can('manage_options')) : ?>
-
-                <a href="<?php echo esc_url( home_url('/admin/') ); ?>" class="footer-item">
-                    <span class="emoji">🦀</span>
-                    <span class="text"><b>Admin HQ</b></span>
-                </a>
-
-            <?php endif; ?>
     </nav>
-</footer><!--footer-->
+
+<?php if (current_user_can('loopis_admin') || current_user_can('manage_options')) : ?>
+    <div class="footer-backdoor" onclick="location.href='<?php echo esc_url(home_url('/admin/')); ?>'">🦀</div>
+<?php endif; ?>
+
+</footer>
 
 <?php wp_footer(); ?>
 </body>

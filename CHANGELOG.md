@@ -1,8 +1,13 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 0.07 (2026-06-15)
+- Theme constants definition moved to new mu-plugin "LOOPIS Constants"
+- Content of pages /shop and /user are now fetched from "LOOPIS Theme"
+- Output with php logic (previously in  `templates`) are now fetched from "LOOPIS Theme"
+
 ## 0.06 (2026-06-11)
 - Additions and improvements
-- Some translation activated with folder `languages`
+- Some theme translation activated with folder `languages`
 
 ## 0.05 (2026-06-10)
 - Now using shared styling from "LOOPIS Theme"

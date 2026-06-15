@@ -8,9 +8,10 @@
 <?php get_header(); ?>
 <div class="page-padding center">
 
-<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/role-greeting.php'; ?>
-<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/role-options.php'; ?>
-<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/access/member-data.php'; ?>
+<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-greeting-main.php'; ?>
+<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options-main.php'; ?>
+<?php include LOOPIS_THEME_DIR . '/includes/output/access/role-options.php'; ?>
+<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/access/member-data.php'; ?>
 
 <?php
         wp_reset_postdata();        
