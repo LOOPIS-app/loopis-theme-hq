@@ -1,19 +1,20 @@
 <?php
 /**
- * Front page template
- * Displays sweden map + form for sign-up.
+ * LOOPIS main site front page
+ * 
+ * Displays user options + list of areas (posts).
  */
-?>
 
-<?php get_header(); ?>
+get_header(); ?>
+
 <div class="page-padding center">
 
-<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-greeting-main.php'; ?>
-<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options-main.php'; ?>
-<?php include LOOPIS_THEME_DIR . '/includes/output/access/role-options.php'; ?>
-<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/access/member-data.php'; ?>
+    <?php 
+    // Messages for users and visitors
+    include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-greeting-main.php';
+    include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options-main.php';
+    include LOOPIS_THEME_HQ_DIR . '/includes/output/access/member-data.php';
 
-<?php
         wp_reset_postdata();        
         // Fetch and count available posts
         $args = array(
