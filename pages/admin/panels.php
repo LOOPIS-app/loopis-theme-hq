@@ -25,7 +25,7 @@ $admin_url = home_url('/admin/');
 
 <!-- Activity -->
 <?php if (current_user_can('manage_options') || current_user_can('loopis_admin')) : ?>
-    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'pages/activity', $admin_url) ); ?>'">
+    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'activity', $admin_url) ); ?>'">
         <h5>📑 Aktivitet</h5>
         <hr>
         <p class="small">
@@ -36,7 +36,7 @@ $admin_url = home_url('/admin/');
 
 <!-- Statistics -->
 <?php if (current_user_can('manage_options') || current_user_can('loopis_admin')) : ?>
-    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'pages/stats', $admin_url) ); ?>'">
+    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'stats', $admin_url) ); ?>'">
         <h5>📊 Statistik</h5>
         <hr>
         <p class="small">
@@ -47,7 +47,7 @@ $admin_url = home_url('/admin/');
 
 <!-- Member registry -->
 <?php if (current_user_can('manage_options') || current_user_can('loopis_board')) : ?>
-    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'pages/activation', $admin_url) ); ?>'">
+    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'activation', $admin_url) ); ?>'">
         <h5>👥 Medlemmar</h5>
         <hr>
         <p class="small">
@@ -58,7 +58,7 @@ $admin_url = home_url('/admin/');
 
 <!-- Pending members count -->
 <?php if (current_user_can('manage_options') || current_user_can('loopis_board')) : ?>
-    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'pages/activation', $admin_url) ); ?>'">
+    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'activation', $admin_url) ); ?>'">
         <h5>👻 Medlemmar?</h5>
         <hr>
         <p class="small">
@@ -73,8 +73,8 @@ $admin_url = home_url('/admin/');
         <h3>💰 Ekonomi</h3>
         <hr>
         <div>
-            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/payments', $admin_url) ); ?>">📒 Alla köp</a></span>&nbsp;
-            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/coins', $admin_url) ); ?>">🪙 Köp av mynt</a></span>&nbsp;
+            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'payments', $admin_url) ); ?>">📒 Alla köp</a></span>&nbsp;
+            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'coins', $admin_url) ); ?>">🪙 Köp av mynt</a></span>&nbsp;
         </div>
     </div>
 <?php endif; ?>
