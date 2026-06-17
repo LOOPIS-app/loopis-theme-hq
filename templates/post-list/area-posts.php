@@ -11,7 +11,8 @@ if (!defined('ABSPATH')) {
 // Get variables
 $area_city = get_post_meta(get_the_ID(), 'area_city', true) ?: 'Stad saknas';
 $area_launch_date = get_post_meta(get_the_ID(), 'area_launch_date', true) ?: 'Lanseringsdatum saknas';
-$active_members = get_post_meta(get_the_ID(), 'active_members', true) ?: 'Antal saknas';
+$active_members_raw = get_post_meta(get_the_ID(), 'active_members', true);
+$active_members = '' === trim((string) $active_members_raw) ? 'Antal saknas' : $active_members_raw;
 $locker_postal_code = get_post_meta(get_the_ID(), 'locker_postal_code', true) ?: 'Postnummer saknas';
 $locker_address = get_post_meta(get_the_ID(), 'locker_address', true) ?: 'Adress saknas';
 $locker_link = get_post_meta(get_the_ID(), 'locker_link', true) ?: '#';

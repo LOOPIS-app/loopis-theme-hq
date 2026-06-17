@@ -32,7 +32,6 @@
 // Not logged in message
 echo '<hr>';
 include LOOPIS_THEME_DIR . '/includes/output/access/only-user.php';
-include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options.php';
 endif; ?>
 
 </div><!--page-padding center-->

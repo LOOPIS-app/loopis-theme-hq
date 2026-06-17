@@ -25,6 +25,9 @@
         </a>
 
     </nav>
+
+<div class="footer-backdoor" onclick="location.href='<?php echo esc_url(home_url('/')); ?>'">🚪</div>
+
 </footer><!--footer-->
 <?php wp_footer(); ?>
 
