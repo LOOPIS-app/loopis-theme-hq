@@ -42,19 +42,19 @@ function loopis_theme_hq_login_template_slot($slot) {
 }
 
 
-// Enqueue LOOPIS styles on wp-login.php only.
+// Enqueue LOOPIS styles for /wp-login.php
 function loopis_theme_hq_login_assets() {
-    $shared_theme_slug = 'loopis-theme';
-    $shared_theme_dir  = trailingslashit( get_theme_root() ) . $shared_theme_slug;
-    $shared_theme_uri  = trailingslashit( get_theme_root_uri() ) . $shared_theme_slug;
 
-    wp_enqueue_style('loopis-theme-hq-style', $shared_theme_uri . '/assets/css/base.css', array(), filemtime($shared_theme_dir . '/assets/css/base.css'));
-    wp_enqueue_style('loopis-theme-hq-responsive', $shared_theme_uri . '/assets/css/responsive.css', array('loopis-theme-hq-style'), filemtime($shared_theme_dir . '/assets/css/responsive.css'));
+    wp_enqueue_style('loopis-theme-hq-style', LOOPIS_THEME_URI . '/assets/css/base.css', array(), filemtime(LOOPIS_THEME_DIR . '/assets/css/base.css'));
+    wp_enqueue_style('loopis-theme-hq-responsive', LOOPIS_THEME_URI . '/assets/css/responsive.css', array('loopis-theme-hq-style'), filemtime(LOOPIS_THEME_DIR . '/assets/css/responsive.css'));
     wp_enqueue_style('loopis-theme-hq-fa', LOOPIS_THEME_HQ_URI . '/assets/fonts/css/fontawesome.min.css', array(), LOOPIS_THEME_HQ_VERSION);
     wp_enqueue_style('loopis-theme-hq-fa-solid', LOOPIS_THEME_HQ_URI . '/assets/fonts/css/solid.min.css', array('loopis-theme-hq-fa'), LOOPIS_THEME_HQ_VERSION);
-    wp_enqueue_style('loopis-theme-hq-forms', $shared_theme_uri . '/assets/css/forms.css', array('loopis-theme-hq-style'), filemtime($shared_theme_dir . '/assets/css/forms.css'));
+    wp_enqueue_style('loopis-theme-hq-forms', LOOPIS_THEME_URI . '/assets/css/forms.css', array('loopis-theme-hq-style'), filemtime(LOOPIS_THEME_DIR . '/assets/css/forms.css'));
     wp_enqueue_style('loopis-theme-hq-login', LOOPIS_THEME_HQ_URI . '/assets/css/wp-login.css', array('loopis-theme-hq-forms'), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/wp-login.css'));
-}
+    // Enqueue our font (because Safari needs it to be in the head and wp-login.php doesn't use wp_head).)
+    wp_enqueue_style('loopis-theme-hq-google-fonts', 'https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,600;1,300;1,400&subset=latin&display=swap', array(), null );
+
+    }
 add_action('login_enqueue_scripts', 'loopis_theme_hq_login_assets');
 
 // Set logo link target on login page.
@@ -136,8 +136,8 @@ function loopis_theme_hq_login_nav_icons() {
         var customHtml1 = <?php echo wp_json_encode(loopis_theme_hq_login_custom_html_1()); ?>;
         var customHtml2 = <?php echo wp_json_encode(loopis_theme_hq_login_custom_html_2()); ?>;
         var nav = document.getElementById('nav');
-        var registerLink = document.querySelector('#nav a.wp-login-register');
-        var lostPasswordLink = document.querySelector('#nav a.wp-login-lost-password');
+        var registerLink = null;
+        var lostPasswordLink = null;
         var backToBlogLink = document.querySelector('#backtoblog a');
         var linksContainer = document.getElementById('loopis-login-links');
         var customHtmlBlock1 = document.getElementById('loopis-login-custom-html-1');
@@ -148,6 +148,32 @@ function loopis_theme_hq_login_nav_icons() {
         var rememberMe = document.getElementById('rememberme');
         var languageSubmit = document.querySelector('#language-switcher input.button[type="submit"]');
         var languageButton = document.querySelector('#language-switcher button.button[type="submit"]');
+
+        function findNavLink(selectors) {
+            var i;
+            var link;
+
+            for (i = 0; i < selectors.length; i++) {
+                link = document.querySelector(selectors[i]);
+                if (link) {
+                    return link;
+                }
+            }
+
+            return null;
+        }
+
+        registerLink = findNavLink([
+            '#nav a.wp-login-register',
+            '#nav a[href*="wp-signup.php"]',
+            '#nav a[href*="action=register"]'
+        ]);
+
+        lostPasswordLink = findNavLink([
+            '#nav a.wp-login-lost-password',
+            '#nav a[href*="action=lostpassword"]',
+            '#nav a[href*="action=retrievepassword"]'
+        ]);
 
         function wrapInBigLink(link) {
             if (!link || (link.parentElement && link.parentElement.classList.contains('big-link'))) {
@@ -289,3 +315,36 @@ function loopis_theme_hq_login_register_text($translated, $text, $domain) {
     return $translated;
 }
 add_filter('gettext', 'loopis_theme_hq_login_register_text', 10, 3);
+
+/**
+ * Style forgot-password email as LOOPIS HTML mail.
+ */
+function loopis_theme_hq_style_password_reset_email($defaults, $key, $user_login, $user_data) {
+    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-headers.php';
+    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-password-reset-mail.php';
+    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-footer.php';
+
+    $reset_url = add_query_arg(
+        array(
+            'action' => 'rp',
+            'key' => $key,
+            'login' => rawurlencode((string) $user_login),
+        ),
+        network_site_url('wp-login.php', 'login')
+    );
+
+    $first_name = '';
+    if ($user_data instanceof WP_User) {
+        $first_name = (string) get_user_meta((int) $user_data->ID, 'first_name', true);
+    }
+
+    $message = loopis_password_reset_mail($first_name, $reset_url);
+    $message .= loopis_mail_footer();
+
+    $defaults['subject'] = '🔑 Återställ ditt lösenord på LOOPIS';
+    $defaults['message'] = $message;
+    $defaults['headers'] = loopis_mail_headers();
+
+    return $defaults;
+}
+add_filter('retrieve_password_notification_email', 'loopis_theme_hq_style_password_reset_email', 10, 4);

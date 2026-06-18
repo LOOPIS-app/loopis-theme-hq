@@ -1,64 +1,52 @@
 /** 
- * Custom styles overriding WP defaults for login page
+ * Custom styles overriding WP defaults on /wp-login.php
  *
  * Loads from wp-login-filters.php
  */
 
 /* Base token fallbacks matching shared forms.css */
-body { --form-bg: #f5f5f5; --form-border: #e5e5e5; --form-border-focus: #d0d0d0; --form-radius: 10px; --form-control-radius: 8px; --form-label-size: 15px; --form-control-size: 22px; --form-pad: 10px 20px; --form-gap: 20px; --form-text: #333; --form-muted: #777; background: #fff !important; font-family: 'Roboto Condensed', sans-serif; text-align: center; font-weight: 300 !important; }
+body { --form-bg: #f5f5f5; --form-border: #e5e5e5; --form-border-focus: #d0d0d0; --form-radius: 10px; --form-control-radius: 8px; --form-label-size: 15px; --form-control-size: 22px; --form-pad: 10px 20px; --form-gap: 20px; --form-text: #333; --form-muted: #777; }
 
-/* Twemoji inherit local text scale */
-img.emoji, img.wp-smiley { width: 1em; height: 1em; vertical-align: -0.1em; }
-
-/* Hide native wp-login logo: custom theme header renders the site logo */
+/* Hide native wp-login logo */
 .wp-login-logo { display: none; }
 
-/* Constrain the login module width and panel appearance */
-#login { width: 380px; padding: 10px 0; }
+/* Override wp-login module appearance */
+#login { width: 380px; padding: 10px 0; margin-top: 0px; }
 #login form { margin: 24px 0; padding: var(--form-pad); font-weight: inherit; overflow: visible; background: var(--form-bg); border-radius: var(--form-radius); border: none; box-shadow: none; }
-
-/* Override wp-login core input styles with shared form control design */
-#loginform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea), #registerform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea), #lostpasswordform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea), #resetpassform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea) { background: #fff; border: 2px solid var(--form-border); color: var(--form-muted); display: inline-block; width: 100%; outline: none; padding: 7px 8px; margin: 0 0 16px 0; font-size: var(--form-control-size); font-weight: 300; text-align: left; }
-#loginform select, #registerform select, #lostpasswordform select, #resetpassform select { border-radius: var(--form-control-radius); }
-#loginform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea):focus, #registerform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea):focus, #lostpasswordform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea):focus, #resetpassform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea):focus { border-color: var(--form-border-focus); color: var(--form-text); box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); }
-
-/* Fix vertical alignment for the password visibility toggle */
-.wp-pwd { position: relative; width: 100%; margin: 0 auto 10px; }
-.wp-pwd input[type="password"], .wp-pwd input[type="text"] { width: 100%; max-width: 100%; display: block; margin-bottom: 0; padding-right: 42px; }
-.wp-pwd .button.wp-hide-pw { position: absolute; top: 4px; right: 2px; width: 36px; margin: 0; border: 0; box-shadow: none; border-radius: 0; background: transparent; color: var(--form-muted); display: flex; align-items: center; justify-content: center; padding: 0; min-height: 0; line-height: 1; }
-.wp-pwd .button.wp-hide-pw:hover, .wp-pwd .button.wp-hide-pw:focus { background: rgba(0, 0, 0, 0.05); color: var(--form-text); }
-.wp-pwd .button.wp-hide-pw .dashicons { position: relative; top: -1px; line-height: 1; }
-
-/* Keep wp-login labels centered while inheriting shared form typography */
-label { color: var(--form-text) !important; font-size: var(--form-label-size) !important; font-weight: 600 !important; line-height: 1.3 !important; margin-bottom: 10px !important; }
-#loginform label, #registerform label, #lostpasswordform label, #resetpassform label { text-align: center; }
-.button-primary, #wp-submit, .wp-core-ui .button-primary, .wp-core-ui .button.button-primary { background: #78b159 !important; border: 1px solid #78b159 !important; padding: 8px 14px; font-size: 22px; cursor: pointer; border-radius: 10px; color: #fff !important; text-shadow: none; box-shadow: none; min-height: 0; line-height: 1.2; }
-.button-primary:hover, .button-primary:focus, #wp-submit:hover, #wp-submit:focus, .wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus { background: #17493f !important; border-color: #17493f !important; color: #fff !important; box-shadow: none; }
-
-/* Center key login text containers */
 #loginform, #loginform p, #loopis-login-register, #loopis-login-lostpassword, #backtoblog, .privacy-policy-page-link { text-align: center; }
 
-/* Language switcher row layout */
-#language-switcher, #language-switcher-locales { text-align: center; visibility: hidden; }
-#login #language-switcher { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: nowrap; background: transparent; padding: 0; border-radius: 0; }
-#language-switcher label { display: inline; margin: 0; }
+/* Override wp-login input styles */
+#loginform :is(input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea),
+#lostpasswordform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea),
+#resetpassform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea) { background: #fff; border: 2px solid var(--form-border); color: var(--form-muted); display: inline-block; width: 100%; outline: none; padding: 7px 8px; margin: 0 0 16px 0; font-size: var(--form-control-size); font-weight: 300; text-align: left; }
+#loginform select, #registerform select, #lostpasswordform select, #resetpassform select { border-radius: var(--form-control-radius); }
+#loginform :is(input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea):focus,
+#lostpasswordform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea):focus,
+#resetpassform :is(input[type="search"], input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="number"], select, textarea):focus { border-color: var(--form-border-focus); color: var(--form-text); box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); }
+#loginform label, #registerform label, #lostpasswordform label, #resetpassform label { text-align: center; }
+label { color: var(--form-text) !important; font-size: var(--form-label-size) !important; font-weight: 600 !important; line-height: 1.3 !important; margin-bottom: 10px !important; }
 
-/* Hide default translation icon (replaced by custom emoji button text) */
-.language-switcher .dashicons { display: none; }
-#language-switcher-locales { text-align-last: center; margin: 0; }
+/* Override wp-login submit buttons */
+#wp-submit { background: #78b159 !important; border: 0px; padding: 8px 14px; margin-top: 10px; font-size: 22px; cursor: pointer; border-radius: 10px; color: #fff !important; line-height: 1.2; }
+#wp-submit:hover, #wp-submit:focus { background: #666 !important; color: #FFF !important; }
 
-/* Language switcher button */
-.language-switcher .button { font-size: 16px; background: #fff; }
+/* Fix vertical alignment and color for the password visibility toggle */
+.wp-pwd .button.wp-hide-pw { margin-top: 3px; border-radius: 25px; color: var(--form-muted);  }
 
-/* Remember-me and submit row layout */
+/* Fix remember-me and submit row layout */
 p.forgetmenot, p.submit { float: none; text-align: center; margin: 0; width: 100%; }
 p.submit { clear: both; margin-top: 0; display: flex; justify-content: center; }
 
-/* Override WP core large-button metrics for login submit */
-#loginform #wp-submit { display: block; float: none; margin: 10px auto 0; min-height: 0; line-height: 1.2; }
+/* On reset-password screen, keep "Generate password" on its own line. */
+.login #resetpassform p.reset-pass-submit { display: block; }
+.login #resetpassform p.reset-pass-submit .button:not(#wp-submit) { display: block;float: none; margin: 0 auto 6px; }
 
-/* Top spacing for standard login action state */
-.login-action-login #login, .login-action-lostpassword #login, .login-action-rp #login, .login-action-resetpass #login, .login-action-register #login { margin-top: 0px; }
+/* Restyle language switcher  */
+#language-switcher, #language-switcher-locales { text-align: center; visibility: hidden; } /* Hidden until we provide translation options */
+#login #language-switcher { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: nowrap; background: transparent; padding: 0; border-radius: 0; }
+#language-switcher label { display: inline; margin: 0; }
+.language-switcher .button { font-size: 16px; background: #fff; }
+.language-switcher .dashicons { display: none; } /* Default translation icon replaced by custom emoji + text */
 
 /* Standalone nav paragraphs inserted via login footer script */
 #loopis-login-register, #loopis-login-lostpassword { margin: 0 0 10px 0; }
@@ -72,10 +60,18 @@ p.submit { clear: both; margin-top: 0; display: flex; justify-content: center; }
 /* Add readable rhythm for optional custom HTML blocks */
 .loopis-login-custom-html { line-height: 1.5; margin: 0 0 10px 0; }
 
-/* Map core wp-login notices to LOOPIS message styles */
+/* Override wp-login notices with LOOPIS message styles */
 .login .message, .login .notice, .login .success, .login #login_error { border: 0 !important; border-left: 0 !important; border-radius: 10px; padding: 7px 7px 1px 7px; margin: 12px 0; font-size: 16px; box-shadow: none; }
 .login .message p, .login .notice p, .login .success p, .login #login_error p { padding: 0; margin: 0 0 6px 0; }
 .login .notice.notice-info.message, .login .message, .login .notice { background-color: #D9EDf7 !important; }
 .login #login_error, .login .notice.notice-error { background-color: #FFE5E7 !important; }
 .login .notice.notice-warning { background-color: #FFF1E4 !important; }
 .login .success, .login .notice.notice-success { background-color: #dff0d8 !important; }
+
+/* Twemoji inherit local text scale (this local fix could be included in base.css instead?) */
+img.emoji, img.wp-smiley { width: 1em; height: 1em; vertical-align: -0.1em; }
+
+/* Override wp-login description */
+#loginform .indicator-hint,
+#lostpasswordform .indicator-hint,
+#resetpassform .indicator-hint { color: var(--form-muted); font-size: 13px; font-style: italic; margin-top: 0; opacity: 1; white-space: normal; display: block; }

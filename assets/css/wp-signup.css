@@ -1,5 +1,5 @@
 /** 
- * Custom styles overriding WP defaults for signup page.
+ * Custom styles overriding WP defaults on /wp-signup.php
  *
  * Loads from wp-signup-filters.php
  */
@@ -7,30 +7,26 @@
 /* Base token fallbacks matching shared forms.css */
 .mu_register { --form-bg: #f5f5f5; --form-border: #e5e5e5; --form-border-focus: #d0d0d0; --form-radius: 10px; --form-control-radius: 8px; --form-label-size: 15px; --form-control-size: 22px; --form-pad: 10px 20px; --form-gap: 20px; --form-text: #333; --form-muted: #777; }
 
-
-.mu_register { width: 350px !important; margin: 0 auto !important; text-align: center; }
-.mu_register form { margin-top: 0px !important; background: var(--form-bg); border-radius: var(--form-radius); padding: var(--form-pad); border: none; box-shadow: none; }
+/* Override wp-signup module appearance */
+.mu_register { width: 380px !important; margin: 0 auto !important; text-align: center; background: var(--form-bg); border-radius: var(--form-radius); padding: var(--form-pad); border: none; box-shadow: none; }
+.mu_register form { margin-top: 5px !important;  }
 .mu_register #setupform { text-align: center; }
 .mu_register #setupform p, .mu_register #setupform label { text-align: center; }
 .mu_register #setupform p { margin: 0 0 var(--form-gap); }
 .mu_register #setupform p:last-child { margin-bottom: 0; }
 
-/* Match theme .error styling for signup helper/error copy */
-#wp-signup-email-description { font-size: 14px; line-height: 1.5em; margin: 0 0 5px 0; color: #ff969d; font-weight: 600; }
-
-/* Override core wp-signup label sizing/spacing to match shared forms.css tokens */
+/* Override wp-signup  input styles  */
 .mu_register #setupform label, .mu_register #setupform legend, .mu_register #setupform .label-heading { color: var(--form-text); font-size: var(--form-label-size); font-weight: 600; margin: 0 0 5px; display: block; }
 .mu_register #setupform :is(input[type="text"], input[type="email"], input[type="password"], select, textarea) { background: #fff; border: 2px solid var(--form-border); color: var(--form-muted); display: inline-block; width: 100%; outline: none; padding: 7px 8px; margin: 0 auto; font-size: var(--form-control-size); font-weight: 300; text-align: left; }
 .mu_register #setupform select { border-radius: var(--form-control-radius); }
 .mu_register #setupform :is(input[type="text"], input[type="email"], input[type="password"], select, textarea):focus { border-color: var(--form-border-focus); color: var(--form-text); box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); }
-.mu_register .loopis-password-toggle-wrap { position: relative; width: min(100%, 380px); margin-left: auto; margin-right: auto; }
-.mu_register .loopis-password-toggle-wrap input[type="password"], .mu_register .loopis-password-toggle-wrap input[type="text"] { width: 100%; max-width: none; margin: 0; padding-right: 42px; }
-.mu_register .wp-pwd .button.wp-hide-pw { position: absolute; top: 4px; right: 2px; bottom: 4px; width: 36px; min-width: 36px; margin: 0; border: 0 !important; box-shadow: none; border-radius: 0; background: transparent; color: var(--form-muted); display: flex; align-items: center; justify-content: center; padding: 0; min-height: 0; line-height: 1; }
-.mu_register .wp-pwd .button.wp-hide-pw:hover, .mu_register .wp-pwd .button.wp-hide-pw:focus { background: rgba(0, 0, 0, 0.10) !important; color: var(--form-text) !important; }
-.mu_register .wp-pwd .button.wp-hide-pw .dashicons { position: relative; top: -1px; line-height: 1; }
-.mu_register .button.wp-hide-pw .dashicons { width: 1.25rem; height: 1.25rem; top: .25rem; }
+
+/* Override wp-login submit buttons */
 .mu_register #setupform p.submit { text-align: center; }
 .mu_register #setupform p.submit input[type="submit"], .mu_register #setupform p.submit .submit { display: inline-block; width: auto !important; min-width: 0; }
+
+/* Set description styling */
+#wp-signup-email-description, .mu_register #setupform .description { color: var(--form-muted); font-size: 13px; font-style: italic; margin-top: 0; opacity: 1; white-space: normal; display: block; }
 
 /* Map signup error output to LOOPIS message styling */
 .mu_register .error { border: 0 !important; border-left: 0 !important; border-radius: 10px; padding: 7px 7px 1px 7px; margin: 12px 0; font-size: 16px; box-shadow: none; background-color: #FFE5E7; color: #333; font-weight: 400; font-style: normal; }
@@ -41,3 +37,9 @@
 .mu_register:has(> .loopis-signup-payment-stage) > h2:first-of-type + p,
 .mu_register:has(> .loopis-signup-payment-stage) > h2:first-of-type + p + p,
 .mu_register:has(> .loopis-signup-payment-stage) > h2:first-of-type + p + p + p { display: none; }
+
+/* Override core success heading styling on the signup confirmation screen. */
+.mu_register > h2:first-of-type {
+	white-space: unset;
+	margin-top: 10px;
+}

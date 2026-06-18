@@ -14,10 +14,10 @@ if (!isset($GLOBALS['pagenow']) || 'wp-activate.php' !== $GLOBALS['pagenow']) {
 }
 
 /**
- * Render an activation template from templates/signup.
+ * Render an activation template from templates/wp-signup.
  */
 function loopis_theme_hq_render_activate_template($template_file, $vars = array()) {
-    $template = get_stylesheet_directory() . '/templates/signup/' . ltrim((string) $template_file, '/');
+    $template = get_stylesheet_directory() . '/templates/wp-signup/' . ltrim((string) $template_file, '/');
     if (!file_exists($template)) {
         return '';
     }
@@ -32,9 +32,67 @@ function loopis_theme_hq_render_activate_template($template_file, $vars = array(
     return trim((string) ob_get_clean());
 }
 
-// Enqueue signup styles on activation page as well.
+/**
+ * Get activation signup details from the current activation key when available.
+ */
+function loopis_theme_hq_get_activation_signup_details() {
+    global $wpdb;
+
+    $activate_cookie = 'wp-activate-' . COOKIEHASH;
+    $activation_key = '';
+
+    if (!empty($_GET['key'])) {
+        $activation_key = sanitize_text_field(wp_unslash($_GET['key']));
+    } elseif (!empty($_POST['key'])) {
+        $activation_key = sanitize_text_field(wp_unslash($_POST['key']));
+    } elseif (!empty($_COOKIE[$activate_cookie])) {
+        $activation_key = sanitize_text_field(wp_unslash($_COOKIE[$activate_cookie]));
+    }
+
+    if ('' === $activation_key) {
+        return array(
+            'user_login' => '',
+            'user_email' => '',
+            'password' => '',
+        );
+    }
+
+    $signup = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT user_login, user_email, meta FROM {$wpdb->signups} WHERE activation_key = %s LIMIT 1",
+            $activation_key
+        )
+    );
+
+    if (!$signup) {
+        return array(
+            'user_login' => '',
+            'user_email' => '',
+            'password' => '',
+        );
+    }
+
+    $password = '';
+    $signup_meta = maybe_unserialize($signup->meta);
+
+    if (
+        is_array($signup_meta)
+        && !empty($signup_meta['loopis_signup_password_enc'])
+        && function_exists('loopis_theme_hq_decrypt_signup_password')
+    ) {
+        $password = loopis_theme_hq_decrypt_signup_password((string) $signup_meta['loopis_signup_password_enc']);
+    }
+
+    return array(
+        'user_login' => isset($signup->user_login) ? (string) $signup->user_login : '',
+        'user_email' => isset($signup->user_email) ? (string) $signup->user_email : '',
+        'password' => $password,
+    );
+}
+
+// Enqueue LOOPIS styles on /wp-activate.php only
 function loopis_theme_hq_activate_assets() {
-    wp_enqueue_style('loopis-theme-hq-signup', LOOPIS_THEME_HQ_URI . '/assets/css/wp-signup.css', array(), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/wp-signup.css'));
+    wp_enqueue_style('loopis-theme-hq-activate', LOOPIS_THEME_HQ_URI . '/assets/css/wp-activate.css', array(), filemtime(LOOPIS_THEME_HQ_DIR . '/assets/css/wp-activate.css'));
 }
 add_action('wp_enqueue_scripts', 'loopis_theme_hq_activate_assets');
 
@@ -43,8 +101,13 @@ add_action('wp_enqueue_scripts', 'loopis_theme_hq_activate_assets');
  */
 function loopis_theme_hq_activation_login_bridge() {
     $login_url = esc_url(wp_login_url(home_url('/shop/?option=membership-stripe')));
-    $template_html = loopis_theme_hq_render_activate_template('loopis-activate-title.php', array(
+    $signup_details = loopis_theme_hq_get_activation_signup_details();
+
+    $template_html = loopis_theme_hq_render_activate_template('loopis-activate-screen.php', array(
         'login_url' => $login_url,
+        'user_login' => $signup_details['user_login'],
+        'user_email' => $signup_details['user_email'],
+        'password' => $signup_details['password'],
     ));
 
     if ('' === $template_html) {

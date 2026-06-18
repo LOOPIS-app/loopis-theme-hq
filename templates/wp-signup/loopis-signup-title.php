@@ -16,6 +16,6 @@ if (!defined('ABSPATH')) {
 3⃣ Logga in<br>
 4⃣ Bli medlem<br>
 
-<!--div class="loopis-message warning">
+<div class="loopis-message warning">
 <p>⚠ OBS! Du kan bara använda LOOPIS nära Bagarmossen! <span class="link"><a href="<?php echo esc_url(home_url('/faq/varfor-bagis/')); ?>">📌 Varför måste jag bo i Bagis?</a></span></p>
-</div-->
+</div>
