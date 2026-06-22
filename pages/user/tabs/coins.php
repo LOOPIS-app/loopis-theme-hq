@@ -33,11 +33,11 @@ $coins = $profile_economy['coins'];
 <hr>
 <p class="small">💡 Information om dina regnbågsmynt.</p>
 <div class="wrapped">
-<h1><img src="<?php echo LOOPIS_THEME_HQ_URI; ?>/assets/img/coin.png" alt="Mynt:" class="symbol"><?php echo $coins; ?></h1>
-<p class="small">Du kan just nu hämta <?php echo $coins; ?> saker.</p>
+<h1><img src="<?php echo LOOPIS_THEME_URI; ?>/assets/img/coin.png" alt="Mynt:" class="symbol"><?php echo $coins; ?></h1>
+<p class="small">Du kan just nu paxa och hämta <?php echo $coins; ?> saker.</p>
 <hr>
 <p><span class="label">💚 <?php echo $count_given; ?> saker lämnade</span></p>
-<p><span class="label">❤ <?php echo $count_booked; ?> saker hämtade</span></p>
+<p><span class="label">❤ <?php echo $count_booked; ?> saker paxade</span></p>
 <p><span class="label">🍀 <?php echo $clovers; ?> fyrklöver</span></p>
 <p><span class="label">🌟 <?php echo $stars; ?> guldstjärnor</span></p>
 </div><!-- wrapped -->
@@ -46,7 +46,7 @@ $coins = $profile_economy['coins'];
 <p class="small">💡 Detaljerad lista över din aktivitet finns på nästa flik.</p>
 
 <!--Buy coins-->
-<p><button type="button" class="green" onclick="window.location.href='<?php echo esc_url(add_query_arg('option', 'coins-stripe', home_url('/shop/'))); ?>'">Köp mynt</button></p>
+<p><button type="button" class="green" onclick="window.location.href='<?php echo esc_url(add_query_arg('option', 'coins-stripe', network_home_url('/shop/'))); ?>'">Köp mynt</button></p>
 
 <!--FAQ-->
-<p><span class="link"><a href="<?php echo esc_url(home_url('/faq/hur-funkar-regnbagsmynt')); ?>">📌 Hur funkar regnbågsmynt?</a></span></p>
+<p><span class="link"><a href="<?php echo esc_url(network_home_url('/faq/hur-funkar-regnbagsmynt')); ?>">📌 Hur funkar regnbågsmynt?</a></span></p>

@@ -56,6 +56,15 @@ $admin_url = home_url('/admin/');
     </div>
 <?php endif; ?>
 
+<!-- App traffic -->
+<div class="wrapped">
+    <h5>📲 Trafik i app</h5>
+    <hr>
+    <p class="small">
+        <?php include __DIR__ . '/panels/traffic-app.php'; ?>
+    </p>
+</div>
+
 <!-- Pending members count -->
 <?php if (current_user_can('manage_options') || current_user_can('loopis_board')) : ?>
     <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'activation', $admin_url) ); ?>'">

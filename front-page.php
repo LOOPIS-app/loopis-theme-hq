@@ -13,7 +13,7 @@ get_header(); ?>
     // Messages for users and visitors
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-greeting-main.php';
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options-main.php';
-    include LOOPIS_THEME_HQ_DIR . '/includes/output/access/member-data.php';
+    include LOOPIS_THEME_HQ_DIR . '/includes/output/access/member-data-check.php';
 
         wp_reset_postdata();        
         // Fetch and count available posts
@@ -48,9 +48,7 @@ get_header(); ?>
 
 <!--?php include_once LOOPIS_THEME_HQ_DIR . '/templates/front-page/map.php'; ?-->
 
-<!--?php if (!is_user_logged_in()) { 
-include LOOPIS_THEME_HQ_DIR . '/templates/forms/interest-form.php'; 
-} ?-->
+<!--?php if (!is_user_logged_in()) { include LOOPIS_THEME_HQ_DIR . '/templates/forms/interest-form.php'; } ?-->
 
 </div><!--page-padding center-->
 

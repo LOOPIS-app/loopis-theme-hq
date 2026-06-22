@@ -1,3 +1,0 @@
-/*
-	Admin scripts for LOOPIS theme
-*/

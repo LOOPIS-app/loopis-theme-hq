@@ -1,9 +1,13 @@
 <?php
 /**
- * Custom maintenance page content.
+ * Maintenance gate and page renderer for LOOPIS HQ frontend.
  */
 
-// Allow bypass for trusted office IPs configured in wp-config.php.
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Resolve client IP from trusted proxy headers first.
 $loopis_get_client_ip = static function() {
     $candidates = array();
 
@@ -31,21 +35,33 @@ $loopis_get_client_ip = static function() {
     return '';
 };
 
+// Early bypass for trusted office IPs configured in wp-config.php.
 $allowed_ips_config = defined('LOOPIS_MAINTENANCE_ALLOWED_IPS') ? (string) LOOPIS_MAINTENANCE_ALLOWED_IPS : '';
 $allowed_ips = array_filter(array_map('trim', explode(',', $allowed_ips_config)));
 $client_ip = $loopis_get_client_ip();
 
 if ($client_ip !== '' && in_array($client_ip, $allowed_ips, true)) {
-    // Return false so caller can continue normal page execution.
-    return false;
+    return;
 }
 
-$assets_url = trailingslashit(get_template_directory_uri()) . 'includes/maintenance/';
+add_action('wp_loaded', function() {
+    if (!headers_sent()) {
+        header('HTTP/1.1 Service Unavailable', true, 503);
+        header('Content-Type: text/html; charset=utf-8');
+        header('Retry-After: 3600');
+    }
 
-// Set ready timestamp (Unix timestamp when site will be ready). Set to 0 to disable timer.
-$ready_timestamp = strtotime('2026-06-16 12:00:00'); // Site ready at this date/time
-$ready_timestamp = isset($ready_timestamp) ? (int) $ready_timestamp : 0;
-?><!DOCTYPE html>
+    $assets_url = trailingslashit(get_template_directory_uri()) . 'includes/maintenance/';
+
+    // SET READY TIMESTAMP HERE! 
+    $ready_timestamp = strtotime('2026-06-23 12:00:00'); // Site ready at this date/time
+    $ready_timestamp = isset($ready_timestamp) ? (int) $ready_timestamp : 0;
+
+    // If timestamp is in the past, disable timer.
+    if ($ready_timestamp > 0 && $ready_timestamp <= time()) { $ready_timestamp = 0; }
+
+    ?>
+<!DOCTYPE html>
 <html lang="sv">
 <head>
     <meta charset="utf-8">
@@ -54,8 +70,8 @@ $ready_timestamp = isset($ready_timestamp) ? (int) $ready_timestamp : 0;
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,600;1,300;1,400&subset=latin&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo $assets_url; ?>maintenance.css">
-    <script src="<?php echo $assets_url; ?>loopis-timer.js"></script>
+    <link rel="stylesheet" href="<?php echo esc_url($assets_url . 'maintenance.css'); ?>">
+    <script src="<?php echo esc_url($assets_url . 'loopis-timer.js'); ?>"></script>
     <title>LOOPIS | Underhåll</title>
 </head>
 
@@ -93,10 +109,14 @@ $ready_timestamp = isset($ready_timestamp) ? (int) $ready_timestamp : 0;
 
 <footer class="footer">
     <div class="footer-content">
-        <img src="<?php echo $assets_url; ?>LOOPIS_mail_header.png" alt="LOOPIS-logo" class="logo">
+        <img src="<?php echo esc_url($assets_url . 'LOOPIS_mail_header.png'); ?>" alt="LOOPIS-logo" class="logo">
         <p><span class="big-link"><a href="mailto:info@loopis.app">info@loopis.app</a></span></p>
     </div>
 </footer>
 
 </body>
 </html>
+<?php
+
+    exit;
+});

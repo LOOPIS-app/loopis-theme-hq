@@ -9,9 +9,10 @@
 <?php get_header(); ?>
 
 <div class="page-padding center">
+
 <?php if ( is_user_logged_in() ) : 
-    // Shared dynamic page loader from LOOPIS Theme.
-    $page_dir = LOOPIS_THEME_DIR . '/pages/shop/';
+    // Dynamic page loader 
+    $page_dir = LOOPIS_THEME_HQ_DIR . '/pages/shop/';
 
     // Get the 'option' parameter from URL
     $page_option = isset($_GET['option']) ? sanitize_file_name($_GET['option']) : 'start';
@@ -29,7 +30,8 @@
 
 <?php else :
 // Not logged in message
-include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-message.php';
+echo '<h1>🛒 Shoppen</h1><hr>';
+include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options-main.php';
 endif; ?>
 
 </div><!--page-padding center-->

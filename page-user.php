@@ -10,9 +10,10 @@
 
 <div class="page-padding center">
     <h1>👤 Min profil</h1>
+    
 <?php if ( is_user_logged_in() ) : 
-    // Shared dynamic page loader from LOOPIS Theme.
-    $page_dir = LOOPIS_THEME_DIR . '/pages/user/';
+    // Dynamic page loader 
+    $page_dir = LOOPIS_THEME_HQ_DIR . '/pages/user/';
 
     // Get the 'option' parameter from URL
     $page_option = isset($_GET['option']) ? sanitize_file_name($_GET['option']) : 'tabs';
@@ -22,7 +23,7 @@
     if (file_exists($php_file)) {
         include $php_file;
     } else {
-        echo '<h1>👤 Min profil</h1><hr>';
+        echo '<hr>';
         include LOOPIS_THEME_DIR . '/includes/output/access/loopis-404.php';
     }
     ?>
