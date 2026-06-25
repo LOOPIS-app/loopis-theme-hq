@@ -12,6 +12,10 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
+// Include extra functions
+require_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-form-handler.php';
+
+// Set variables for current user meta values
 $user_id = get_current_user_id();
 $wpum_postcode = get_user_meta($user_id, 'wpum_postcode', true);
 $wpum_phone = get_user_meta($user_id, 'wpum_phone', true);
@@ -40,7 +44,7 @@ $member_form_fields = array_values(array_unique($member_form_fields));
 // Field-specific helper text used directly under each label.
 $member_form_field_messages = array(
     'wpum_postcode' => 'Ange 5 siffror.',
-    'wpum_phone' => 'Ange 10 siffror, bindestreck valfritt (t.ex. 070-1234567).',
+    'wpum_phone' => 'Ange 10 siffror, bindestreck valfritt.',
     'wpum_birthyear' => 'Ange 4 siffror.',
     'wpum_gender' => 'Välj ett alternativ i listan.',
     'wpum_area' => 'Välj ett alternativ i listan.',

@@ -8,7 +8,7 @@
 .mu_register { --form-bg: #f5f5f5; --form-border: #e5e5e5; --form-border-focus: #d0d0d0; --form-radius: 10px; --form-control-radius: 8px; --form-label-size: 15px; --form-control-size: 22px; --form-pad: 10px 20px; --form-gap: 20px; --form-text: #333; --form-muted: #777; }
 
 /* Override wp-signup module appearance */
-.mu_register { width: 380px !important; margin: 0 auto !important; text-align: center; background: var(--form-bg); border-radius: var(--form-radius); padding: var(--form-pad); border: none; box-shadow: none; }
+.mu_register { width: 380px !important; margin: 0 auto !important; text-align: center !important; background: var(--form-bg); border-radius: var(--form-radius); padding: var(--form-pad); border: none; box-shadow: none; }
 .mu_register form { margin-top: 5px !important;  }
 .mu_register #setupform { text-align: center; }
 .mu_register #setupform p, .mu_register #setupform label { text-align: center; }

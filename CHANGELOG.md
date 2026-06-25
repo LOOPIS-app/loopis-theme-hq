@@ -1,10 +1,14 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 1.02 (2026-06-25)
+- Bugs and small fixes
+- Some admin panels moved from "LOOPIS Theme"
+- Privacy page added
+
 ## 1.01 (2026-06-22)
 - Maintenance mode revised
 - Pages content for /user and /shop moved from "LOOPIS Theme" to here
 - Script assets (js) centralized and moved to "LOOPIS Theme"
-- Stripe fixes in process...
 
 ## 1.00 (2026-06-16)
 - Deployment on new multisite!

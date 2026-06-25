@@ -2,7 +2,7 @@
 /**
  * Dynamic content for pages using url /shop/?option=
  * 
- * Content is fetched from "LOOPIS Theme"
+ * Content is shared to "LOOPIS Theme"
  */
 ?>
 

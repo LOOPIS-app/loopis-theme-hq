@@ -9,63 +9,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Extra php functions (not yet migrated)
-// include_once LOOPIS_THEME_DIR . '/includes/functions/admin-extra/admin_action_add_membership.php';
+// Extra php functions
+include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action_add_membership.php';
 ?>
-
-<style>
-.user-card {
-    background-color: #f5f5f5;
-    padding: 8px;
-    margin-bottom: 10px;
-    font-size: 0.875rem;
-}
-
-.user-card-row {
-    display: flex;
-    gap: 8px;
-}
-
-.user-card-row:first-child {
-    font-size: 1.1rem;
-}
-
-.user-card-row > span {
-    flex: 1;
-}
-
-.user-card-row.header > span {
-    flex: 0 0 auto;
-    font-weight: 400;
-}
-
-.user-card-row.header > span:last-child {
-    flex: 0 0 auto;
-    text-align: right;
-}
-
-.user-card-row.details {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.user-card-row.details > span {
-    flex: 0 1 auto;
-}
-
-.user-card-actions {
-    margin-left: auto;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.user-card-time {
-    font-size: 0.75rem;
-    margin-left: auto;
-}
-</style>
 
 <h1>🎉 Nya medlemmar</h1>
 <hr>
@@ -83,7 +29,7 @@ $count = count($pending_users);
 ?>
 
 <!-- Pending Members -->
-<h3>📋 Formulär</h3>
+<h3>📋 Nya konton</h3>
 <div class="columns">
     <div class="column1">
         ↓ <?php echo $count; ?> <?php echo (($count == 1) ? 'ny' : 'nya') . ' som ej betalat'; ?>
@@ -104,12 +50,12 @@ $count = count($pending_users);
             
             // Get area
             ob_start();
-            get_template_part('templates/user/profile/user-area');
+            include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php';
             $area = ob_get_clean();
             ?>
             <div class="user-card">
                 <div class="user-card-row header">
-                    <span><?php get_template_part('templates/user/profile/user-names'); ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-names.php'; ?></span>
                     <span class="user-card-actions">
                         <span class="big-link"><a href="<?php echo esc_url(admin_url('user-edit.php?user_id=' . $user_id)); ?>" onclick="return confirm('Vill du redigera i användaren i WP Admin?')">🔧</a></span>
                         <form method="post" id="activate_form_<?php echo $user_id; ?>" style="display: none;">
@@ -119,13 +65,13 @@ $count = count($pending_users);
                     </span>
                 </div>
                 <div class="user-card-row details">
-                    <span><?php get_template_part('templates/user/profile/user-area'); ?></span>
-                    <span><?php get_template_part('templates/admin/profile/user-gender'); ?></span>
-                    <span><?php get_template_part('templates/admin/profile/user-age'); ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-gender.php'; ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-age.php'; ?></span>
                 </div>
                 <div class="user-card-row details">
-                    <span><?php get_template_part('templates/admin/profile/user-email'); ?></span>
-                    <span><?php get_template_part('templates/admin/profile/user-phone'); ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-email.php'; ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-phone.php'; ?></span>
                     <span class="user-card-time">⏳ <?php echo esc_html($registered); ?></span>
                 </div>
             </div>
@@ -198,19 +144,19 @@ $count = count($new_users);
             ?>
             <div class="user-card">
                 <div class="user-card-row header">
-                    <span><a href="<?php echo esc_url($author_link); ?>"><?php get_template_part('templates/user/profile/user-names'); ?></a></span>
+                    <span><a href="<?php echo esc_url($author_link); ?>"><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-names.php'; ?></a></span>
                     <span class="user-card-actions">
                         <span class="big-link"><a href="<?php echo esc_url(admin_url('user-edit.php?user_id=' . $user_id)); ?>" onclick="return confirm('Vill du redigera i användaren i WP Admin?')">🔧</a></span>
                     </span>
                 </div>
                 <div class="user-card-row details">
-                    <span><?php get_template_part('templates/user/profile/user-area'); ?></span>
-                    <span><?php get_template_part('templates/admin/profile/user-gender'); ?></span>
-                    <span><?php get_template_part('templates/admin/profile/user-age'); ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-gender.php'; ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-age.php'; ?></span>
                 </div>
                 <div class="user-card-row details">
-                    <span><?php get_template_part('templates/admin/profile/user-email'); ?></span>
-                    <span><?php get_template_part('templates/admin/profile/user-phone'); ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-email.php'; ?></span>
+                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-phone.php'; ?></span>
                     <span>💰 <?php echo esc_html($payment_method ?: '—'); ?></span>
                     <span class="user-card-time">⏳ <?php echo esc_html($registered); ?></span>
                 </div>

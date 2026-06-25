@@ -21,12 +21,8 @@ $field_id = 35;
 $dropdown_meta_key = 'dropdown_options';
 
 // Query the database to get the dropdown options
-$dropdown_options = $wpdb->get_var(
-    $wpdb->prepare(
-        "SELECT meta_value FROM {$wpdb->prefix}wpum_fieldmeta WHERE wpum_field_id = %d AND meta_key = %s",
-        $field_id,
-        $dropdown_meta_key
-    )
+$dropdown_options = $wpdb->get_results(
+    "SELECT DISTINCT type FROM {$wpdb->base_prefix}loopis_ledger WHERE event = 'payment'", ARRAY_A
 );
 
 // Initialize the mapping array
@@ -34,12 +30,10 @@ $wpum_payment_type_labels = array();
 
 // If dropdown options are found, deserialize and build the mapping
 if (!empty($dropdown_options)) {
-    $options = maybe_unserialize($dropdown_options);
-    if (is_array($options)) {
-        foreach ($options as $option) {
-            if (isset($option['value']) && isset($option['label'])) {
-                $wpum_payment_type_labels[$option['value']] = $option['label'];
-            }
+    //$options = maybe_unserialize($dropdown_options);
+    if (is_array($dropdown_options)) {
+        foreach ($dropdown_options as $option) {
+            $wpum_payment_type_labels[loopis_ledger_type_output( $option['type'])] = loopis_ledger_type_output( $option['type']);
         }
     }
 }
@@ -141,9 +135,10 @@ foreach ($all_payments as $payment) {
 ?>
 
 <!-- Year Filter -->
+<div class="loopis-form" id="filter-form">
 <form method="GET" action="/admin/" style="margin-bottom: 20px;">
     <input type="hidden" name="view" value="economy/payments">
-    <select id="filter_year" name="filter_year" style="float: left; font-size: 16px;">
+    <select id="filter_year" name="filter_year">
         <option value="">Alla år</option>
         <?php foreach ($available_years as $year) : ?>
             <option value="<?php echo esc_attr($year); ?>" <?php echo ($filter_year === $year) ? 'selected' : ''; ?>>
@@ -151,8 +146,9 @@ foreach ($all_payments as $payment) {
             </option>
         <?php endforeach; ?>
     </select>
-    <button type="submit" class="green small" style="margin: 3px 0 0 10px;">Välj år</button>
+    <button type="submit" class="green small">Välj år</button>
 </form>
+</div> 
 
 <!-- Summary Section -->
 <div class="columns">
@@ -166,10 +162,11 @@ foreach ($all_payments as $payment) {
 <p><span class="label">👤 <?php echo $medlemskap_count; ?> köp av medlemskap = <?php echo $medlemskap_total_amount; ?> kr</span></p>
 
 <!-- Payment Type Filter -->
+<div class="loopis-form" id="filter-form">
 <form method="GET" action="/admin/" style="margin-bottom: 20px;">
     <input type="hidden" name="view" value="economy/payments">
     <input type="hidden" name="filter_year" value="<?php echo esc_attr($filter_year); ?>">
-    <select id="filter_payment_type" name="filter_payment_type" style="float: left; font-size: 16px;">
+    <select id="filter_payment_type" name="filter_payment_type">
         <option value="">Alla typer</option>
         <?php foreach ($wpum_payment_type_labels as $value => $label) : ?>
             <option value="<?php echo esc_attr($value); ?>" <?php echo ($filter_payment_type === $value) ? 'selected' : ''; ?>>
@@ -177,8 +174,9 @@ foreach ($all_payments as $payment) {
             </option>
         <?php endforeach; ?>
     </select>
-    <button type="submit" class="green small" style="margin: 3px 0 0 10px;">Filtrera typ</button>
+    <button type="submit" class="green small">Filtrera typ</button>
 </form>
+</div>
 
 <!-- Payments List -->
 <h3>🗃 Registrerade köp</h3>

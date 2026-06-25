@@ -22,8 +22,8 @@ $password = isset($password) ? (string) $password : '';
 <div class="wp-activate-message">
 <p>Ditt konto är aktiverat! 🥳<br>
 Logga in för att bli medlem i föreningen och börja loopa.</p>
-<p><b>E-post:</b> <?php echo esc_html($user_email); ?></p>
-<p><b>Användarnamn:</b> <?php echo esc_html($user_login); ?></p>
-<p><b>Lösenord:</b> <?php echo esc_html($password); ?></p>
+<p>E-post: <b><?php echo esc_html($user_email); ?></b></p>
+<p>Användarnamn: <b><?php echo esc_html($user_login); ?></b></p>
+<p>Lösenord: <b><?php echo esc_html($password); ?></b></p>
 <?php include LOOPIS_THEME_HQ_DIR . '/templates/links/log-in-button.php'; ?>
 </div>

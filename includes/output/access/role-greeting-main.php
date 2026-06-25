@@ -17,17 +17,17 @@ if (is_user_logged_in()) {
 
     // Member
     if (in_array('member', $user_roles, true)) {
-        $message = '<h5>Välkommen ' . esc_html($user->first_name) . '!</h5>';
+        $message = '<h5>Hej ' . esc_html($user->first_name) . '!</h5>';
     }
 
     // Member pending
     elseif (in_array('member_pending', $user_roles, true)) {
-        $message = '<h5>Hej ' . esc_html($user->first_name) . '!</h5>';
+        $message = '<h5>Välkommen ' . esc_html($user->first_name) . '!</h5>';
     }
 
     // Member earlier
     elseif (in_array('member_earlier', $user_roles, true)) {
-        $message = '<h5>Hej ' . esc_html($user->first_name) . '!</h5>';
+        $message = '<h5>Välkommen tillbaka ' . esc_html($user->first_name) . '!</h5>';
     }
 
     // Member outside
@@ -49,7 +49,7 @@ if (is_user_logged_in()) {
     // Not logged in
     $message .= '<h5>Det nya sättet att ge & få saker</h5>
                 <hr>
-                <p class="small">💡 Paxa i appen, hämta i skåpet.</p>';
+                <p class="small">💡 Paxa i telefonen, hämta i skåpet.</p>';
 }
 
 // Output the message if it exists

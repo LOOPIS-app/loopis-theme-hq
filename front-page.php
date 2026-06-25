@@ -2,7 +2,7 @@
 /**
  * LOOPIS main site front page
  * 
- * Displays user options + list of areas (posts).
+ * Displays user options + list available areas.
  */
 
 get_header(); ?>
@@ -13,8 +13,14 @@ get_header(); ?>
     // Messages for users and visitors
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-greeting-main.php';
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options-main.php';
-    include LOOPIS_THEME_HQ_DIR . '/includes/output/access/member-data-check.php';
+    
+    // Check member data
+    if (is_user_logged_in()) { include LOOPIS_THEME_HQ_DIR . '/includes/output/access/member-data-check.php'; }
 
+    // Show concept image
+    if (!is_user_logged_in()) { include LOOPIS_THEME_HQ_DIR . '/templates/faq/loopis-concept.php'; }
+
+    // Show list of areas
         wp_reset_postdata();        
         // Fetch and count available posts
         $args = array(
@@ -44,11 +50,12 @@ get_header(); ?>
         </div><!--post-list-->
         <?php endif; ?>
 
-        <?php wp_reset_postdata(); ?>
+        <?php wp_reset_postdata();
 
-<!--?php include_once LOOPIS_THEME_HQ_DIR . '/templates/front-page/map.php'; ?-->
-
-<!--?php if (!is_user_logged_in()) { include LOOPIS_THEME_HQ_DIR . '/templates/forms/interest-form.php'; } ?-->
+// Future options?
+// if (!is_user_logged_in()) { include_once LOOPIS_THEME_HQ_DIR . '/templates/front-page/map.php'; }
+// if (!is_user_logged_in()) { include LOOPIS_THEME_HQ_DIR . '/templates/forms/interest-form.php'; }
+?>
 
 </div><!--page-padding center-->
 

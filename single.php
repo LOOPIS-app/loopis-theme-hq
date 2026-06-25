@@ -45,27 +45,24 @@ if (!$area_launch_timestamp) {
 }
 ?>	
 
-<!-- POST CONTENT -->
-    <div class="post-wrapper">
-        <div class="page-padding center">
+<!-- THE POST -->
+<div class="page-padding center">
 			<p><span class="rounded"><a href="<?php echo get_post_type_archive_link('post'); ?>">📍 Områden</a></span> <span class="rounded"><?php the_category(' ');?></span></p>
             <h1 class="wrap"><?php the_title(); ?></h1>
 			<hr>
 			<div class="post-meta">
 				<p>🗺 <?php echo esc_html($area_city); ?> (<?php echo esc_html($locker_postal_code); ?>)<br>
-				🎉 <?php echo esc_html($area_launch_text); ?></p>
+				🎉 <?php echo esc_html($area_launch_text); ?><br>
+				👤 Medlemmar: <?php echo esc_html($active_members); ?><br>
+				🎁 Loopade saker: <?php echo esc_html($circulated_things); ?><br>
 			</div><!--post-meta-->
 
 			<?php if (has_term('active', 'category')) { ?>
-			<h5><a href="<?php echo esc_url(home_url('/' . $locker_postal_code)); ?>">→ Gå till område</a></h5>
+			<span class="mega-link"><a href="<?php echo esc_url(home_url('/' . $locker_postal_code)); ?>">→ Gå till område</a></span>
 			<?php } ?>
 
-				<div class="post-content">
-				<div class="wrapped">
-					<p>👤 Antal aktiva medlemmar: <?php echo esc_html($active_members); ?></p>
-					<p>🎁 Antal cirkulerade saker: <?php echo esc_html($circulated_things); ?></p>
-				</div>
-			
+	
+			<div class="post-content">
 				<?php the_content(); ?>
 				<?php if ($thumbnail_id){ echo wp_get_attachment_image($thumbnail_id, 'large'); } ?>
 
@@ -73,7 +70,6 @@ if (!$area_launch_timestamp) {
 <a href="#" id="copy_url" class="option">🔗 Kopiera länk</a>
 
 			</div><!--post-content-->				
-		</div><!--post-padding-->				
-	</div><!--post-wrapper-->							
+		</div><!--post-padding-->								
 
 <?php get_footer(); ?>

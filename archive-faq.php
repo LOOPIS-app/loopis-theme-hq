@@ -7,12 +7,15 @@
 
 get_header(); ?>
 
+<?php
+$selected_faq_tag = isset($_GET['faq_tag']) ? sanitize_title((string) $_GET['faq_tag']) : '';
+?>
+
 	<div class="page-padding center">
 
 <h1>💡 Frågor & svar</h1>
 <hr>
-<p>Hur funkar LOOPIS?</p>
-<p>Hur får jag LOOPIS till mitt område?</p>
+<p><i>🤔 Hur funkar regnbågsmynt?<br>🤔 Hur får jag LOOPIS till mitt område?</i></p>
 <p>Här finns svaren på de vanligaste frågorna.</p>
 
 <!--List of all FAQ tags and posts-->
@@ -22,6 +25,7 @@ $terms = get_terms([
     'hide_empty' => false,
     'orderby'    => 'name',
     'order'      => 'ASC',
+    'slug'       => '' !== $selected_faq_tag ? array($selected_faq_tag) : '',
 ]);
 
 if (!empty($terms) && !is_wp_error($terms)) :
