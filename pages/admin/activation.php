@@ -15,7 +15,7 @@ include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action
 
 <h1>🎉 Nya medlemmar</h1>
 <hr>
-<p class="small">💡 Här ser du nya medlemmar - och kan aktivera deras konton manuellt.</p>
+<p class="small">💡 Här ser du blivande och nya medlemmar.</p>
 
 <?php
 // Get pending users
@@ -29,10 +29,10 @@ $count = count($pending_users);
 ?>
 
 <!-- Pending Members -->
-<h3>📋 Nya konton</h3>
+<h3>📋 Nya användare</h3>
 <div class="columns">
     <div class="column1">
-        ↓ <?php echo $count; ?> <?php echo (($count == 1) ? 'ny' : 'nya') . ' som ej betalat'; ?>
+        ↓ <?php echo $count; ?> <?php echo ' ej komplett' . (($count == 1) ? '' : 'a'); ?>
     </div>
     <div class="column2 small">💡 Senaste överst</div>
 </div>
@@ -47,11 +47,30 @@ $count = count($pending_users);
                 admin_action_add_membership($user_id);
             }
             $registered = human_time_diff(strtotime($user->user_registered), current_time('timestamp'));
-            
-            // Get area
-            ob_start();
-            include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php';
-            $area = ob_get_clean();
+            $author_link = get_author_posts_url($user_id);
+            $payment_method = '';
+            $payment_type_display = '';
+            $payments = get_user_meta($user_id, 'wpum_payments', true);
+            if (!empty($payments) && is_array($payments)) {
+                foreach ($payments as $row) {
+                    $payment_type = '';
+                    if (isset($row['wpum_payment_type'])) {
+                        $payment_type = is_array($row['wpum_payment_type'])
+                            ? ($row['wpum_payment_type'][0]['value'] ?? '')
+                            : $row['wpum_payment_type'];
+                    }
+                    $normalized_type = strtolower($payment_type);
+                    if (in_array($normalized_type, array('membership', 'medlemskap'), true)) {
+                        $payment_type_display = $payment_type;
+                        $payment_method = is_array($row['wpum_payment_method'] ?? null)
+                            ? ($row['wpum_payment_method'][0]['value'] ?? '')
+                            : ($row['wpum_payment_method'] ?? '');
+                        if ($payment_method !== '') {
+                            break;
+                        }
+                    }
+                }
+            }
             ?>
             <div class="user-card">
                 <div class="user-card-row header">
@@ -65,9 +84,10 @@ $count = count($pending_users);
                     </span>
                 </div>
                 <div class="user-card-row details">
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></span>
+                    <span>📍 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></span>
                     <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-gender.php'; ?></span>
                     <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-age.php'; ?></span>
+                    <span>💰 <?php echo esc_html($payment_method ?: '—'); ?></span>
                 </div>
                 <div class="user-card-row details">
                     <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-email.php'; ?></span>
@@ -77,13 +97,13 @@ $count = count($pending_users);
             </div>
         <?php endforeach; ?>
     <?php else : ?>
-        <p>💢 Inga väntande konton just nu.</p>
+        <p>💢 Inga nya användare just nu.</p>
     <?php endif; ?>
 </div>
 
 <?php
 // Get recently activated users (last X days)
-$time_ago = strtotime('-1 days');
+$time_ago = strtotime('-7 days');
 $args = array(
     'role'       => 'member',
     'orderby'    => 'registered',
@@ -101,10 +121,10 @@ $count = count($new_users);
 ?>
 
 <!-- Recently Activated -->
-<h3>✅ Aktiverade</h3>
+<h3>✅ Nya medlemmar</h3>
 <div class="columns">
     <div class="column1">
-        ↓ <?php echo $count; ?> <?php echo (($count == 1) ? 'ny' : 'nya'); ?> senaste dygnet
+        ↓ <?php echo $count; ?> <?php echo (($count == 1) ? 'ny' : 'nya'); ?> senaste veckan
     </div>
     <div class="column2 small">💡 Senaste överst</div>
 </div>
@@ -117,7 +137,6 @@ $count = count($new_users);
             $user_id = $user->ID;
             $registered = human_time_diff(strtotime($user->user_registered), current_time('timestamp'));
             $author_link = get_author_posts_url($user_id);
-
             $payment_method = '';
             $payment_type_display = '';
             $payments = get_user_meta($user_id, 'wpum_payments', true);
@@ -163,6 +182,6 @@ $count = count($new_users);
             </div>
         <?php endforeach; ?>
     <?php else : ?>
-        <p>💢 Inga nya konton idag.</p>
+        <p>💢 Inga nya medlemmar senaste 7 dagarna.</p>
     <?php endif; ?>
 </div>

@@ -129,6 +129,10 @@ function loopis_theme_hq_handle_member_form_post() {
     update_user_meta($user_id, 'wpum_area', $area);
     update_user_meta($user_id, 'wpum_active', $active);
 
+    // Check if both member data and membership payment are complete.
+    include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php';
+    member_pending_check($user_id);
+
     wp_safe_redirect(add_query_arg('member_form', 'success', $redirect_url));
     exit;
 }

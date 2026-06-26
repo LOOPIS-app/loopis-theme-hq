@@ -30,7 +30,9 @@ $is_member_pending = in_array('member_pending', $user_roles, true);
 <?php elseif ('success' === $checkout_status) : ?>
 
     <p><strong>✅ Betalning mottagen!</strong></p>
-    <p>Nu är ditt medlemskap aktiverat.</p>
+    <div class="loopis-message information">
+    <p>Du behöver nu komplettera vårt <span class="big-link">📋 <a href="<?php echo esc_url(home_url('/user/?option=member-data')); ?>">Medlemsregister</a></span> och välja område.</p>
+    </div>
     <script>
     (function() {
         var nonce = <?php echo wp_json_encode(wp_create_nonce('wp_rest')); ?>;

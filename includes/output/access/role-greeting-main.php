@@ -7,52 +7,51 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-// Initialize message
-$message = '';
+// Initialize greeting
+$role_greeting = '';
 
 if (is_user_logged_in()) { 
-
-    $user = wp_get_current_user();
-    $user_roles = (array) $user->roles;
+    
+    $user_firstname = wp_get_current_user()->first_name;
 
     // Member
-    if (in_array('member', $user_roles, true)) {
-        $message = '<h5>Hej ' . esc_html($user->first_name) . '!</h5>';
+    if (current_user_can('member')) { 
+        $role_greeting = '<h5>Hej ' . $user_firstname . '!</h5>';
     }
 
     // Member pending
-    elseif (in_array('member_pending', $user_roles, true)) {
-        $message = '<h5>Välkommen ' . esc_html($user->first_name) . '!</h5>';
+    if (current_user_can('member_pending')) { 
+        $role_greeting = '<h5>Välkommen ' . $user_firstname . '!</h5>';
     }
 
     // Member earlier
-    elseif (in_array('member_earlier', $user_roles, true)) {
-        $message = '<h5>Välkommen tillbaka ' . esc_html($user->first_name) . '!</h5>';
+    elseif (current_user_can('member_earlier')) {
+        $role_greeting = '<h5>Välkommen tillbaka ' . $user_firstname . '!</h5>';
     }
 
     // Member outside
-    elseif (in_array('member_outside', $user_roles, true)) {
-        $message = '<h5>Hej ' . esc_html($user->first_name) . '!</h5>';
+    elseif (current_user_can('member_outside')) {
+        $role_greeting = '<h5>Hej ' . $user_firstname . '!</h5>';
     }
 
     // Super Admin (multisite capability, not a role slug)
-    elseif (is_multisite() && is_super_admin($user->ID)) {
-        $message = '<h5>Hej super-admin!</h5>';
+    elseif (is_super_admin()) {
+        $role_greeting = '<h5>Hej webmaster!</h5>';
     }
 
     // Admin
-    elseif (in_array('administrator', $user_roles, true)) {
-        $message = '<h5>Hej admin ' . esc_html($user->first_name) . '!</h5>';
+    elseif (current_user_can('administrator')) {
+        $role_greeting = '<h5>Hej admin ' . $user_firstname . '!</h5>';
     }
 
 } else {
     // Not logged in
-    $message .= '<h5>Det nya sättet att ge & få saker</h5>
+    $role_greeting .= '<h5>Det nya sättet att ge & få saker</h5>
                 <hr>
                 <p class="small">💡 Paxa i telefonen, hämta i skåpet.</p>';
 }
 
 // Output the message if it exists
-if (!empty($message)) {
-    echo $message;
+if (!empty($role_greeting)) {
+    echo $role_greeting;
 }

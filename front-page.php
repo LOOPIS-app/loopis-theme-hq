@@ -10,19 +10,19 @@ get_header(); ?>
 <div class="page-padding center">
 
     <?php 
-    // Messages for users and visitors
+    // Check member data and payment for member_pending
+    if (current_user_can('member_pending'))  {
+        include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php'; 
+        $user_id = get_current_user_id();
+        member_pending_check($user_id);
+        }
+    
+    // Greeting and options for users and visitors
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-greeting-main.php';
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options-main.php';
-    
-    // Check member data
-    if (is_user_logged_in()) { include LOOPIS_THEME_HQ_DIR . '/includes/output/access/member-data-check.php'; }
-
-    // Show concept image
-    if (!is_user_logged_in()) { include LOOPIS_THEME_HQ_DIR . '/templates/faq/loopis-concept.php'; }
 
     // Show list of areas
         wp_reset_postdata();        
-        // Fetch and count available posts
         $args = array(
             'post_type'      => 'post',
             'posts_per_page' => 50,
@@ -52,9 +52,6 @@ get_header(); ?>
 
         <?php wp_reset_postdata();
 
-// Future options?
-// if (!is_user_logged_in()) { include_once LOOPIS_THEME_HQ_DIR . '/templates/front-page/map.php'; }
-// if (!is_user_logged_in()) { include LOOPIS_THEME_HQ_DIR . '/templates/forms/interest-form.php'; }
 ?>
 
 </div><!--page-padding center-->

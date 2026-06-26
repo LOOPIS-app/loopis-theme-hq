@@ -1,5 +1,9 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 1.03 (2026-06-26)
+- Onboarding improved, now requiring both membership payment and member data.
+- Ledger views added to post log, author log and admin area.
+
 ## 1.02 (2026-06-25)
 - Bugs and small fixes
 - Some admin panels moved from "LOOPIS Theme"
