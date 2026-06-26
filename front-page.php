@@ -14,7 +14,7 @@ get_header(); ?>
     if (current_user_can('member_pending'))  {
         include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php'; 
         $user_id = get_current_user_id();
-        member_pending_check($user_id);
+        $member_status = member_pending_check($user_id);
         }
     
     // Greeting and options for users and visitors

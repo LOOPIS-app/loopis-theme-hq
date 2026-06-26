@@ -216,3 +216,7 @@ $member_form_error_message = $member_form_field_messages['general'];
         <button type="submit">Spara uppgifter</button>
     </form>
 </div><!-- loopis-form -->
+<?php 
+if ('POST' === ($_SERVER['REQUEST_METHOD'] ?? '')) {
+    loopis_theme_hq_handle_member_form_post();
+}

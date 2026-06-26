@@ -55,7 +55,7 @@ function member_pending_check($user_id) {
     if (!empty($payment_info)) {
         foreach ($payment_info as $row) {
             $payment_date = date('Y-m-d',strtotime($row['timestamp']));
-            $payment_type = loopis_ledger_type_output($row['type']);
+            $payment_type = $row['type'];
             $payment_amount = $row['payment'];
             $payment_method = $row['description'];
         }
@@ -66,7 +66,7 @@ function member_pending_check($user_id) {
 
     // Setup roles if both member data and membership payment are complete
     if ($member_data_complete && $member_payment_complete) {
-        include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-role-setup.php';
+        include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-access-setup.php';
         member_access_setup($user_id);
     }
 
