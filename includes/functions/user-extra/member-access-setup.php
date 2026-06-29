@@ -42,14 +42,14 @@ function member_access_setup($user_id) {
 
     // Add user and set role on subsite (currently hardcoded ID 2).
     $subsite_id = 2;
-        if (!is_user_member_of_blog((int) $user_id, $subsite_id)) {
-            add_user_to_blog($subsite_id, (int) $user_id, 'member');
-        } else {
-            switch_to_blog($subsite_id);
-            $subsite_user = new WP_User((int) $user_id);
-            if ($subsite_user && 0 !== (int) $subsite_user->ID) {
-                $subsite_user->set_role('member');
-            }
-            restore_current_blog();
+    if (!is_user_member_of_blog((int) $user_id, $subsite_id)) {
+        $added = add_user_to_blog($subsite_id, (int) $user_id, 'member');
+    } else {
+        switch_to_blog($subsite_id);
+        $subsite_user = new WP_User((int) $user_id);
+        if ($subsite_user && 0 !== (int) $subsite_user->ID) {
+            $subsite_user->set_role('member');
         }
+        restore_current_blog();
+    }
 }

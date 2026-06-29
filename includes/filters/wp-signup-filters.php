@@ -322,6 +322,7 @@ function loopis_theme_hq_build_signup_username($first_name, $last_name) {
     $last_name = sanitize_text_field($last_name);
 
     $raw = strtolower(trim(remove_accents($first_name . '-' . $last_name)));
+    ucfirst()
     $raw = preg_replace('/\s+/', '-', $raw);
     $raw = preg_replace('/-+/', '-', $raw);
     $raw = trim($raw, '-');
