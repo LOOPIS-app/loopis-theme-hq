@@ -136,7 +136,7 @@ foreach ($all_payments as $payment) {
 
 <!-- Year Filter -->
 <div class="loopis-form loopis-filter">
-<form method="GET" action="/admin/" style="margin-bottom: 20px;">
+<form method="GET" action="/admin/">
     <input type="hidden" name="view" value="economy/payments">
     <select id="filter_year" name="filter_year">
         <option value="">Alla år</option>
@@ -146,7 +146,7 @@ foreach ($all_payments as $payment) {
             </option>
         <?php endforeach; ?>
     </select>
-    <button type="submit" class="green small">Välj år</button>
+    <button type="submit">Välj år</button>
 </form>
 </div> 
 
@@ -161,9 +161,13 @@ foreach ($all_payments as $payment) {
 <p><span class="label">🪙 <?php echo $mynt_count; ?> köp av mynt = <?php echo $mynt_total_amount; ?> kr</span></p>
 <p><span class="label">👤 <?php echo $medlemskap_count; ?> köp av medlemskap = <?php echo $medlemskap_total_amount; ?> kr</span></p>
 
+<!-- Payments List -->
+<h3>🗃 Registrerade köp</h3>
+<hr>
+
 <!-- Payment Type Filter -->
-<div class="loopis-form loopis-filter>
-<form method="GET" action="/admin/" style="margin-bottom: 20px;">
+<div class="loopis-form loopis-filter">
+<form method="GET" action="/admin/">
     <input type="hidden" name="view" value="economy/payments">
     <input type="hidden" name="filter_year" value="<?php echo esc_attr($filter_year); ?>">
     <select id="filter_payment_type" name="filter_payment_type">
@@ -174,12 +178,10 @@ foreach ($all_payments as $payment) {
             </option>
         <?php endforeach; ?>
     </select>
-    <button type="submit" class="green small">Filtrera typ</button>
+    <button type="submit">Filtrera typ</button>
 </form>
 </div>
 
-<!-- Payments List -->
-<h3>🗃 Registrerade köp</h3>
 <div class="columns">
     <div class="column1">↓ <?php echo $filtered_count; ?> köp</div>
     <div class="column2 small">💡 Senaste överst</div>
