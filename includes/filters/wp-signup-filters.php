@@ -315,16 +315,18 @@ add_action('wp_head', 'loopis_theme_hq_signup_username_ui_bridge');
 /**
  * Build a username from first and last name.
  *
- * Format: firstname-lastname
+ * Format: Firstname-Lastname
  */
 function loopis_theme_hq_build_signup_username($first_name, $last_name) {
+    // safe strings
     $first_name = sanitize_text_field($first_name);
     $last_name = sanitize_text_field($last_name);
 
-    $raw = strtolower(trim(remove_accents($first_name . '-' . $last_name)));
-    $raw = preg_replace('/\s+/', '-', $raw);
+    $raw = remove_accents($first_name . '-' . $last_name); //no special lettering or fancy accent
+    $raw = preg_replace('/\s+/', '-', $raw); //ensure bonus names and hyphens are connected with the right character
     $raw = preg_replace('/-+/', '-', $raw);
-    $raw = trim($raw, '-');
+    $raw = trim($raw, '-'); // fix ends
+    $raw = ucwords(strtolower($raw), '-'); //all letters small except first and after -
 
     return sanitize_user($raw, true);
 }
