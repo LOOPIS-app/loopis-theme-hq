@@ -25,6 +25,6 @@ $user = wp_get_current_user();
 <p>📍 Område: <b><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></b></p>
 </div>
 
-<p><span class="big-link"><a href="<?php echo esc_url(home_url('/user/?option=member-form')); ?>">📋 Medlemsregister</a></span> för dina aktuella uppgifter</p>
+<p><span class="big-link"><a href="<?php echo esc_url(home_url('/user/?option=member-data')); ?>">📋 Medlemsregister</a></span> för dina aktuella uppgifter</p>
 <p><span class="big-link"><a href="<?php echo esc_url(get_author_posts_url($user_id)); ?>">👥 Din profil</a></span> som den visas för andra</p>
 <p><span class="big-link"><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">🚪 Logga ut</a></span> från LOOPIS.app</p>
