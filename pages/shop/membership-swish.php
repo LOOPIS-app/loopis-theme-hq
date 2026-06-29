@@ -22,4 +22,4 @@ if (!defined('ABSPATH')) {
 <p class="small">💡 Swish-betalning måste registreras manuellt av vår kassör, vanligtvis inom en timme.</p>
 </div>
 
-<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/general/swish-membership.php'; ?>
+<?php include_once LOOPIS_THEME_DIR . '/templates/general/swish-membership.php'; ?>

@@ -21,7 +21,6 @@ if (!defined('ABSPATH')) {
 <p>⚠ Swisha bara om du inte kan <span class="big-link">💳 <a href="<?php echo esc_url( add_query_arg(array('option' => 'coins-stripe'), home_url('/shop/')) ); ?>">Betala med kort</a></span></p>
 <p class="small">💡 Swish-betalning måste registreras manuellt av vår kassör, vanligtvis inom en timme.</p>
 </div>
-
-<?php include_once LOOPIS_THEME_HQ_DIR . '/templates/general/swish-coins.php'; ?>
+<?php include_once LOOPIS_THEME_DIR . '/templates/general/swish-coins.php'; ?>
 
 <p><span class="link"><a href="<?php echo esc_url(home_url('/faq/hur-funkar-regnbagsmynt') ); ?>">📌 Hur funkar regnbågsmynt?</a></span></p>
