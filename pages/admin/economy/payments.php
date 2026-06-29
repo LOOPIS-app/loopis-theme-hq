@@ -135,7 +135,7 @@ foreach ($all_payments as $payment) {
 ?>
 
 <!-- Year Filter -->
-<div class="loopis-form" id="filter-form">
+<div class="loopis-form loopis-filter">
 <form method="GET" action="/admin/" style="margin-bottom: 20px;">
     <input type="hidden" name="view" value="economy/payments">
     <select id="filter_year" name="filter_year">
@@ -162,7 +162,7 @@ foreach ($all_payments as $payment) {
 <p><span class="label">👤 <?php echo $medlemskap_count; ?> köp av medlemskap = <?php echo $medlemskap_total_amount; ?> kr</span></p>
 
 <!-- Payment Type Filter -->
-<div class="loopis-form" id="filter-form">
+<div class="loopis-form loopis-filter>
 <form method="GET" action="/admin/" style="margin-bottom: 20px;">
     <input type="hidden" name="view" value="economy/payments">
     <input type="hidden" name="filter_year" value="<?php echo esc_attr($filter_year); ?>">
