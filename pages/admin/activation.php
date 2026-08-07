@@ -74,28 +74,29 @@ $count = count($pending_users);
             ?>
             <div class="user-card">
                 <div class="user-card-row header">
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-names.php'; ?></span>
+                    <span>👤 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-names.php'; ?></span>
                     <span class="user-card-actions">
                         <span class="big-link"><a href="<?php echo esc_url(admin_url('user-edit.php?user_id=' . $user_id)); ?>" onclick="return confirm('Vill du redigera i användaren i WP Admin?')">🔧</a></span>
                         <form method="post" id="activate_form_<?php echo $user_id; ?>" style="display: none;">
                             <input type="hidden" name="add_membership<?php echo $user_id; ?>" value="1">
                         </form>
-                        <span class="big-link"><a href="#" onclick="if(confirm('Aktivera konto för <?php echo esc_js($user->first_name . ' ' . $user->last_name); ?>?')) { document.getElementById('activate_form_<?php echo $user_id; ?>').submit(); } return false;">✅</a></span>
+                        <span class="big-link"><a href="#" onclick="if(confirm('Aktivera konto för <?php echo esc_js($user->first_name . ' ' . $user->last_name); ?>?')) { document.getElementById('activate_form_<?php echo $user_id; ?>').submit(); } return false;">💸</a></span>
                     </span>
                 </div>
                 <div class="user-card-row details">
                     <span>📍 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></span>
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-gender.php'; ?></span>
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-age.php'; ?></span>
+                    <span>⚧ <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-gender.php'; ?></span>
+                    <span>🚼 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-age.php'; ?></span>
                     <span>💰 <?php echo esc_html($payment_method ?: '—'); ?></span>
                 </div>
                 <div class="user-card-row details">
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-email.php'; ?></span>
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-phone.php'; ?></span>
+                    <span>📧 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-email.php'; ?></span>
+                    <span>📱 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-phone.php'; ?></span>
                     <span class="user-card-time">⏳ <?php echo esc_html($registered); ?></span>
                 </div>
             </div>
         <?php endforeach; ?>
+        <p class="small">💡 Tryck på 💸 för att registrera Swish-betalning.</p>
     <?php else : ?>
         <p>💢 Inga nya användare just nu.</p>
     <?php endif; ?>
@@ -163,13 +164,13 @@ $count = count($new_users);
             ?>
             <div class="user-card">
                 <div class="user-card-row header">
-                    <span><a href="<?php echo esc_url($author_link); ?>"><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-names.php'; ?></a></span>
+                    <span>👤 <a href="<?php echo esc_url($author_link); ?>"><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-names.php'; ?></a></span>
                     <span class="user-card-actions">
                         <span class="big-link"><a href="<?php echo esc_url(admin_url('user-edit.php?user_id=' . $user_id)); ?>" onclick="return confirm('Vill du redigera i användaren i WP Admin?')">🔧</a></span>
                     </span>
                 </div>
                 <div class="user-card-row details">
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></span>
+                    <span>📍 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></span>
                     <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-gender.php'; ?></span>
                     <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-age.php'; ?></span>
                 </div>

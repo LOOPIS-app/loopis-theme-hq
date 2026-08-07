@@ -42,7 +42,7 @@ $admin_url = home_url('/admin/');
 <?php endif; ?>
 
 <!-- Economy -->
-<?php if (current_user_can('manage_options') || current_user_can('loopis_board')) : ?>
+<?php if (current_user_can('manage_options') || current_user_can('loopis_economy')) : ?>
     <div>
         <h3>💰 Ekonomi</h3>
         <hr>

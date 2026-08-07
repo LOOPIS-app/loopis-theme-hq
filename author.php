@@ -37,7 +37,7 @@ $star_coins = $profile_economy['star_coins'];
 $clovers = $profile_economy['clovers'];
 $clover_coins = $profile_economy['clover_coins'];
 $coins = $profile_economy['coins'];
-$joined_date = $profile_economy['joined_date'];
+$joined_date = date('Y-m-d',strtotime($profile_economy['joined_date']));
 if ($count_submitted !== 0) { $given_percentage = round(($count_given / $count_submitted) * 100); } else { $given_percentage = 0; }
 ?>
 
@@ -48,7 +48,7 @@ if ($count_submitted !== 0) { $given_percentage = round(($count_given / $count_s
 <p class="small"><?php echo $first_name; ?> kan just nu paxa och hämta <?php echo $coins; ?> saker.</p>
 <hr>
 <p><span class="label">💚 <?php echo $count_given; ?> saker lämnade</span></p>
-<p><span class="label">❤ <?php echo $count_booked; ?> saker paxade</span></p>
+<p><span class="label">❤ <?php echo $count_booked; ?> saker hämtade</span></p>
 <p><span class="label">🍀 <?php echo $clovers; ?> fyrklöver</span></p>
 <p><span class="label">⭐ <?php echo $stars; ?> guldstjärnor</span></p>
 </div><!-- wrapped -->
