@@ -171,12 +171,12 @@ $count = count($new_users);
                 </div>
                 <div class="user-card-row details">
                     <span>📍 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-area.php'; ?></span>
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-gender.php'; ?></span>
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-age.php'; ?></span>
+                    <span>⚧ <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-gender.php'; ?></span>
+                    <span>🚼 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-age.php'; ?></span>
                 </div>
                 <div class="user-card-row details">
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-email.php'; ?></span>
-                    <span><?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-phone.php'; ?></span>
+                    <span>📧 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-email.php'; ?></span>
+                    <span>📱 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-phone.php'; ?></span>
                     <span>💰 <?php echo esc_html($payment_method ?: '—'); ?></span>
                     <span class="user-card-time">⏳ <?php echo esc_html($registered); ?></span>
                 </div>
