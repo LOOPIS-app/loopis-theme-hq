@@ -37,7 +37,7 @@ $coins = $profile_economy['coins'];
 <p class="small">Du kan just nu paxa och hämta <?php echo $coins; ?> saker.</p>
 <hr>
 <p><span class="label">💚 <?php echo $count_given; ?> saker lämnade</span></p>
-<p><span class="label">❤ <?php echo $count_booked; ?> saker paxade</span></p>
+<p><span class="label">❤ <?php echo $count_booked; ?> saker hämtade (inkl. paxade)</span></p>
 <p><span class="label">🍀 <?php echo $clovers; ?> fyrklöver</span></p>
 <p><span class="label">🌟 <?php echo $stars; ?> guldstjärnor</span></p>
 </div><!-- wrapped -->
