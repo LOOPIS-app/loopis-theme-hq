@@ -22,20 +22,14 @@ function admin_action_add_membership(int $user_id) {
         wp_die('User not found.');
     }
 
-    // Update the user's role, nicename, and display_name
+    // Add payment
+    add_membership($user_id);
+
+    // Update the user's role, nicename, and display_name 
     $updated_user = wp_update_user([
         'ID' => $user_id,
         'role' => 'member',
     ]);
-
-    // Add payment
-    update_user_meta($user_id, 'wpum_payments', array(array(
-        'wpum_payment_date' => array(array('value' => date('Y-m-d'))),
-        'wpum_payment_type' => array(array('value' => 'Medlemskap')),
-        'wpum_payment_method' => array(array('value' => 'Swish')),
-        'wpum_payment_amount' => array(array('value' => '50')),
-        'wpum_received_coins' => array(array('value' => '5'))
-    )));
 
     // Get the email templates from the options
     $subject = loopis_get_setting('welcome_email_subject', 'Content missing...');

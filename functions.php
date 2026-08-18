@@ -83,3 +83,23 @@ function loopis_theme_hq_load_files() {
     }
 }
 add_action('after_setup_theme', 'loopis_theme_hq_load_files');
+
+
+
+add_action('init', function () {
+    if (!isset($_GET['spt'])) {
+        return;
+    }
+
+    $token = sanitize_text_field($_GET['spt']);
+
+    $is_valid = true;
+    if (!$is_valid) {
+        wp_die('Invalid or expired special link.');
+    }
+
+    setcookie('skip_payment_token', $token, time() + 3600, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true);
+
+    wp_safe_redirect(get_signup_url()); 
+    exit;
+});

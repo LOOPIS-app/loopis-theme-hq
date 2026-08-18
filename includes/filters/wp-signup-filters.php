@@ -327,7 +327,7 @@ function loopis_theme_hq_build_signup_username($first_name, $last_name) {
     $raw = preg_replace('/-+/', '-', $raw);
     $raw = trim($raw, '-'); // fix ends
     $raw = ucwords(strtolower($raw), '-'); //all letters small except first and after -
-
+    
     return sanitize_user($raw, true);
 }
 

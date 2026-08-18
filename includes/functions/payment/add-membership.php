@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-function add_membership($user_id = null) {
+function add_membership($user_id = null, $method = 'stripe') {
 
     // Get user ID (either passed parameter or current logged-in user).
     if ($user_id === null) {
@@ -33,7 +33,7 @@ function add_membership($user_id = null) {
     $current_payments[] = array(
         'wpum_payment_date' => array(array('value' => date('Y-m-d'))),
         'wpum_payment_type' => array(array('value' => 'Medlemskap')),
-        'wpum_payment_method' => array(array('value' => 'stripe')),
+        'wpum_payment_method' => array(array('value' => $method)),
         'wpum_payment_amount' => array(array('value' => '50')),
         'wpum_received_coins' => array(array('value' => '5')),
     );
