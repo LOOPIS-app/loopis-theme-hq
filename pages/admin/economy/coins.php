@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Extra php functions (not yet migrated)
+// Extra php functions
 include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action_add_coins.php';
 ?>
 
@@ -26,6 +26,7 @@ include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action
 $member_users = get_users(array('role' => 'member'));
 ?>
 
+<div class="loopis-form loopis-filter">
 <form method="post" class="arb" action="" style="display: flex; align-items: center;">
     <select id="selected_member" name="selected_member" style="max-width: 175px; margin-right: 10px;">
         <option value="">Välj medlem</option>
@@ -35,8 +36,9 @@ $member_users = get_users(array('role' => 'member'));
             </option>
         <?php endforeach; ?>
     </select>
-    <button name="add_payment" type="submit" class="blue" style="display: none;">☑ Betalat</button>
+    <button name="add_payment" type="submit" class="blue small" style="display: none;">☑ Betalat</button>
 </form>
+</div>
 <p class="info">Välj en medlem och tryck på knappen.</p>
 
 <?php
