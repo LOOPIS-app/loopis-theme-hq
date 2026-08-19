@@ -84,22 +84,76 @@ function loopis_theme_hq_load_files() {
 }
 add_action('after_setup_theme', 'loopis_theme_hq_load_files');
 
-
+add_action('init', function () {
+    update_option('special_invite_hash', hash('sha256', 'code'));
+});
 
 add_action('init', function () {
-    if (!isset($_GET['spt'])) {
-        return;
-    }
+  if ($_SERVER['REQUEST_METHOD'] !== 'GET') return;
 
-    $token = sanitize_text_field($_GET['spt']);
+  $path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+  if ($path !== '/special-signup/') return;
 
-    $is_valid = true;
-    if (!$is_valid) {
-        wp_die('Invalid or expired special link.');
-    }
+  $code = isset($_GET['spt']) ? (string) $_GET['spt'] : '';
+  $code = preg_replace('/[^A-Za-z0-9_-]/', '', $code);
+  if ($code === '') wp_die('Invalid code/URL.');
 
-    setcookie('skip_payment_token', $token, time() + 3600, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true);
+  $expected_hash = get_option('special_invite_hash', '');
+  if (!$expected_hash) wp_die('No invite set for right now.');
 
-    wp_safe_redirect(get_signup_url()); 
-    exit;
+  if (!hash_equals($expected_hash, hash('sha256', $code))) {
+    wp_die('Invalid invite.');
+  }
+
+  $payload = '4'.'|'.'member'; // placeholder currently blog + role
+
+  setcookie(
+    'special_invite_payload',
+    base64_encode($payload),
+    [
+      'expires'  => time() + 60 * 60,
+      'path'     => '/',
+      'secure'   => is_ssl(),
+      'httponly' => true,
+      'samesite' => 'Lax',
+    ]
+  );
+
+  wp_safe_redirect(network_site_url('wp-signup.php'));
+  exit;
+});
+
+add_action('user_register', function ($user_id) {
+  if (empty($_COOKIE['special_invite_payload'])) return;
+
+  $decoded = base64_decode($_COOKIE['special_invite_payload'], true);
+  if (!$decoded) return;
+
+  $parts = explode('|', $decoded, 2);
+  if (count($parts) !== 2) return;
+
+  $blog_id = (int) $parts[0];
+  $role_slug = sanitize_key($parts[1]) ?: 'member';
+
+  setcookie('special_invite_payload', '', time() - 3600, '/', '', is_ssl(), true);
+
+  if (!is_multisite() || $blog_id <= 0) return;
+
+  add_membership($user_id,'plattform24');
+
+  switch_to_blog($blog_id);
+  add_user_to_blog($blog_id, $user_id, $role_slug);
+  restore_current_blog();
+  setcookie(
+    'skip_pay_screen',
+    base64_encode(1),
+    [
+      'expires'  => time() + 60 * 60,
+      'path'     => '/',
+      'secure'   => is_ssl(),
+      'httponly' => true,
+      'samesite' => 'Lax',
+    ]
+  );
+
 });

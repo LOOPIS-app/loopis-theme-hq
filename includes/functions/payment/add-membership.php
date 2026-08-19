@@ -39,7 +39,7 @@ function add_membership($user_id = null, $method = 'stripe') {
     );
 
     update_user_meta($user_id, 'wpum_payments', $current_payments);
-    loopis_ledger_add_payment($user_id, ['type' => 'medlemskap']);
+    loopis_ledger_add_payment($user_id, ['type' => 'medlemskap', 'description'=>$method]);
 
     // Check if both member data and membership payment are complete.
     include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php';
