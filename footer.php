@@ -43,7 +43,7 @@
     </nav>
 
 <?php if (current_user_can('loopis_admin') || current_user_can('manage_options')) : ?>
-    <div class="footer-backdoor" onclick="location.href='<?php echo esc_url(home_url('/admin/')); ?>'">🦀</div>
+    <div class="footer-backdoor" onclick="location.href='<?php echo esc_url(home_url('/admin/')); ?>'">🐙</div>
 <?php endif; ?>
 
 </footer>
