@@ -1,8 +1,6 @@
 <?php
 /**
  * Archive for custom post type 'faq' reached on URL /faq
- * 
- * Copy from local theme FAQ archive layout.
  */
 
 get_header(); ?>
@@ -11,7 +9,7 @@ get_header(); ?>
 $selected_faq_tag = isset($_GET['faq_tag']) ? sanitize_title((string) $_GET['faq_tag']) : '';
 ?>
 
-	<div class="page-padding center">
+<div class="page-padding center">
 
 <h1>💡 Frågor & svar</h1>
 <hr>
