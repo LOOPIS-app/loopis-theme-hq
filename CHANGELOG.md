@@ -1,5 +1,8 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 1.04 (2026-08-26)
+- Minor revision to sync with "LOOPIS Theme"
+
 ## 1.03 (2026-06-26)
 - Onboarding improved, now requiring both membership payment and member data.
 - Ledger views added to post log, author log and admin area.

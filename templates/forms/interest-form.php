@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<h2>Vill du ha LOOPIS i ditt område?</h2>
+<h3>Vill du ha LOOPIS i ditt område?</h3>
 <hr>
 <p>Vi behöver 100 personer med ditt postnummer för att börja planera.</p>
 
