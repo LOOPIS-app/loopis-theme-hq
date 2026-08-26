@@ -17,7 +17,7 @@
 
             <a href="<?php echo home_url('/faq/'); ?>" class="footer-item">
                 <span class="emoji">💡</span>
-                <span class="text">Frågor & svar</span>
+                <span class="text">Vanliga frågor</span>
             </a>
 
             <!--a href="<?php echo home_url('/news/'); ?>" class="footer-item">
@@ -28,8 +28,8 @@
             <?php if (is_user_logged_in()) : ?>
 
                 <a href="<?php echo home_url('/user/'); ?>" class="footer-item">
-                    <span class="emoji">👤️</span>
-                    <span class="text">Min profil</span>
+                    <span class="emoji">📋</span>
+                    <span class="text">Mitt medlemskap</span>
                 </a>
 
             <?php else : ?>

@@ -21,29 +21,29 @@ wp_enqueue_script('loopis-tabs', LOOPIS_THEME_URI . '/assets/js/tabs.js', array(
 <!-- Tab Navigation -->
 <div class="tab-nav">
   <nav class="tab-navbar">
-    <a href="#" class="tab-link" data-tab="tab-coins">👛</a>
-    <a href="#" class="tab-link" data-tab="tab-activity">🧮</a>
-    <!--a href="#" class="tab-link" data-tab="tab-areas">📍</a-->
     <a href="#" class="tab-link" data-tab="tab-settings">⚙</a>
+    <a href="#" class="tab-link" data-tab="tab-areas">📍</a>
+    <a href="#" class="tab-link" data-tab="tab-activity">🧮</a>
+    
   </nav>
 </div><!--tab-nav-->
 
 <!-- Tab Content -->
 <div class="tab-content">
 
-  <!-- COINS -->
-  <div id="tab-coins" class="tab-panel">
-    <?php include_once __DIR__ . '/tabs/coins.php'; ?>
+  <!-- SETTINGS -->
+  <div id="tab-settings" class="tab-panel">
+    <?php include_once __DIR__ . '/tabs/settings.php'; ?>
+  </div>
+
+  <!-- AREAS -->
+  <div id="tab-areas" class="tab-panel">
+    <?php include_once __DIR__ . '/tabs/areas.php'; ?>
   </div>
   
   <!-- ACTIVITY -->
   <div id="tab-activity" class="tab-panel">
     <?php include_once __DIR__ . '/tabs/activity.php'; ?>
-  </div>
-
-  <!-- SETTINGS -->
-  <div id="tab-settings" class="tab-panel">
-    <?php include_once __DIR__ . '/tabs/settings.php'; ?>
   </div>
 
 </div><!--tab-content-->

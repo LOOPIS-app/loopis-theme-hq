@@ -30,7 +30,7 @@ $coins = $profile_economy['coins'];
 
 <h3>🧮 Min aktivitet</h3>
 <hr>
-<p class="small">💡 Information om din aktivitet.</p>
+<p class="small">💡 Detaljerad information om din aktivitet.</p>
 
 <!--COINS-->
 <div class="economy wrapped">

@@ -11,12 +11,10 @@ $selected_faq_tag = isset($_GET['faq_tag']) ? sanitize_title((string) $_GET['faq
 
 <div class="page-padding center">
 
-<h1>💡 Frågor & svar</h1>
+<h1>💡 Vanliga frågor</h1>
 <hr>
-<p><i>🤔 Hur får jag saker?<br>
-🤔 Hur funkar regnbågsmynt?<br>
-<!--🤔 Hur får jag LOOPIS till mitt område?--></i></p>
-<p>Här finns svaren på de vanligaste frågorna.</p>
+
+<p>Här finns svar på de vanligaste frågorna om LOOPIS.</p>
 
 <!--List of all FAQ tags and posts-->
 <?php
