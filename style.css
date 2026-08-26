@@ -1,7 +1,7 @@
 /**
  * Theme Name:  LOOPIS Theme HQ
  * Version:     1.03
- * Description: Theme providing all frontend design and functionality for LOOPIS main page
+ * Description: Theme providing all frontend design and functionality for LOOPIS main site (HQ)
  * Author:      The Develoopers
  * Author URI:  https://loopis.org
  * License:     GPL-3.0-or-later
@@ -23,13 +23,15 @@
  * IMPORTANT!
  * ==========
  *
- * "LOOPIS Theme HQ" (main site) and "LOOPIS Theme" (sub sites) share styling.
+ * All CSS files of "LOOPIS Theme" (sub sites) are also enqueued in "LOOPIS Theme HQ" (main site).
+ * Make sure that adjustments to the files work for both themes!
+ */
+
+/**
+ * =========== 
+ * WP OVERRIDE
+ * ===========
  *
- * The CSS files enqueued in both themes are placed in loopis-theme/assets/css:
- * base.css, admin.css, forms.css, responsive.css
- *
- * Some local CSS files for overriding WordPress defaults are enqueued only in the main site:
- * wp-login.css, wp-signup.css
- *
- * Extra or new styles needed for main site should be placed in the local extra.css
+ * Some CSS files for overriding WordPress defaults are enqueued only in the main site:
+ * wp-activate.css, wp-login.css, wp-signup.css.
  */

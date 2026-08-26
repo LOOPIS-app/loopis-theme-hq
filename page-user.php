@@ -1,6 +1,6 @@
 <?php
 /**
- * Dynamic content for pages using url /user/?option=
+ * Dynamic content for pages using url /user/?view=
  * 
  * Content is shared to "LOOPIS Theme"
  */
@@ -9,14 +9,14 @@
 <?php get_header(); ?>
 
 <div class="page-padding center">
-    <h1>👤 Min profil</h1>
+    <h1>📋 Mitt medlemskap</h1>
     
 <?php if ( is_user_logged_in() ) : 
     // Dynamic page loader 
     $page_dir = LOOPIS_THEME_HQ_DIR . '/pages/user/';
 
     // Get the 'option' parameter from URL
-    $page_option = isset($_GET['option']) ? sanitize_file_name($_GET['option']) : 'tabs';
+    $page_option = isset($_GET['view']) ? sanitize_file_name($_GET['view']) : 'start';
 
     $php_file = $page_dir . $page_option . '.php';
 
