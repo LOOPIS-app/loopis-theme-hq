@@ -52,12 +52,21 @@ $user = wp_get_current_user();
         );
 
         $the_query = new WP_Query( $args );
-        $count_total = $the_query->found_posts;
+        $count_total = 0;
+        if ( $the_query->have_posts() ) {
+            foreach ( $the_query->posts as $area_post ) {
+                if ( in_category( 'private', $area_post ) && ! current_user_can( 'manage_options' ) && ! current_user_can( 'loopis_admin' ) ) {
+                    continue;
+                }
+
+                $count_total++;
+            }
+        }
         ?>
 
         <!-- List header -->
         <div class="columns">
-            <div class="column1">↓ <?php echo $count_total; ?> områden</div>
+            <div class="column1">↓ <?php echo $count_total; ?> <?php echo $count_total === 1 ? 'område' : 'områden'; ?></div>
             <div class="column2"></div>
         </div>
         <hr>
