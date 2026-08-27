@@ -107,11 +107,21 @@ add_action('init', function () {
     }
     $blog_id = 4;
     $role_slug = 'member';
-
+    $already_a_member = false;
     if(is_user_logged_in()){
         $user_id = get_current_user();
+
+        $payments = loopis_ledger_user_payments($user_id);
+        foreach($payments as $entry){
+            if($entry['type'] === 'medlemskap'){
+                $already_a_member = true;
+                break;
+            }
+        }
         
-        add_membership($user_id,'platform24');
+        if(!$already_a_member){
+            add_membership($user_id,['description'=>'platform24']);
+        }
 
         switch_to_blog($blog_id);
         add_user_to_blog($blog_id, $user_id, $role_slug);
