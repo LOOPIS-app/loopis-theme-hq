@@ -5,7 +5,7 @@
     <nav>
         
         <a href="<?php echo  esc_url($admin_url); ?>" class="footer-item">
-        <span class="emoji">🦀</span>
+        <span class="emoji">🐙</span>
         <span class="text">Översikt</span>
         </a>
 

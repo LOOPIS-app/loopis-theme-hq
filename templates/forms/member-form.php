@@ -92,14 +92,9 @@ if (empty($member_form_fields)) {
 $member_form_fields = array_values(array_unique($member_form_fields));
 $member_form_show_general_error = 'error' === $member_form_status && in_array('general', $member_form_fields, true);
 $member_form_error_message = $member_form_field_messages['general'];
-?>
 
-
-<h2>📋 Medlemsregister</h2>
-<hr>
-<p class="small">💡 Ange dina aktuella uppgifter.</p>
-
-<?php if ('success' === $member_form_status) : ?>
+// Render the form
+if ('success' === $member_form_status) : ?>
     <div class="loopis-message success">
         <p>Uppgifterna sparades.</p>
     </div>
