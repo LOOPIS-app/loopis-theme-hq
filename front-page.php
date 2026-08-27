@@ -37,7 +37,7 @@ get_header(); ?>
         );
 
         $the_query = new WP_Query($args);
-        $count_total = $the_query->found_posts;
+        $count_total = 0;
         ?>
 
         <!-- List header -->
