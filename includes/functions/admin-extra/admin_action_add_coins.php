@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 function admin_action_add_coins(int $user_id) {
     // add the coins! 
-    add_coins($user_id);
+    add_coins($user_id,['description'=>'swish']);
     // Get user data
     $user = get_userdata($user_id);
     if (!$user) {

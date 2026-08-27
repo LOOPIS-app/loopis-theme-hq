@@ -23,7 +23,7 @@ function admin_action_add_membership(int $user_id) {
     }
 
     // Add payment
-    add_membership($user_id);
+    add_membership($user_id,['description'=>'swish']);
 
     // Update the user's role, nicename, and display_name 
     $updated_user = wp_update_user([
