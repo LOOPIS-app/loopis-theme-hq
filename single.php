@@ -15,17 +15,15 @@ $post_id = get_the_ID();
 // Get post meta
 $thumbnail_id = get_post_thumbnail_id($post_id);
 $area_subdirectory = get_post_meta($post_id, 'area_subdirectory', true) ?: '#';
+$area_blog_id = get_post_meta($post_id, 'area_blog_id', true) ?: '';
 $area_city = get_post_meta($post_id, 'area_city', true) ?: 'Stad saknas';
 $area_launch_date = get_post_meta($post_id, 'area_launch_date', true) ?: 'Lanseringsdatum saknas';
 $locker_postal_code = get_post_meta($post_id, 'locker_postal_code', true) ?: 'Postnummer saknas';
 $locker_address = get_post_meta($post_id, 'locker_address', true) ?: 'Adress saknas';
 $locker_google_maps = get_post_meta($post_id, 'locker_google_maps', true) ?: 'URL saknas';
 $locker_model = get_post_meta($post_id, 'locker_model', true) ?: 'Modell saknas';
-$area_members_raw = get_post_meta($post_id, 'area_members', true);
-$area_members = '' === trim((string) $area_members_raw) ? 'Antal saknas' : $area_members_raw;
 $area_circulated_things_raw = get_post_meta($post_id, 'area_circulated_things', true);
 $area_circulated_things = '' === trim((string) $area_circulated_things_raw) ? 'Antal saknas' : $area_circulated_things_raw;
-
 $area_launch_timestamp = strtotime($area_launch_date);
 $current_timestamp = current_time('timestamp');
 
@@ -44,8 +42,12 @@ if (!$area_launch_timestamp) {
 		wp_date('Y-m-d', $area_launch_timestamp),
 		human_time_diff($area_launch_timestamp, $current_timestamp)
 	);
-}
-?>	
+}	
+
+// Count subsite members
+include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/visitor-extra/subsite-member-count.php';
+$area_members_count = subsite_member_count($area_blog_id);
+?>
 
 <!-- THE POST -->
 <div class="page-padding center">
@@ -65,7 +67,7 @@ if (!$area_launch_timestamp) {
 			<div class="post-meta">
 				<p>🗺 <?php echo esc_html($area_city); ?> (<?php echo esc_html($locker_postal_code); ?>)<br>
 				🎉 <?php echo esc_html($area_launch_text); ?><br>
-				👤 Medlemmar: <?php echo esc_html($area_members); ?><br>
+				👤 Medlemmar: <?php echo esc_html($area_members_count); ?><br>
 				<?php if (false) : ?>
 				🎁 Loopade saker: <?php echo esc_html($area_circulated_things); ?><br>
 				<?php endif; ?>
