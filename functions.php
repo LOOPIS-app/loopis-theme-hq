@@ -126,6 +126,7 @@ add_action('init', function () {
         switch_to_blog($blog_id);
         add_user_to_blog($blog_id, $user_id, $role_slug);
         restore_current_blog();
+        update_user_meta($user_id,'primary_blog',$blog_id);
         wp_safe_redirect(home_url('/p24/'));
         exit;
     }
@@ -144,7 +145,7 @@ add_action('init', function () {
         ]
     );
 
-    wp_safe_redirect(network_site_url('wp-signup.php'));
+    wp_safe_redirect(network_site_url('/platform24/'));
     exit;
 });
 
@@ -164,11 +165,12 @@ add_action('user_register', function ($user_id) {
 
   if (!is_multisite() || $blog_id <= 0) return;
 
-  add_membership($user_id,'platform24');
+  add_membership($user_id,['description'=>'platform24']);
 
   switch_to_blog($blog_id);
   add_user_to_blog($blog_id, $user_id, $role_slug);
   restore_current_blog();
+  update_user_meta($user_id,'primary_blog',$blog_id);
   setcookie(
     'skip_pay_screen',
     base64_encode(1),
