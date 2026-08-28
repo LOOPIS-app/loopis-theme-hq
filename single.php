@@ -14,15 +14,17 @@ $post_id = get_the_ID();
 
 // Get post meta
 $thumbnail_id = get_post_thumbnail_id($post_id);
+$area_subdirectory = get_post_meta($post_id, 'area_subdirectory', true) ?: '#';
 $area_city = get_post_meta($post_id, 'area_city', true) ?: 'Stad saknas';
 $area_launch_date = get_post_meta($post_id, 'area_launch_date', true) ?: 'Lanseringsdatum saknas';
-$active_members_raw = get_post_meta($post_id, 'active_members', true);
-$active_members = '' === trim((string) $active_members_raw) ? 'Antal saknas' : $active_members_raw;
-$circulated_things_raw = get_post_meta($post_id, 'circulated_things', true);
-$circulated_things = '' === trim((string) $circulated_things_raw) ? 'Antal saknas' : $circulated_things_raw;
 $locker_postal_code = get_post_meta($post_id, 'locker_postal_code', true) ?: 'Postnummer saknas';
 $locker_address = get_post_meta($post_id, 'locker_address', true) ?: 'Adress saknas';
-$locker_link = get_post_meta($post_id, 'locker_link', true) ?: '#';
+$locker_google_maps = get_post_meta($post_id, 'locker_google_maps', true) ?: 'URL saknas';
+$locker_model = get_post_meta($post_id, 'locker_model', true) ?: 'Modell saknas';
+$area_members_raw = get_post_meta($post_id, 'area_members', true);
+$area_members = '' === trim((string) $area_members_raw) ? 'Antal saknas' : $area_members_raw;
+$area_circulated_things_raw = get_post_meta($post_id, 'area_circulated_things', true);
+$area_circulated_things = '' === trim((string) $area_circulated_things_raw) ? 'Antal saknas' : $area_circulated_things_raw;
 
 $area_launch_timestamp = strtotime($area_launch_date);
 $current_timestamp = current_time('timestamp');
@@ -47,20 +49,38 @@ if (!$area_launch_timestamp) {
 
 <!-- THE POST -->
 <div class="page-padding center">
-			<p><span class="rounded"><a href="<?php echo get_post_type_archive_link('post'); ?>">📍 Områden</a></span> <span class="rounded"><?php the_category(' ');?></span></p>
-            <h1 class="wrap"><?php the_title(); ?></h1>
+			<p><span class="rounded"><a href="<?php echo esc_url(get_post_type_archive_link('post')); ?>">📍 Områden</a></span>
+			<?php
+			$single_categories = array_reverse(get_the_category());
+			if (!empty($single_categories)) :
+				foreach ($single_categories as $single_category) :
+					$category_link = get_category_link($single_category->term_id);
+					?>
+					<span class="rounded"><a href="<?php echo esc_url($category_link); ?>"><?php echo esc_html($single_category->name); ?></a></span>
+				<?php endforeach;
+			endif;
+			?></p>
+			<h1 class="wrap"><?php the_title(); ?></h1>
 			<hr>
 			<div class="post-meta">
 				<p>🗺 <?php echo esc_html($area_city); ?> (<?php echo esc_html($locker_postal_code); ?>)<br>
 				🎉 <?php echo esc_html($area_launch_text); ?><br>
-				👤 Medlemmar: <?php echo esc_html($active_members); ?><br>
-				🎁 Loopade saker: <?php echo esc_html($circulated_things); ?><br>
+				👤 Medlemmar: <?php echo esc_html($area_members); ?><br>
+				<?php if (false) : ?>
+				🎁 Loopade saker: <?php echo esc_html($area_circulated_things); ?><br>
+				<?php endif; ?>
 			</div><!--post-meta-->
 
-			<?php if (has_term('active', 'category')) { ?>
-			<span class="mega-link"><a href="<?php echo esc_url(home_url('/' . $locker_postal_code)); ?>">→ Gå till område</a></span>
+			<?php if (has_category('private')) { ?>
+			<button type="button" onclick="location.href='<?php echo esc_url(home_url('/special-signup/')); ?>'">Skapa konto!</button>
+			<?php if (current_user_can('manage_options') || current_user_can('loopis_admin')) { ?>
+			<p><br><span class="big-link"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
+			<?php } ?>
 			<?php } ?>
 
+			<?php if (has_term('active', 'category') && !has_category('private')) { ?>
+			<p><span class="mega-link"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
+			<?php } ?>
 	
 			<div class="post-content">
 				<?php the_content(); ?>
