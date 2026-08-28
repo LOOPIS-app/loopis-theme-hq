@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<h1>📋 Medlemsregister</h1>
+<h3>📝 Medlemsregister</h3>
 <hr>
 <p class="small">💡 Ange dina aktuella uppgifter.</p>
 
@@ -19,4 +19,5 @@ if (!defined('ABSPATH')) {
 // Include member form
 include LOOPIS_THEME_HQ_DIR . '/templates/forms/member-form.php'; ?>
 
-<p>Läs hur föreningen LOOPIS hanterar dina uppgifter: <span class="big-link"><a href="<?php echo esc_url(home_url('/privacy/')); ?>">🗄 Integritet</a></span></p>
+<p>Läs hur föreningen hanterar personuppgifter: <span class="big-link"><a href="<?php echo esc_url(home_url('/privacy/')); ?>">🗄 Integritet</a></span></p>
+<p>Läs föreningens stadgar: <span class="big-link"><a href="<?php echo esc_url(home_url('/faq/loopis-stadgar')); ?>">📜 Stadgar</a></span></p>

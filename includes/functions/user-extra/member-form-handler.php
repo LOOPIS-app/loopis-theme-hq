@@ -14,7 +14,7 @@ function loopis_theme_hq_handle_member_form_post() {
 
     $redirect_url = wp_get_referer();
     if (!$redirect_url) {
-        $redirect_url = home_url('/user/?option=member-data');
+        $redirect_url = home_url('/user/?view=member-data');
     }
 
     if (!is_user_logged_in()) {

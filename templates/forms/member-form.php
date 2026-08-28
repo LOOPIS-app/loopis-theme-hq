@@ -198,14 +198,14 @@ if ('success' === $member_form_status) : ?>
         </div>
 
         <div>
-            <label for="member-active">Fortsätt vara medlem</label>
+            <label for="member-active">Aktivera medlemskap</label>
             <input
                 type="checkbox"
                 id="member-active"
                 name="wpum_active"
                 value="1"
                 <?php checked($wpum_active_checked); ?>
-            >
+            ><span> Aktivera</span><br>&nbsp;
         </div>
 
         <button type="submit">Spara uppgifter</button>
