@@ -184,3 +184,36 @@ add_action('user_register', function ($user_id) {
   );
 
 });
+
+
+add_action('init', function () {
+    if (!empty($_COOKIE['stop_redirect'])) return;
+
+    $user_id = get_current_user_id();
+
+
+    $blog_id = (int) get_user_meta($user_id,'primary_blog',true);
+
+    if($blog_id===0){
+        return;
+        $blog_id = 1;
+        update_user_meta($user_id,'primary_blog',1);
+    }
+    
+    setcookie(
+        'stop_redirect',
+        base64_encode($blog_id),
+        [
+            'expires'  => time() + 60 * 60 * 24,
+            'path'     => '/',
+            'secure'   => is_ssl(),
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]
+    );
+    $target_url = get_home_url($blog_id, '/');
+
+    wp_safe_redirect($target_url);
+    exit;
+    
+});
