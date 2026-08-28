@@ -9,8 +9,16 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-function add_coins($user_id = null) {
-
+function add_coins($user_id = null,$options=[]) {
+    $settings = [
+        'type' => $options['type'] ?? 'mynt',
+        'description' => $options['description'] ?? 'stripe',
+        'location' => $options['location'] ?? 'digital',
+        'blog_id' => $options['blog_id'] ?? 1,
+        'payment' => $options['payment'] ?? 50,
+        'coins' => $options['coins'] ?? 5,
+        'clovers'=>$options['clovers'] ?? 0,
+    ];
     // Get user ID (either passed parameter or current logged-in user)
     if ($user_id === null) {
         $user_id = get_current_user_id();
@@ -30,16 +38,17 @@ function add_coins($user_id = null) {
     }
 
     // Create the new payment detail array
-    $new_payment = array(
-    'wpum_payment_date' => array(array('value' => date('Y-m-d'))),
-    'wpum_payment_type' => array(array('value' => 'Mynt')),
-    'wpum_payment_amount' => array(array('value' => '50')),
-    'wpum_payment_method' => array(array('value' => 'stripe')),
-    'wpum_received_coins' => array(array('value' => '5'))
-);
-    loopis_ledger_add_payment($user_id);
+    $current_payments[] = array(
+        'wpum_payment_date' => array(array('value' => date('Y-m-d'))),
+        'wpum_payment_type' => array(array('value' => ucfirst($settings['type']))),
+        'wpum_payment_method' => array(array('value' => $settings['description'])),
+        'wpum_payment_amount' => array(array('value' => $settings['payment'])),
+        'wpum_received_coins' => array(array('value' => $settings['coins'])),
+    );
+
+    loopis_ledger_add_payment($user_id,$settings);
     // Add the new payment detail to the existing array
-    $updated_payments = array_merge((array) $current_payments, array($new_payment));
+    $updated_payments = array_merge($current_payments);
 
     // Update the wpum_payments field with the modified array
     $updated = update_user_meta($user_id, 'wpum_payments', $updated_payments);

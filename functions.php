@@ -84,43 +84,69 @@ function loopis_theme_hq_load_files() {
 }
 add_action('after_setup_theme', 'loopis_theme_hq_load_files');
 
+
 add_action('init', function () {
     update_option('special_invite_hash', hash('sha256', 'code'));
 });
 
 add_action('init', function () {
-  if ($_SERVER['REQUEST_METHOD'] !== 'GET') return;
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') return;
 
-  $path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-  if ($path !== '/special-signup/') return;
+    $path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    if ($path !== '/special-signup/') return;
 
-  $code = isset($_GET['spt']) ? (string) $_GET['spt'] : '';
-  $code = preg_replace('/[^A-Za-z0-9_-]/', '', $code);
-  if ($code === '') wp_die('Invalid code/URL.');
+    $code = isset($_GET['spt']) ? (string) $_GET['spt'] : '';
+    $code = preg_replace('/[^A-Za-z0-9_-]/', '', $code);
+    if ($code === '') wp_die('Invalid code/URL.');
 
-  $expected_hash = get_option('special_invite_hash', '');
-  if (!$expected_hash) wp_die('No invite set for right now.');
+    $expected_hash = get_option('special_invite_hash', '');
+    if (!$expected_hash) wp_die('No invite set for right now.');
 
-  if (!hash_equals($expected_hash, hash('sha256', $code))) {
-    wp_die('Invalid invite.');
-  }
+    if (!hash_equals($expected_hash, hash('sha256', $code))) {
+      wp_die('Invalid invite.');
+    }
+    $blog_id = 4;
+    $role_slug = 'member';
+    $already_a_member = false;
+    if(is_user_logged_in()){
+        $user_id = get_current_user();
 
-  $payload = '4'.'|'.'member'; // placeholder currently blog + role
+        $payments = loopis_ledger_user_payments($user_id);
+        foreach($payments as $entry){
+            if($entry['type'] === 'medlemskap'){
+                $already_a_member = true;
+                break;
+            }
+        }
+        
+        if(!$already_a_member){
+            add_membership($user_id,['description'=>'platform24']);
+        }
 
-  setcookie(
-    'special_invite_payload',
-    base64_encode($payload),
-    [
-      'expires'  => time() + 60 * 60,
-      'path'     => '/',
-      'secure'   => is_ssl(),
-      'httponly' => true,
-      'samesite' => 'Lax',
-    ]
-  );
+        switch_to_blog($blog_id);
+        add_user_to_blog($blog_id, $user_id, $role_slug);
+        restore_current_blog();
+        update_user_meta($user_id,'primary_blog',$blog_id);
+        wp_safe_redirect(home_url('/p24/'));
+        exit;
+    }
 
-  wp_safe_redirect(network_site_url('wp-signup.php'));
-  exit;
+    $payload = $blog_id .'|'.$role_slug; // placeholder currently blog + role
+
+    setcookie(
+        'special_invite_payload',
+        base64_encode($payload),
+        [
+            'expires'  => time() + 60 * 60 * 24,
+            'path'     => '/',
+            'secure'   => is_ssl(),
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]
+    );
+
+    wp_safe_redirect(network_site_url('/platform24/'));
+    exit;
 });
 
 add_action('user_register', function ($user_id) {
@@ -139,11 +165,12 @@ add_action('user_register', function ($user_id) {
 
   if (!is_multisite() || $blog_id <= 0) return;
 
-  add_membership($user_id,'plattform24');
+  add_membership($user_id,['description'=>'platform24']);
 
   switch_to_blog($blog_id);
   add_user_to_blog($blog_id, $user_id, $role_slug);
   restore_current_blog();
+  update_user_meta($user_id,'primary_blog',$blog_id);
   setcookie(
     'skip_pay_screen',
     base64_encode(1),
