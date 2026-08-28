@@ -47,6 +47,12 @@ if (!$area_launch_timestamp) {
 // Count subsite members
 include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/visitor-extra/subsite-member-count.php';
 $area_members_count = subsite_member_count($area_blog_id);
+
+// Check if the current user can access the private area
+$can_access_private_area = current_user_can('manage_options') || current_user_can('loopis_admin');
+if (!$can_access_private_area && is_user_logged_in() && $area_blog_id !== '') {
+	$can_access_private_area = is_user_member_of_blog(get_current_user_id(), (int) $area_blog_id);
+}
 ?>
 
 <!-- THE POST -->
@@ -73,17 +79,22 @@ $area_members_count = subsite_member_count($area_blog_id);
 				<?php endif; ?>
 			</div><!--post-meta-->
 
-			<?php if (has_category('private')) { ?>
-			<button type="button" onclick="location.href='<?php echo esc_url(home_url('/special-signup/')); ?>'">Skapa konto!</button>
-			<?php if (current_user_can('manage_options') || current_user_can('loopis_admin')) { ?>
-			<p><br><span class="big-link"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
+			<!-- Go to free signup (requires cookies) -->
+			<?php if (has_category('private') && !is_user_logged_in()) { ?>
+			<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Skapa konto!</a></p>
 			<?php } ?>
+			
+			<!-- Go to private subsite link -->
+			<?php if (has_category('private') && $can_access_private_area) { ?>
+			<p><span class="mega-link"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
 			<?php } ?>
-
+				
+			<!-- Go to subsite link -->
 			<?php if (has_term('active', 'category') && !has_category('private')) { ?>
 			<p><span class="mega-link"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
 			<?php } ?>
 	
+			<!-- Output area description (post content) and locker photo (featured image) -->
 			<div class="post-content">
 				<?php the_content(); ?>
 				<?php if ($thumbnail_id){ echo wp_get_attachment_image($thumbnail_id, 'large'); } ?>
