@@ -109,7 +109,7 @@ add_action('init', function () {
     $role_slug = 'member';
     $already_a_member = false;
     if(is_user_logged_in()){
-        $user_id = get_current_user();
+        $user_id = get_current_user_id();
 
         $payments = loopis_ledger_user_payments($user_id);
         foreach($payments as $entry){
