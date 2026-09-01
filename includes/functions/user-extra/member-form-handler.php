@@ -40,7 +40,8 @@ function loopis_theme_hq_handle_member_form_post() {
     $phone_raw = sanitize_text_field(wp_unslash($_POST['wpum_phone'] ?? ''));
     $birthyear_raw = sanitize_text_field(wp_unslash($_POST['wpum_birthyear'] ?? ''));
     $gender = sanitize_key(wp_unslash($_POST['wpum_gender'] ?? ''));
-    $area = sanitize_key(wp_unslash($_POST['wpum_area'] ?? ''));
+    $area = sanitize_key(wp_unslash($_POST['area'] ?? ''));
+    
     $active = isset($_POST['wpum_active']) ? 'true' : 'false';
 
     $postcode = preg_replace('/\D+/', '', $postcode_raw);
@@ -59,7 +60,7 @@ function loopis_theme_hq_handle_member_form_post() {
     $is_valid_gender = in_array($gender, $allowed_genders, true);
     $is_valid_area = in_array($area, $allowed_areas, true);
 
-    if (!$is_valid_postcode || !$is_valid_phone || !$is_valid_birthyear || !$is_valid_gender || !$is_valid_area) {
+    if (!$is_valid_postcode || !$is_valid_phone || !$is_valid_birthyear || !$is_valid_gender|| !$is_valid_area) {
         $invalid_fields = array();
 
         if (!$is_valid_postcode) {
@@ -77,7 +78,7 @@ function loopis_theme_hq_handle_member_form_post() {
         if (!$is_valid_gender) {
             $invalid_fields[] = 'wpum_gender';
         }
-
+                
         if (!$is_valid_area) {
             $invalid_fields[] = 'wpum_area';
         }
@@ -122,9 +123,12 @@ function loopis_theme_hq_handle_member_form_post() {
     update_user_meta($user_id, 'wpum_gender', $gender);
     update_user_meta($user_id, 'wpum_area', $area);
     update_user_meta($user_id, 'wpum_active', $active);
-
+    update_user_meta($user_id, 'primary_blog', $area);
     // Check if both member data and membership payment are complete.
-    include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php';
+    if(!function_exists('member_pending_check')) {
+        include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php';
+    }
+    
     member_pending_check($user_id);
 
     wp_safe_redirect(add_query_arg('member_form', 'success', $redirect_url));

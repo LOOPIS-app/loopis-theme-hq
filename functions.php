@@ -86,6 +86,7 @@ add_action('after_setup_theme', 'loopis_theme_hq_load_files');
 
 
 add_action('init', function () {
+
     update_option('special_invite_hash', hash('sha256', 'code'));
 });
 
@@ -106,7 +107,7 @@ add_action('init', function () {
       wp_die('Invalid invite.');
     }
     $blog_id = 4;
-    $role_slug = 'member';
+    $role_slug = 'member_pending';
     $already_a_member = false;
     if(is_user_logged_in()){
         $user_id = get_current_user_id();
@@ -159,7 +160,7 @@ add_action('user_register', function ($user_id) {
   if (count($parts) !== 2) return;
 
   $blog_id = (int) $parts[0];
-  $role_slug = sanitize_key($parts[1]) ?: 'member';
+  $role_slug = sanitize_key($parts[1]) ?: 'member_pending';
 
   setcookie('special_invite_payload', '', time() - 3600, '/', '', is_ssl(), true);
 
