@@ -8,8 +8,14 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Skip private posts for non-admin users
-if (in_category('private') && !current_user_can('manage_options') && !current_user_can('loopis_admin')) {
+// Skip private posts for users without private area access
+$area_blog_id = get_post_meta(get_the_ID(), 'area_blog_id', true) ?: 0;
+$can_access_private_area = current_user_can('manage_options') || current_user_can('loopis_admin');
+if (!$can_access_private_area && is_user_logged_in() && (int) $area_blog_id > 0) {
+    $can_access_private_area = is_user_member_of_blog(get_current_user_id(), (int) $area_blog_id);
+}
+
+if (in_category('private') && !$can_access_private_area) {
     return;
 }
 // Set post opacity style for private posts
@@ -24,7 +30,6 @@ $count_total++;
 // Get variables
 $area_city = get_post_meta(get_the_ID(), 'area_city', true) ?: 'Stad saknas';
 $area_launch_date = get_post_meta(get_the_ID(), 'area_launch_date', true) ?: 'Lanseringsdatum saknas';
-$area_blog_id = get_post_meta(get_the_ID(), 'area_blog_id', true) ?: 0;
 $locker_postal_code = get_post_meta(get_the_ID(), 'locker_postal_code', true) ?: 'Postnummer saknas';
 $locker_address = get_post_meta(get_the_ID(), 'locker_address', true) ?: 'Adress saknas';
 $locker_link = get_post_meta(get_the_ID(), 'locker_link', true) ?: '#';

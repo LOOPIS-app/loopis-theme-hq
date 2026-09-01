@@ -16,10 +16,19 @@ if (!defined('ABSPATH')) {
 3⃣ Logga in<br>
 4⃣ Bli medlem<br>
 
-<p>För att använda LOOPIS behöver du vara medlem i föreningen LOOPIS. Medlemmarna bestämmer medlemsavgiften på årsmötet.</p>
-<p><b>Skapa ett konto för att logga in och betala 50 kronor!</b></p>
+<?php
+// Check cookie for special invite code
+if (empty($_COOKIE['special_invite_payload'])) { ?> 
+<p><b>Bli medlem i LOOPIS genom att skapa ett konto och betala 50 kronor.</b></p>
+<div class="loopis-message warning">
+<p>⚠ Du kan bara använda LOOPIS om du bor nära våra skåp.</p>
+<p><span class="big-link"><a href="<?php echo esc_url(home_url('/faq/var-finns-loopis/')); ?>">📌 Var finns LOOPIS?</a></span></p>
+</div>
+<?php } else { ?>
+<p><b>Skapa konto för att få ett gratis medlemskap.</b></p>
+<p class="info">Du har fått en specialinbjudan! ✨</p>
+<?php } ?>
+
+<!-- FAQ -->
 <p><span class="big-link"><a href="<?php echo esc_url(home_url('/faq/varfor-medlemskap/')); ?>">📌 Varför måste jag vara medlem?</a></span></p>
 <p><span class="big-link"><a href="<?php echo esc_url(home_url('/faq/loopis-stadgar/')); ?>">📜 Stadgar</a></span>&nbsp; <span class="big-link"><a href="<?php echo esc_url(home_url('/privacy/')); ?>">🗄 Integritet</a></span></p>
-<div class="loopis-message warning">
-<p>⚠ OBS! Du kan just nu bara använda LOOPIS nära Bagarmossen! <span class="big-link"><a href="<?php echo esc_url(home_url('/faq/varfor-bagis/')); ?>">📌 Varför måste jag bo i Bagis?</a></span></p>
-</div>
