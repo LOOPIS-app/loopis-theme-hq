@@ -168,10 +168,18 @@ add_action('signup_extra_fields', 'loopis_theme_hq_signup_extra_name_fields');
 /**
  * Return private multisite locations.
  */
-function loopis_theme_hq_get_private_sites(){
+function loopis_theme_hq_get_private_sites() {
     global $wpdb;
+
     $table = $wpdb->base_prefix . 'loopis_areas';
-    return $wpdb->get_col("SELECT blog_id FROM $table WHERE privacy = 1") ?? array();
+
+    $site_ids = $wpdb->get_col(
+        "SELECT DISTINCT blog_id
+         FROM {$table}
+         WHERE privacy = 1"
+    );
+
+    return array_map('absint', $site_ids ?: array());
 }
 
 /**

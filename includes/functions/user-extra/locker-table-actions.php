@@ -6,9 +6,10 @@
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
-
+//little heavy
 function reconstitute_locker(){
     global $wpdb;
+    include_once LOOPIS_THEME_DIR . '/includes/functions/everyone/get-locker.php';
     $blog_ids = get_sites([
         'fields' => 'ids',
     ]);
@@ -36,23 +37,49 @@ function reconstitute_locker(){
             continue;
         }
 
-        $wpdb->replace(
+        $result = $wpdb->update(
             $table,
             array(
-                'blog_id'     => $locker['blog_id'],
                 'locker_id'   => $locker['id'],
                 'locker_name' => $locker['name'] ?? '',
                 'postal_code' => $locker['postal_code'] ?? '',
                 'privacy'     => $locker['privacy'],
             ),
             array(
+                'blog_id'     => $locker['blog_id'],
+            ),
+            array(
+                '%s',
+                '%s',
+                '%s',
                 '%d',
-                '%s',
-                '%s',
-                '%s',
+            ),
+            array(
                 '%d',
             )
         );
+        if ($result === 0) {
+            $exists = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT 1 FROM {$table} WHERE blog_id = %d LIMIT 1",
+                    $locker['blog_id']
+                )
+            );
+
+            if (!$exists) {
+                $wpdb->insert(
+                    $table,
+                    array(
+                        'blog_id'     => $locker['blog_id'],
+                        'locker_id'   => $locker['id'],
+                        'locker_name' => $locker['name'] ?? '',
+                        'postal_code' => $locker['postal_code'] ?? '',
+                        'privacy'     => $locker['privacy'] ?? 0,
+                    ),
+                    array('%d', '%s', '%s', '%s', '%d')
+                );
+            }
+        }
     }
 }
 
