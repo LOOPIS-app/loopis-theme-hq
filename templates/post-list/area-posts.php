@@ -1,7 +1,6 @@
 <?php
 /**
- * Template part for displaying big posts, with all post meta, in list view.
- * Copy from "LOOPIS Theme" and modified for "LOOPIS Theme HQ".
+ * Template part for displaying big area posts in list view.
  */
 
 if (!defined('ABSPATH')) {

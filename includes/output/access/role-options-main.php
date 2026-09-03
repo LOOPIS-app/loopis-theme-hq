@@ -14,7 +14,9 @@ if (is_user_logged_in()) {
         echo '<p>Det här är LOOPIS startsida. Här ser du alla områden, din profil, samt frågor & svar.</p>';
         echo '<div class="loopis-message success">';
         echo '<p>Gå till ditt område för att loopa:</p>';
-        echo '<p><span class="mega-link"><a href="'.esc_url( home_url( '/12845/' ) ).'">📍 Bagarmossen</a></span></p>';
+        echo '<p>';
+        include LOOPIS_THEME_HQ_DIR . '/includes/output/links/user-subsite-links.php';
+        echo '</p>';
         echo '</div>';
     }
 
@@ -47,7 +49,11 @@ if (is_user_logged_in()) {
         echo '<div class="loopis-message information">';
         echo '<p>😈 Du är inloggad som WordPress super-admin.</p>';
         echo '<p>Du har tillgång till alla områden:</p>';
-        echo '<p><span class="link"><a href="'.esc_url( home_url( '/12845/' ) ).'">📍 Bagarmossen</a></span> <span class="link"><a href="'.esc_url( home_url( '/12833/' ) ).'">📍 Skarpnäck</a></span></p>';
+        echo '<p>';
+        include LOOPIS_THEME_HQ_DIR . '/includes/output/links/all-subsite-links.php';
+        echo '</p>';
+
+
         echo '<p><span class="link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut</a></span></p>';
         echo '</div>';
     } 
