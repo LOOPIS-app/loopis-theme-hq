@@ -39,17 +39,48 @@ function member_access_setup($user_id) {
         }
 
     restore_current_blog();
+    $blogs = get_blogs_where_user_has_role($user_id, 'member_pending');
 
-    // Add user and set role on subsite (currently hardcoded ID 2).
-    $subsite_id = 2;
-    if (!is_user_member_of_blog((int) $user_id, $subsite_id)) {
-        $added = add_user_to_blog($subsite_id, (int) $user_id, 'member');
-    } else {
-        switch_to_blog($subsite_id);
-        $subsite_user = new WP_User((int) $user_id);
-        if ($subsite_user && 0 !== (int) $subsite_user->ID) {
-            $subsite_user->set_role('member');
+    // Add user and set role on subsite.
+    foreach($blogs as $blog_id){
+        if (!is_user_member_of_blog((int) $user_id, $blog_id)) {
+            $added = add_user_to_blog($blog_id, (int) $user_id, 'member');
+        } else {
+            switch_to_blog($blog_id);
+            $subsite_user = new WP_User((int) $user_id);
+            if ($subsite_user && 0 !== (int) $subsite_user->ID) {
+                $subsite_user->set_role('member');
+            }
+            restore_current_blog();
         }
-        restore_current_blog();
+
     }
+}
+
+
+function get_blogs_where_user_has_role( $user_id, $role = 'member_pending' ) {
+    global $wpdb;
+
+    $blogs = get_sites(
+        array(
+            'number'   => 0,
+            'public'   => null,
+            'archived' => 0,
+            'deleted'  => 0,
+            'spam'     => 0,
+        )
+    );
+
+    $matching_blogs = array();
+
+    foreach ( $blogs as $blog ) {
+        $capabilities_key = $wpdb->get_blog_prefix( $blog->blog_id ) . 'capabilities';
+        $capabilities     = get_user_meta( $user_id, $capabilities_key, true );
+
+        if ( is_array( $capabilities ) && ! empty( $capabilities[ $role ] ) ) {
+            $matching_blogs[] = $blog->blog_id ;
+        }
+    }
+
+    return $matching_blogs;
 }

@@ -166,6 +166,150 @@ function loopis_theme_hq_signup_extra_name_fields() {
 add_action('signup_extra_fields', 'loopis_theme_hq_signup_extra_name_fields');
 
 /**
+ * Return private multisite locations.
+ */
+function loopis_theme_hq_get_private_sites() {
+    global $wpdb;
+
+    $table = $wpdb->base_prefix . 'loopis_areas';
+
+    $site_ids = $wpdb->get_col(
+        "SELECT DISTINCT blog_id
+         FROM {$table}
+         WHERE privacy = 1"
+    );
+
+    return array_map('absint', $site_ids ?: array());
+}
+
+/**
+ * Return selectable multisite locations.
+ */
+function loopis_theme_hq_get_signup_locations() {
+    if ( ! is_multisite() ) {
+        return array();
+    }
+    $not_in = loopis_theme_hq_get_private_sites();
+    $not_in[] = get_main_site_id();
+    return get_sites(
+        array(
+            'network_id' => get_current_network_id(),
+            'public'     => 1,
+            'archived'   => 0,
+            'spam'       => 0,
+            'deleted'    => 0,
+            'site__not_in' => $not_in,
+            'number'     => 100,
+            'orderby'    => 'domain',
+            'order'      => 'ASC',
+        )
+    );
+}
+
+/**
+ * Check whether a blog ID is an allowed signup location.
+ */
+function loopis_theme_hq_is_valid_signup_location( $blog_id ) {
+    $blog_id = absint( $blog_id );
+
+    if ( $blog_id <= 0 || ! is_multisite() ) {
+        return false;
+    }
+
+    $site = get_site( $blog_id );
+
+    if ( ! $site ) {
+        return false;
+    }
+
+    if ( (int) $site->network_id !== (int) get_current_network_id() ) {
+        return false;
+    }
+
+    if ( $site->archived || $site->spam || $site->deleted ) {
+        return false;
+    }
+
+    return true;
+}
+
+function loopis_theme_hq_has_special_location_cookie() {
+    return isset( $_COOKIE['special_invite_payload'] );
+}
+
+function loopis_theme_hq_get_location_safe() {
+    if ( loopis_theme_hq_has_special_location_cookie() ) {
+        $encoded_blog_id = wp_unslash(
+            $_COOKIE['special_invite_payload']
+        );
+
+        $decoded_blog_id = base64_decode( $encoded_blog_id, true );
+
+        if (
+            false === $decoded_blog_id ||
+            ! ctype_digit( (string) $decoded_blog_id )
+        ) {
+            return 0;
+        }
+
+        return absint( $decoded_blog_id );
+    }else{
+        return isset( $_POST['loopis_location_blog_id'] )
+        ? absint( wp_unslash( $_POST['loopis_location_blog_id'] ) )
+        : 0;
+    }
+}
+
+/**
+ * Render location selector on the signup form.
+ */
+function loopis_theme_hq_signup_location_field() {
+    if ( loopis_theme_hq_has_special_location_cookie() ) {
+        return;
+    }
+    $selected_blog_id = loopis_theme_hq_get_location_safe();
+
+    $locations = loopis_theme_hq_get_signup_locations();
+    ?>
+
+    <p>
+        <label for="loopis_location_blog_id">
+            <?php esc_html_e( 'Location', 'loopis-theme-hq' ); ?>
+        </label>
+
+        <select
+            name="loopis_location_blog_id"
+            id="loopis_location_blog_id"
+            required
+        >
+            <option value="">
+                <?php esc_html_e( 'Select a location', 'loopis-theme-hq' ); ?>
+            </option>
+
+            <?php foreach ( $locations as $location ) : ?>
+                <?php
+                $blog_id  = (int) $location->blog_id;
+                $blogname = get_blog_option( $blog_id, 'blogname' );
+                ?>
+
+                <option
+                    value="<?php echo esc_attr( $blog_id ); ?>"
+                    <?php selected( $selected_blog_id, $blog_id ); ?>
+                >
+                    <?php echo esc_html( $blogname ); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </p>
+
+    <?php
+}
+
+add_action(
+    'signup_extra_fields',
+    'loopis_theme_hq_signup_location_field'
+);
+/**
  * Hide the default username input and keep it auto-generated in the form.
  */
 function loopis_theme_hq_signup_username_ui_bridge() {
@@ -454,6 +598,7 @@ function loopis_theme_hq_validate_signup_name_fields($result) {
     $last_name = isset($_POST['last_name']) ? sanitize_text_field(wp_unslash($_POST['last_name'])) : '';
     $signup_password = isset($_POST['signup_password']) ? (string) wp_unslash($_POST['signup_password']) : '';
     $signup_password_confirm = isset($_POST['signup_password_confirm']) ? (string) wp_unslash($_POST['signup_password_confirm']) : '';
+    $location_blog_id = loopis_theme_hq_get_location_safe();
 
     if ('' === $first_name) {
         $result['errors']->add('first_name', __('Please enter your first name.', 'loopis-theme-hq'));
@@ -479,6 +624,16 @@ function loopis_theme_hq_validate_signup_name_fields($result) {
         return $result;
     }
 
+    if ( ! loopis_theme_hq_is_valid_signup_location( $location_blog_id ) ) {
+        $result['errors']->add(
+            'loopis_location_blog_id',
+            __(
+                'Please select a valid location.',
+                'loopis-theme-hq'
+            )
+        );
+    }
+
     // Replace core username errors so our generated pattern can include hyphens.
     $result['errors']->remove('user_name');
 
@@ -497,7 +652,11 @@ function loopis_theme_hq_signup_user_meta($meta) {
     $first_name = isset($_POST['first_name']) ? loopis_theme_hq_normalize_person_name(wp_unslash($_POST['first_name'])) : '';
     $last_name = isset($_POST['last_name']) ? loopis_theme_hq_normalize_person_name(wp_unslash($_POST['last_name'])) : '';
     $signup_password = isset($_POST['signup_password']) ? (string) wp_unslash($_POST['signup_password']) : '';
+    $location_blog_id = loopis_theme_hq_get_location_safe();
 
+    if ( loopis_theme_hq_is_valid_signup_location( $location_blog_id ) ) {
+        $meta['loopis_location_blog_id'] = $location_blog_id;
+    }
     if ('' !== $first_name) {
         $meta['first_name'] = $first_name;
     }
@@ -648,31 +807,64 @@ add_action('wpmu_activate_user', 'loopis_theme_hq_apply_signup_password_on_activ
 /**
  * Ensure newly activated users are added to the main site in multisite.
  */
-function loopis_theme_hq_add_activated_user_to_main_site($user_id, $password, $meta) {
-    if (!is_multisite()) {
+function loopis_theme_hq_add_activated_user_to_main_site(
+    $user_id,
+    $password,
+    $meta
+) {
+    if ( ! is_multisite() ) {
         return;
     }
 
-    $main_site_id = function_exists('get_main_site_id') ? (int) get_main_site_id() : 1;
-    if ($main_site_id <= 0) {
-        return;
+    $user_id = (int) $user_id;
+
+    $main_site_id = function_exists( 'get_main_site_id' )
+        ? (int) get_main_site_id()
+        : 1;
+    //hardcoded to handle registrations from before changes
+    $selected_blog_id = 2;
+
+    if ( is_array( $meta ) && ! empty( $meta['loopis_location_blog_id'] ) ) {
+        $selected_blog_id = absint( $meta['loopis_location_blog_id'] );
     }
 
-    if (is_user_member_of_blog((int) $user_id, $main_site_id)) {
-        return;
+    $site_ids = array_filter(
+        array_unique(
+            array(
+                $main_site_id,
+                $selected_blog_id,
+            )
+        )
+    );
+
+    if ( $selected_blog_id === 4){
+        add_membership($user_id,['description'=>'platform24']);
     }
 
-    $added = add_user_to_blog($main_site_id, (int) $user_id, 'member_pending');
-    if (is_wp_error($added)) {
-        error_log('LOOPIS: Failed adding activated user ' . (int) $user_id . ' to site ' . $main_site_id . ': ' . $added->get_error_message());
-    }
+    foreach ( $site_ids as $site_id ) {
+        if ( ! loopis_theme_hq_is_valid_signup_location( $site_id ) ) {
+            continue;
+        }
 
-    // Also add to subsite (ID 2).
-    $subsite_id = 2;
-    if (!is_user_member_of_blog((int) $user_id, $subsite_id)) {
-        $added_subsite = add_user_to_blog($subsite_id, (int) $user_id, 'member_pending');
-        if (is_wp_error($added_subsite)) {
-            error_log('LOOPIS: Failed adding activated user ' . (int) $user_id . ' to subsite ' . $subsite_id . ': ' . $added_subsite->get_error_message());
+        if ( is_user_member_of_blog( $user_id, $site_id ) ) {
+            continue;
+        }
+
+        $added = add_user_to_blog(
+            $site_id,
+            $user_id,
+            'member_pending'
+        );
+
+        if ( is_wp_error( $added ) ) {
+            error_log(
+                sprintf(
+                    'LOOPIS: Failed adding user %d to site %d: %s',
+                    $user_id,
+                    $site_id,
+                    $added->get_error_message()
+                )
+            );
         }
     }
 }

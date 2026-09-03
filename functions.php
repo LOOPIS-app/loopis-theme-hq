@@ -85,7 +85,7 @@ function loopis_theme_hq_load_files() {
 add_action('after_setup_theme', 'loopis_theme_hq_load_files');
 
 
-add_action('init', function () {
+add_action('after_setup_theme', function () {
     update_option('special_invite_hash', hash('sha256', 'code'));
 });
 
@@ -106,7 +106,7 @@ add_action('init', function () {
       wp_die('Invalid invite.');
     }
     $blog_id = 4;
-    $role_slug = 'member';
+    $role_slug = 'member_pending';
     $already_a_member = false;
     if(is_user_logged_in()){
         $user_id = get_current_user_id();
@@ -131,7 +131,7 @@ add_action('init', function () {
         exit;
     }
 
-    $payload = $blog_id .'|'.$role_slug; // placeholder currently blog + role
+    $payload = $blog_id; // placeholder currently blog + role
 
     setcookie(
         'special_invite_payload',
@@ -150,44 +150,38 @@ add_action('init', function () {
 });
 
 add_action('user_register', function ($user_id) {
-  if (empty($_COOKIE['special_invite_payload'])) return;
-
-  $decoded = base64_decode($_COOKIE['special_invite_payload'], true);
-  if (!$decoded) return;
-
-  $parts = explode('|', $decoded, 2);
-  if (count($parts) !== 2) return;
-
-  $blog_id = (int) $parts[0];
-  $role_slug = sanitize_key($parts[1]) ?: 'member';
-
-  setcookie('special_invite_payload', '', time() - 3600, '/', '', is_ssl(), true);
-
-  if (!is_multisite() || $blog_id <= 0) return;
-
-  add_membership($user_id,['description'=>'platform24']);
-
-  switch_to_blog($blog_id);
-  add_user_to_blog($blog_id, $user_id, $role_slug);
-  restore_current_blog();
-  update_user_meta($user_id,'primary_blog',$blog_id);
-  setcookie(
-    'skip_pay_screen',
-    base64_encode(1),
-    [
-      'expires'  => time() + 60 * 60,
-      'path'     => '/',
-      'secure'   => is_ssl(),
-      'httponly' => true,
-      'samesite' => 'Lax',
-    ]
-  );
-
+    if (empty($_COOKIE['special_invite_payload'])) return;
+    $blog_id = (int) base64_decode($_COOKIE['special_invite_payload'], true);
+    if ($blog_id===0) return;
+    $role_slug = 'member_pending';
+    
+    setcookie('special_invite_payload', '', time() - 3600, '/', '', is_ssl(), true);
+    
+    if (!is_multisite() || $blog_id <= 0) return;
+    
+    add_membership($user_id,['description'=>'platform24']);
+    
+    switch_to_blog($blog_id);
+    add_user_to_blog($blog_id, $user_id, $role_slug);
+    restore_current_blog();
+    update_user_meta($user_id,'primary_blog',$blog_id);
 });
 
 
-add_action('init', function () {
+
+add_action('template_redirect', function () {
     if (!empty($_COOKIE['stop_redirect'])) return;
+
+    if (
+        is_admin()
+        || wp_doing_ajax()
+        || ( defined( 'REST_REQUEST' ) && REST_REQUEST )
+        || ( defined( 'DOING_CRON' ) && DOING_CRON )
+        || current_user_can( 'manage_options' )
+    ) {
+        return;
+    }
+
 
     $user_id = get_current_user_id();
 
@@ -212,6 +206,11 @@ add_action('init', function () {
         ]
     );
     $target_url = get_home_url($blog_id, '/');
+
+    if ( ! is_user_member_of_blog( $user->ID, $blog_id) ) {
+        wp_safe_redirect( get_home_url( 1, '/' ) );
+        exit;
+    }
 
     wp_safe_redirect($target_url);
     exit;

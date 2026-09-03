@@ -25,6 +25,30 @@ $wpum_area = get_user_meta($user_id, 'wpum_area', true);
 $wpum_active = get_user_meta($user_id, 'wpum_active', true);
 $wpum_active_checked = in_array((string) $wpum_active, array('1', 'true', 'yes', 'on'), true);
 
+// blog handlers
+loopis_theme_hq_include_folder('functions/user-extra', LOOPIS_THEME_HQ_DIR);
+$primary_blog = get_user_meta($user_id, 'primary_blog', true);
+$user_blogs = get_blogs_of_user( $user_id );
+$all_blogs = get_area_privacy();
+
+if(count($user_blogs)>2){
+    $give_blog_choice = true;
+    $choices = [];
+    foreach($user_blogs as $blog){
+        if($blog->userblog_id === 1){
+            continue;
+        }else{
+            if(!empty($all_blogs[$blog->userblog_id])){
+                $choices[] = array('blog_id'=>$blog->userblog_id,
+                    'name'=>$all_blogs[$blog->userblog_id]['name']
+                );
+            }
+        }
+    }
+}else{
+    $give_blog_choice = false;
+}
+
 // Status from handler redirect after submit.
 $member_form_status = sanitize_key(wp_unslash($_GET['member_form'] ?? ''));
 $member_form_fields_raw = sanitize_text_field(wp_unslash($_GET['member_form_fields'] ?? ''));
@@ -180,23 +204,22 @@ if ('success' === $member_form_status) : ?>
                 <option value="secret" <?php selected($wpum_gender, 'secret'); ?>>Vill ej ange</option>
             </select>
         </div>
-
+        <?php if($give_blog_choice || (count($choices)===1)):?>
         <div>
             <label for="member-area">Område</label>
-            <?php if (in_array('wpum_area', $member_form_fields, true)) : ?>
-                <p class="error"><?php echo esc_html($member_form_field_messages['wpum_area']); ?></p>
+            <?php if (in_array('area', $member_form_fields, true)) : ?>
+                <p class="error"><?php echo esc_html($member_form_field_messages['area']); ?></p>
             <?php endif; ?>
-            <select id="member-area" name="wpum_area" required>
+            <select id="member-area" name="area" required>
                 <option value="">Välj</option>
-                <option value="1" <?php selected($wpum_area, '1'); ?>>Bagarmossen</option>
-                <option value="2" <?php selected($wpum_area, '2'); ?>>Skarpnäck</option>
-                <option value="3" <?php selected($wpum_area, '3'); ?>>Kärrtorp</option>
-                <option value="4" <?php selected($wpum_area, '4'); ?>>Björkhagen</option>
-                <option value="5" <?php selected($wpum_area, '5'); ?>>Enskede</option>
-                <option value="other" <?php selected($wpum_area, 'other'); ?>>Annat</option>
+                <?php 
+                foreach($choices as $blog){
+                    echo '<option value="' . esc_attr( $blog['blog_id'] ) . '" ' . selected( $wpum_area, $blog['blog_id'], false ) . '>' . esc_html( $blog['name'] ) .'</option>';
+                }
+                ?>
             </select>
         </div>
-
+        <?php endif; ?>
         <div>
             <label for="member-active">Aktivera medlemskap</label>
             <input
