@@ -123,7 +123,6 @@ function loopis_theme_hq_handle_member_form_post() {
     update_user_meta($user_id, 'wpum_gender', $gender);
     update_user_meta($user_id, 'wpum_area', $area);
     update_user_meta($user_id, 'wpum_active', $active);
-    update_user_meta($user_id, 'primary_blog', $area);
     // Check if both member data and membership payment are complete.
     if(!function_exists('member_pending_check')) {
         include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php';
