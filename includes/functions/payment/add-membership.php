@@ -10,20 +10,21 @@ if (!defined('ABSPATH')) {
 }
 
 function add_membership($user_id = null, $options=[]) {
-    $settings = [
-        'type' => $options['type'] ?? 'medlemskap',
-        'description' => $options['description'] ?? 'stripe',
-        'location' => $options['location'] ?? 'digital',
-        'blog_id' => $options['blog_id'] ?? 1,
-        'payment' => $options['payment'] ?? 50,
-        'coins' => $options['coins'] ?? 5,
-        'clovers'=>$options['clovers'] ?? 0,
-    ];
+
     // Get user ID (either passed parameter or current logged-in user).
     if ($user_id === null) {
         $user_id = get_current_user_id();
     }
 
+    $settings = [
+        'type' => $options['type'] ?? 'medlemskap',
+        'description' => $options['description'] ?? 'stripe',
+        'location' => $options['location'] ?? 'digital',
+        'blog_id' => $options['blog_id'] ?? (get_user_meta($user_id,'primary_blog',true) ?? 1),
+        'payment' => $options['payment'] ?? 50,
+        'coins' => $options['coins'] ?? 5,
+        'clovers'=>$options['clovers'] ?? 0,
+    ];
     // Get user data.
     $user = get_userdata($user_id);
     if (!$user) {
