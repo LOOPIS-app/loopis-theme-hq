@@ -43,7 +43,7 @@ if(is_user_logged_in()){
     add_user_to_blog($blog_id, $user_id, $role_slug);
     restore_current_blog();
     update_user_meta($user_id,'primary_blog',$blog_id);
-    wp_safe_redirect(home_url('/p24/'));
+    wp_safe_redirect(network_site_url('/p24/'));
     exit;
 }
 $payload = $blog_id; // placeholder currently blog + role
