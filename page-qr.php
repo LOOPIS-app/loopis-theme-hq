@@ -6,7 +6,7 @@
  * @subpackage Frontend
  */
 
-$id = isset($_GET['id']) ? (string) $_GET['id'] : '';
+$uid = isset($_GET['x']) ? (string) $_GET['x'] : '';
 
 
 if($location!==''){
@@ -15,18 +15,19 @@ if($location!==''){
     $table2 = $wpdb->base_prefix . 'loopis_qr_codes';
     $row = $wpdb->get_row(
         $wpdb->prepare(
-            "SELECT * FROM {$table2} WHERE id = %d",
-            $id
+            "SELECT * FROM {$table2} WHERE uid = %s",
+            $uid
         ),
     ARRAY_A
     );
     $wpdb->insert($table, 
         [
-        'location' => $row['location'] ?? '',
+        'blog_id' => $row['blog_id'] ?? '',
         'name' => $row['name'] ?? '',
         'timestamp' =>current_time('Y-m-d H:i:s'),
+        'redirect' =>$row['redirect'],
         ],
-        ['%s', '%s', '%s']
+        ['%s', '%s', '%s', '%s']
     );
 }
 
