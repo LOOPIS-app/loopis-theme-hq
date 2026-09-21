@@ -28,6 +28,11 @@ $role_slug = 'member_pending';
 $already_a_member = false;
 if(is_user_logged_in()){
     $user_id = get_current_user_id();
+
+    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php';
+
+    $membership = member_pending_check($user_id);
+    $role_slug=  $membership['member_data_complete'] ? 'member' :  $role_slug;
     $payments = loopis_ledger_user_payments($user_id);
     foreach($payments as $entry){
         if($entry['type'] === 'medlemskap'){
