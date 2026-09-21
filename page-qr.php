@@ -6,22 +6,30 @@
  * @subpackage Frontend
  */
 
-$location = isset($_GET['loc']) ? (string) $_GET['loc'] : '';
+$uid = isset($_GET['x']) ? (string) $_GET['x'] : '';
 
-$info = isset($_GET['info']) ? (string) $_GET['info'] : '';
 
 if($location!==''){
     global $wpdb;
     $table = $wpdb->base_prefix . 'loopis_qr_visits';
+    $table2 = $wpdb->base_prefix . 'loopis_qr_codes';
+    $row = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT * FROM {$table2} WHERE uid = %s",
+            $uid
+        ),
+    ARRAY_A
+    );
     $wpdb->insert($table, 
         [
-        'location' => $location,
-        'info' => $info,
+        'blog_id' => $row['blog_id'] ?? '',
+        'name' => $row['name'] ?? '',
         'timestamp' =>current_time('Y-m-d H:i:s'),
+        'redirect' =>$row['redirect'],
         ],
-        ['%s', '%s', '%s']
+        ['%s', '%s', '%s', '%s']
     );
 }
 
-wp_safe_redirect( get_home_url( 1, '/' ) );
+wp_safe_redirect( $row['redirect'] ?? get_home_url( 1, '/' ) );
 exit;

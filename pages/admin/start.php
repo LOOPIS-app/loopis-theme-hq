@@ -41,6 +41,17 @@ $admin_url = home_url('/admin/');
     </div>
 <?php endif; ?>
 
+<!-- Pending members count -->
+<?php if (current_user_can('manage_options') || current_user_can('loopis_board')) : ?>
+    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'ledger', $admin_url) ); ?>'">
+        <h5>📖 Boken</h5>
+        <hr>
+        <p class="small">
+            <?php include __DIR__ . '/panels/ledger.php'; ?>
+        </p>
+    </div>
+<?php endif; ?>
+
 <!-- Economy -->
 <?php if (current_user_can('manage_options') || current_user_can('loopis_economy')) : ?>
     <div>

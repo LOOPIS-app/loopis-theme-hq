@@ -28,6 +28,11 @@ $role_slug = 'member_pending';
 $already_a_member = false;
 if(is_user_logged_in()){
     $user_id = get_current_user_id();
+
+    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php';
+
+    $membership = member_pending_check($user_id);
+    $role_slug=  $membership['member_data_complete'] ? 'member' :  $role_slug;
     $payments = loopis_ledger_user_payments($user_id);
     foreach($payments as $entry){
         if($entry['type'] === 'medlemskap'){
@@ -43,7 +48,7 @@ if(is_user_logged_in()){
     add_user_to_blog($blog_id, $user_id, $role_slug);
     restore_current_blog();
     update_user_meta($user_id,'primary_blog',$blog_id);
-    wp_safe_redirect(home_url('/p24/'));
+    wp_safe_redirect(network_site_url('/p24/'));
     exit;
 }
 $payload = $blog_id; // placeholder currently blog + role

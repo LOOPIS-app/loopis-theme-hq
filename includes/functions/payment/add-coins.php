@@ -10,19 +10,19 @@ if (!defined('ABSPATH')) {
 }
 
 function add_coins($user_id = null,$options=[]) {
+    if ($user_id === null) {
+        $user_id = get_current_user_id();
+    }
     $settings = [
         'type' => $options['type'] ?? 'mynt',
         'description' => $options['description'] ?? 'stripe',
         'location' => $options['location'] ?? 'digital',
-        'blog_id' => $options['blog_id'] ?? 1,
+        'blog_id' => $options['blog_id'] ?? (get_user_meta($user_id,'primary_blog',true) ?? 1),
         'payment' => $options['payment'] ?? 50,
         'coins' => $options['coins'] ?? 5,
         'clovers'=>$options['clovers'] ?? 0,
     ];
     // Get user ID (either passed parameter or current logged-in user)
-    if ($user_id === null) {
-        $user_id = get_current_user_id();
-    }
 
     // Get user data
     $user = get_userdata($user_id);
