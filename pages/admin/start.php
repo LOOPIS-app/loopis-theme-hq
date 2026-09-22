@@ -21,6 +21,15 @@ $admin_url = home_url('/admin/');
 <hr>
 <p class="small">💡 Visar verktyg tillgängliga för <span class="small-link"><a href="<?php echo esc_url( home_url('/user/') ); ?>">👤<?php echo wp_get_current_user()->user_login; ?></a></span></p>
 
+<!-- Statistics -->
+<div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'stats', $admin_url) ); ?>'">
+    <h5>📊 Statistik</h5>
+    <hr>
+    <p class="small">
+        🛠️ Lämplig översikt kommer att läggas till här.
+    </p>
+</div>
+
 <!-- App traffic -->
 <div class="wrapped">
     <h5>📲 Trafik i app</h5>
