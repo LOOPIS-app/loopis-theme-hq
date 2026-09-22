@@ -33,6 +33,8 @@
 		<div class="group">
 			<div class="header-back" onclick="history.back()"><i class="fas fa-chevron-left"></i></div>
 			<a href="<?php echo esc_url( home_url('/admin/') ); ?>"><img src="<?php echo LOOPIS_THEME_HQ_URI; ?>/assets/img/LOOPIS_logo_admin.png" alt="LOOPIS-logo" id="header-img"></a>
-			</div>
-		</header>
+			<div class="header-faq" onclick="location.href='<?php echo esc_url( home_url('/start/') ); ?>'">🗺</div>
+		</div>
+	</header>
+
 	<div class="container" >

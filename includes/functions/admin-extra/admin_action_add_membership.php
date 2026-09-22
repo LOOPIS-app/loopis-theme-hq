@@ -39,7 +39,7 @@ function admin_action_add_membership(int $user_id) {
     $user_first_name = $user->first_name;
     $subject = '💚 Välkommen!';
     $greeting = "Hej {$user_first_name}!";
-    $message = '🎉 Ditt Medlemskap på LOOPIS.app är nu aktiverat.<br>→  Logga in med din vanliga webbläsare.<br>'
+    $message = '🎉 Ditt Medlemskap på LOOPIS.app är nu aktiverat.<br>→  Logga in med din vanliga webbläsare.<br>';
     $outro = '<a href="/faq/tips-till-ny-medlem/">📌 Tips till ny medlem!</a>;';
 
     // Get templates
