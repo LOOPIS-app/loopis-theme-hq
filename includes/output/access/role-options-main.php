@@ -11,12 +11,9 @@ if (is_user_logged_in()) {
 
     // Member
     if (in_array('member', $user_roles, true)) {
-        echo '<p>Det här är LOOPIS startsida. Här ser du alla områden, din profil, samt frågor & svar.</p>';
         echo '<div class="loopis-message success">';
-        echo '<p>Gå till ditt område för att loopa:</p>';
-        echo '<p>';
-        include LOOPIS_THEME_HQ_DIR . '/includes/output/links/user-subsite-links.php';
-        echo '</p>';
+        echo '<p>Det här är LOOPIS startsida. Här hittar du ditt medlemskap och vanliga frågor m.m.</p>';
+        echo '<p>För att loopa: tryck på ditt område nedan!</p>';
         echo '</div>';
     }
 
@@ -46,17 +43,19 @@ if (is_user_logged_in()) {
 
     // Super Admin
     elseif (is_super_admin()) {
-        echo '<div class="loopis-message information">';
-        echo '<p>😈 Du är inloggad som WordPress super-admin.</p>';
-        echo '<p>Du har tillgång till alla områden:</p>';
-        echo '<p>';
-        include LOOPIS_THEME_HQ_DIR . '/includes/output/links/all-subsite-links.php';
-        echo '</p>';
-
-
-        echo '<p><span class="link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut</a></span></p>';
+        echo '<div class="admin-block">';
+        echo '<p>😈 Du är inloggad som WordPress multisite super-admin.</p>';
+        echo '<p><span class="big-link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="big-link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut</a></span></p>';
         echo '</div>';
     } 
+
+     // Administrator
+    elseif (in_array('administrator', $user_roles, true)) {
+        echo '<div class="admin-block">';
+        echo '<p>Du bör inte göra någonting med detta konto.</p>';
+        echo '<p>Så: <span class="link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut!</a></span></p>';
+        echo '</div>';
+    }
 
     // Not logged in
     } else {

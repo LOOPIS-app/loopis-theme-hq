@@ -1,36 +1,29 @@
 <?php
 /**
- * Template for displaying available subsites using blog posts.
- * 
- * Posts with category 'private' are only shown to users with access to that subsite.
+ * Template for displaying area blog posts, linking to their respective subsite.
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// Skip private posts for users without private area access
-$area_blog_id = get_post_meta(get_the_ID(), 'area_blog_id', true) ?: 0;
-$can_access_private_area = current_user_can('manage_options') || current_user_can('loopis_admin');
-if (!$can_access_private_area && is_user_logged_in() && (int) $area_blog_id > 0) {
-    $can_access_private_area = is_user_member_of_blog(get_current_user_id(), (int) $area_blog_id);
-}
-
-if (in_category('private') && !$can_access_private_area) {
-    return;
-}
-// Set post opacity style for private posts
-$post_opacity_style = in_category('private') ? ' style="opacity: 0.6; filter: grayscale(100%);"' : '';
-
 // Get variables
+$area_blog_id = get_post_meta(get_the_ID(), 'area_blog_id', true) ?: 0;
 $area_city = get_post_meta(get_the_ID(), 'area_city', true) ?: 'Stad saknas';
+$area_subdirectory = get_post_meta(get_the_ID(), 'area_subdirectory', true) ?: '#';
+$area_url = home_url('/' . trim($area_subdirectory, '/') . '/');
 
 // Count subsite members
 include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/visitor-extra/subsite-member-count.php';
 $area_members_count = subsite_member_count($area_blog_id);
+
+// Set post opacity style for private posts
+$post_opacity_style = in_category('private') ? ' style="opacity: 0.6; filter: grayscale(100%);"' : '';
 ?>
 
-<div class="post-list-post-big"<?php echo $post_opacity_style; ?> onclick="location.href='<?php the_permalink(); ?>';">
+<!-- Output -->
+<div class="post-list-post-big"<?php echo $post_opacity_style; ?>
+     onclick="window.location.href='<?php echo esc_js(esc_url($area_url)); ?>';">
     <div class="post-list-post-thumbnail-big"><?php the_post_thumbnail('thumbnail'); ?></div>
     <div class="post-list-post-title-big"><?php the_title(); ?></div>
     <div class="post-list-post-meta">
