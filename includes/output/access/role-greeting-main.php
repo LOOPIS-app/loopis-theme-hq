@@ -34,9 +34,9 @@ if (is_user_logged_in()) {
         echo '<h5>Hej webmaster!</h5>';
     }
 
-    // Admin
+    // Administrator
     elseif (in_array('administrator', $user_roles, true)) {
-        echo '<h5>Hej admin ' . $user_firstname . '!</h5>';
+        echo '<h5>Hej ' . $user_firstname . '!</h5>';
     }
 
 } else {
