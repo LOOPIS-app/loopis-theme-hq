@@ -1,8 +1,8 @@
 # 🎡 LOOPIS Theme HQ
-**Theme providing all frontend design and functionality for LOOPIS.app main page**
+**Theme providing frontend for main site of LOOPIS.app**
 
 ## 💡 Status
-We are working on adding the right content and functions for multisite environment.
+We are working on improving the Wordpress MultiSite experience.
 
 ## 📋 Changelog
 See [CHANGELOG.md](CHANGELOG.md)
@@ -11,4 +11,4 @@ See [CHANGELOG.md](CHANGELOG.md)
 Installation & updates are managed by plugin "LOOPIS Config".
 
 ## 👤 Contributors
-Johan Hagvil
+Johan Hagvil & Hubert Hilborn
