@@ -79,6 +79,8 @@ add_action('before_signup_form', 'loopis_theme_hq_signup_custom_header');
  * Close LOOPIS page wrapper.
  */
 function loopis_theme_hq_signup_close_page_padding() {
+    echo '<p class="info">PS. LOOPIS är en ideell förening för dig som vill ha en glad & hållbar framtid. Läs mer här:</p>';
+    echo '<p><span class="link"><a href="' . esc_url(home_url('/faq/varfor-medlemskap/')) . '">📌 Varför medlemskap?</a></span>&nbsp; <span class="link"><a href="' . esc_url(home_url('/faq/loopis-stadgar/')) . '">📜 Stadgar</a></span>&nbsp; <span class="link"><a href="' . esc_url(home_url('/privacy/')) . '">🗄 Integritet</a></span></p>';
     echo '</div><!-- .page-padding center -->';
 }
 add_action('after_signup_form', 'loopis_theme_hq_signup_close_page_padding');
@@ -140,26 +142,45 @@ add_action('signup_finished', 'loopis_theme_hq_signup_activation_confirmation');
 /**
  * Render first and last name fields on /wp-signup.php
  */
-function loopis_theme_hq_signup_extra_name_fields() {
+function loopis_theme_hq_signup_extra_name_fields($errors) {
     $first_name = isset($_POST['first_name']) ? sanitize_text_field(wp_unslash($_POST['first_name'])) : '';
     $last_name = isset($_POST['last_name']) ? sanitize_text_field(wp_unslash($_POST['last_name'])) : '';
+    $postcode = isset($_POST['wpum_postcode']) ? sanitize_text_field(wp_unslash($_POST['wpum_postcode'])) : '';
+    $signup_password = isset($_POST['signup_password']) ? (string) wp_unslash($_POST['signup_password']) : '';
+    $signup_password_confirm = isset($_POST['signup_password_confirm']) ? (string) wp_unslash($_POST['signup_password_confirm']) : '';
+    $first_name_error = is_wp_error($errors) ? $errors->get_error_message('first_name') : '';
+    $last_name_error = is_wp_error($errors) ? $errors->get_error_message('last_name') : '';
+    $postcode_error = is_wp_error($errors) ? $errors->get_error_message('wpum_postcode') : '';
     ?>
     <p>
         <label for="first_name"><?php echo esc_html__('First name', 'loopis-theme-hq'); ?></label>
+        <?php if ('' !== $first_name_error) : ?>
+            <span class="error"><?php echo esc_html($first_name_error); ?></span>
+        <?php endif; ?>
         <input type="text" name="first_name" id="first_name" value="<?php echo esc_attr($first_name); ?>" autocomplete="given-name" required />
     </p>
     <p>
         <label for="last_name"><?php echo esc_html__('Last name', 'loopis-theme-hq'); ?></label>
+        <?php if ('' !== $last_name_error) : ?>
+            <span class="error"><?php echo esc_html($last_name_error); ?></span>
+        <?php endif; ?>
         <input type="text" name="last_name" id="last_name" value="<?php echo esc_attr($last_name); ?>" autocomplete="family-name" required />
     </p>
     <p>
         <label for="signup_password"><?php echo esc_html__('Password', 'loopis-theme-hq'); ?></label>
-        <input type="text" name="signup_password" id="signup_password" value="" autocomplete="new-password" required />
+        <input type="text" name="signup_password" id="signup_password" value="<?php echo esc_attr($signup_password); ?>" autocomplete="new-password" required />
         <span class="description">Minst 8 tecken.</span>
     </p>
     <p>
         <label for="signup_password_confirm"><?php echo esc_html__('Confirm password', 'loopis-theme-hq'); ?></label>
-        <input type="text" name="signup_password_confirm" id="signup_password_confirm" value="" autocomplete="new-password" required />
+        <input type="text" name="signup_password_confirm" id="signup_password_confirm" value="<?php echo esc_attr($signup_password_confirm); ?>" autocomplete="new-password" required />
+    </p>
+    <p>
+        <label for="wpum_postcode"><?php esc_html_e('Postnummer', 'loopis-theme-hq'); ?></label>
+        <?php if ('' !== $postcode_error) : ?>
+            <span class="error"><?php echo esc_html($postcode_error); ?></span>
+        <?php endif; ?>
+        <input type="text" name="wpum_postcode" id="wpum_postcode" value="<?php echo esc_attr($postcode); ?>" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required />
     </p>
     <?php
 }
@@ -266,11 +287,12 @@ function loopis_theme_hq_get_location_safe() {
 /**
  * Render area selector on the signup form.
  */
-function loopis_theme_hq_signup_location_field() {
+function loopis_theme_hq_signup_location_field($errors) {
     if ( loopis_theme_hq_has_special_location_cookie() ) {
         return;
     }
     $selected_blog_id = loopis_theme_hq_get_location_safe();
+    $location_error = is_wp_error($errors) ? $errors->get_error_message('loopis_location_blog_id') : '';
 
     $locations = loopis_theme_hq_get_signup_locations();
     ?>
@@ -279,6 +301,9 @@ function loopis_theme_hq_signup_location_field() {
         <label for="loopis_location_blog_id">
             <?php esc_html_e( 'Område', 'loopis-theme-hq' ); ?>
         </label>
+        <?php if ('' !== $location_error) : ?>
+            <span class="error"><?php echo esc_html($location_error); ?></span>
+        <?php endif; ?>
 
         <select
             name="loopis_location_blog_id"
@@ -610,6 +635,7 @@ add_action('init', 'loopis_theme_hq_signup_prepare_username', 0);
 function loopis_theme_hq_validate_signup_name_fields($result) {
     $first_name = isset($_POST['first_name']) ? sanitize_text_field(wp_unslash($_POST['first_name'])) : '';
     $last_name = isset($_POST['last_name']) ? sanitize_text_field(wp_unslash($_POST['last_name'])) : '';
+    $postcode = isset($_POST['wpum_postcode']) ? loopis_theme_hq_normalize_postcode(wp_unslash($_POST['wpum_postcode'])) : '';
     $signup_password = isset($_POST['signup_password']) ? (string) wp_unslash($_POST['signup_password']) : '';
     $signup_password_confirm = isset($_POST['signup_password_confirm']) ? (string) wp_unslash($_POST['signup_password_confirm']) : '';
     $location_blog_id = loopis_theme_hq_get_location_safe();
@@ -622,6 +648,10 @@ function loopis_theme_hq_validate_signup_name_fields($result) {
         $result['errors']->add('last_name', __('Please enter your last name.', 'loopis-theme-hq'));
     }
 
+    if (!preg_match('/^[0-9]{5}$/', $postcode)) {
+        $result['errors']->add('wpum_postcode', __('Please enter a five-digit postcode.', 'loopis-theme-hq'));
+    }
+
     if ('' === $signup_password) {
         $result['errors']->add('generic', __('Please enter a password.', 'loopis-theme-hq'));
     } elseif (strlen($signup_password) < 8) {
@@ -632,12 +662,6 @@ function loopis_theme_hq_validate_signup_name_fields($result) {
         $result['errors']->add('generic', __('Password confirmation does not match.', 'loopis-theme-hq'));
     }
 
-    $generated_username = loopis_theme_hq_generate_available_signup_username($first_name, $last_name);
-    if ('' === $generated_username) {
-        $result['errors']->add('user_name', __('Please provide a valid first and last name to generate a username.', 'loopis-theme-hq'));
-        return $result;
-    }
-
     if ( ! loopis_theme_hq_is_valid_signup_location( $location_blog_id ) ) {
         $result['errors']->add(
             'loopis_location_blog_id',
@@ -646,6 +670,15 @@ function loopis_theme_hq_validate_signup_name_fields($result) {
                 'loopis-theme-hq'
             )
         );
+    }
+
+    $generated_username = loopis_theme_hq_generate_available_signup_username($first_name, $last_name);
+    if ('' === $generated_username) {
+        $result['errors']->remove('user_name');
+        if ('' !== $first_name && '' !== $last_name) {
+            $result['errors']->add('generic', __('Please provide a valid first and last name to generate a username.', 'loopis-theme-hq'));
+        }
+        return $result;
     }
 
     // Replace core username errors so our generated pattern can include hyphens.
@@ -665,6 +698,7 @@ add_filter('wpmu_validate_user_signup', 'loopis_theme_hq_validate_signup_name_fi
 function loopis_theme_hq_signup_user_meta($meta) {
     $first_name = isset($_POST['first_name']) ? loopis_theme_hq_normalize_person_name(wp_unslash($_POST['first_name'])) : '';
     $last_name = isset($_POST['last_name']) ? loopis_theme_hq_normalize_person_name(wp_unslash($_POST['last_name'])) : '';
+    $postcode = isset($_POST['wpum_postcode']) ? loopis_theme_hq_normalize_postcode(wp_unslash($_POST['wpum_postcode'])) : '';
     $signup_password = isset($_POST['signup_password']) ? (string) wp_unslash($_POST['signup_password']) : '';
     $location_blog_id = loopis_theme_hq_get_location_safe();
 
@@ -677,6 +711,10 @@ function loopis_theme_hq_signup_user_meta($meta) {
 
     if ('' !== $last_name) {
         $meta['last_name'] = $last_name;
+    }
+
+    if (preg_match('/^[0-9]{5}$/', $postcode)) {
+        $meta['wpum_postcode'] = $postcode;
     }
 
     $encrypted_password = loopis_theme_hq_encrypt_signup_password($signup_password);
