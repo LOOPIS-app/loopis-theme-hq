@@ -1,8 +1,6 @@
 <?php
 /**
  * Output summary of user activity
- * 
- * $user_id is set from author.php
  */
 
 // Exit if accessed directly
@@ -89,10 +87,13 @@ $coins = $profile_economy['coins'];
 </p>
 
 <!--FAQ-->	
-<p><span class="big-link"><a href="<?php echo esc_url(network_home_url( '/faq/hur-funkar-beloningar' )); ?>">📌 Hur funkar belöningar?</a></span></p>
+<p><span class="link"><a href="<?php echo esc_url(network_home_url( '/faq/hur-funkar-beloningar' )); ?>">📌 Hur funkar belöningar?</a></span></p>
 
 <!--Payments-->	
 <h3>📒 Mina kvitton</h3>
 <hr>
-<p>Dina registrerade betalningar till föreningen.</p>
+<p>Dina betalningar till föreningen.</p>
 <?php include_once LOOPIS_THEME_DIR . '/includes/output/user-data/user-payments.php'; ?>
+
+<!--FAQ-->	
+<p><span class="link"><a href="<?php echo esc_url(network_home_url( '/faq/varför-medlemskap' )); ?>">📌 Vad gör LOOPIS med inkomsterna?</a></span></p>

@@ -23,7 +23,6 @@ wp_enqueue_script('loopis-tabs', LOOPIS_THEME_URI . '/assets/js/tabs.js', array(
   <nav class="tab-navbar">
     <a href="#" class="tab-link" data-tab="tab-settings">⚙</a>
     <!--a href="#" class="tab-link" data-tab="tab-areas">📍</a-->
-    <a href="#" class="tab-link" data-tab="tab-coins">👛</a>
     <a href="#" class="tab-link" data-tab="tab-activity">🧮</a>
     
   </nav>
@@ -34,17 +33,12 @@ wp_enqueue_script('loopis-tabs', LOOPIS_THEME_URI . '/assets/js/tabs.js', array(
 
   <!-- Tab: Settings -->
   <div id="tab-settings" class="tab-panel">
-    <?php include_once __DIR__ . '/tabs/my-settings.php'; ?>
-  </div>
-  
-  <!-- Tab: Coins -->
-  <div id="tab-coins" class="tab-panel">
-    <?php include_once __DIR__ . '/tabs/my-coins.php'; ?>
+    <?php include_once __DIR__ . '/start-tabs/my-settings.php'; ?>
   </div>
 
   <!-- Tab: Activity -->
   <div id="tab-activity" class="tab-panel">
-    <?php include_once __DIR__ . '/tabs/my-activity.php'; ?>
+    <?php include_once __DIR__ . '/start-tabs/my-activity.php'; ?>
   </div>
 
 </div><!--tab-content-->

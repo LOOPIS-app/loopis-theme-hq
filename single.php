@@ -79,24 +79,32 @@ if (!$can_access_private_area && is_user_logged_in() && $area_blog_id !== '') {
 				<?php endif; ?>
 			</div><!--post-meta-->
 
-			<!-- Go to free signup (requires cookies) -->
+			<!-- Output area description (post content)-->
+			<div class="post-content">
+				<?php the_content(); ?>
+
+			<!-- Join! -->
+			<?php if (!is_user_logged_in()) { ?>
+			<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Bli medlem!</a></p>
+			<?php } ?>
+
+			<!-- Special signup -->
 			<?php if (has_category('private') && !is_user_logged_in()) { ?>
 			<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Skapa konto!</a></p>
 			<?php } ?>
 			
-			<!-- Go to private subsite link -->
+			<!-- Go to private area -->
 			<?php if (has_category('private') && $can_access_private_area) { ?>
 			<p><span class="mega-link"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
 			<?php } ?>
 				
-			<!-- Go to subsite link -->
+			<!-- Go to area -->
 			<?php if (has_term('active', 'category') && !has_category('private')) { ?>
 			<p><span class="mega-link"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
 			<?php } ?>
 	
-			<!-- Output area description (post content) and locker photo (featured image) -->
-			<div class="post-content">
-				<?php the_content(); ?>
+
+			<!-- Output area photo (featured image) -->
 				<?php if ($thumbnail_id){ echo wp_get_attachment_image($thumbnail_id, 'large'); } ?>
 
 <!-- POST OPTIONS -->
