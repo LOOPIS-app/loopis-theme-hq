@@ -2,7 +2,8 @@
 /**
  * Tab showing summary of user activity
  * 
- * TODO: This data should be output using the existing user-economy.php
+ * TODO: Create function get_profile_economy($user_id) for easy reuse.
+ * TODO: Move all files for output of centralised user-data from "LOOPIS Theme" to "LOOPIS Theme HQ".
  */
 
 // Exit if accessed directly
@@ -29,6 +30,12 @@ $clovers = $profile_economy['clovers'];
 $clover_coins = $profile_economy['clover_coins'];
 $coins = $profile_economy['coins'];
 ?>
+
+<h3>👛 Mina mynt</h3>
+<hr>
+<p class="small">💡 Information om dina regnbågsmynt.</p>
+
+<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-coins.php'; ?>
 
 <h3>🧮 Min aktivitet</h3>
 <hr>

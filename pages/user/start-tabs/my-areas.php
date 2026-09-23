@@ -1,6 +1,8 @@
 <?php
 /**
  * Tab showing areas where user has access
+ * 
+ * Currently not used. Might be implemented when we allow users to have access to multiple areas.
  */
 
 // Exit if accessed directly

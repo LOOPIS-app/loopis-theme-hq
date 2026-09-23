@@ -36,7 +36,7 @@ get_header(); ?>
         include LOOPIS_THEME_HQ_DIR . '/includes/output/areas/user-areas.php';
     } else {
         // List all areas available to visitor
-        echo '<h2>📍 Områden</h2>';
+        echo '<h2>📍 Var finns LOOPIS?</h2>';
         echo '<p class="small">💡 Områden där LOOPIS finns - och är på gång.</p>';
         include LOOPIS_THEME_HQ_DIR . '/includes/output/areas/all-areas.php';
     }

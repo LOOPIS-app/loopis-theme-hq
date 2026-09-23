@@ -44,7 +44,7 @@ if (is_user_logged_in()) {
     // Super Admin
     elseif (is_super_admin()) {
         echo '<div class="admin-block">';
-        echo '<p>😈 Du är inloggad som WordPress multisite super-admin.</p>';
+        echo '<p>😈 Du är inloggad som "Super Admin".</p>';
         echo '<p><span class="big-link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="big-link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut</a></span></p>';
         echo '</div>';
     } 
