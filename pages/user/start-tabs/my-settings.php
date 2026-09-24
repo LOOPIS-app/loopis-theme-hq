@@ -18,13 +18,16 @@ $user = wp_get_current_user();
 <hr>
 <p class="small">💡 Inställningar för ditt medlemskap.</p>
 
-<div class="wrapped">
+<div class="wrapped link" style="text-align: left; min-width: 300px;" onclick="location.href='<?php echo esc_url(home_url('/user/?view=member-data')); ?>'">
+<h5>📋 Medlemsregister</h5>
+<p class="small">↓ Dina uppgifter<span class="right blue">Redigera →</span></p>
+<hr>
 <p>👤 Användarnamn: <b><?php echo $user->user_login ?></b></p>
 <p>✉ E-post: <b><?php echo antispambot($user->user_email); ?></b></p>
 <p>📱 Mobilnummer: <b><?php echo antispambot($user->wpum_phone); ?></b></p>
+<p>🗺️ Postnummer: <b><?php echo antispambot($user->wpum_postcode); ?></b></p>
 </div>
 
-<p><span class="big-link"><a href="<?php echo esc_url(home_url('/user/?view=member-data')); ?>">🖊 Medlemsregister</a></span></p>
 <p><span class="big-link"><a href="<?php echo esc_url(get_author_posts_url($user_id)); ?>">👥 Se din profil</a></span></p>
 <p><span class="big-link"><a href="<?php echo esc_url(home_url('/wp-login.php?action=lostpassword')); ?>">🔑 Byt lösenord</a></span></p>
 <p><span class="big-link"><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">🚪 Logga ut</a></span></p>
