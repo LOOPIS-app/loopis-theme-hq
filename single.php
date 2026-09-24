@@ -57,7 +57,7 @@ if (!$can_access_private_area && is_user_logged_in() && $area_blog_id !== '') {
 
 <!-- THE POST -->
 <div class="page-padding center">
-			<p><span class="rounded"><a href="<?php echo esc_url(get_post_type_archive_link('post')); ?>">📍 Områden</a></span>
+			<p><span class="rounded"><a href="<?php echo esc_url(home_url('/areas')); ?>">📍 Områden</a></span>
 			<?php
 			$single_categories = array_reverse(get_the_category());
 			if (!empty($single_categories)) :
