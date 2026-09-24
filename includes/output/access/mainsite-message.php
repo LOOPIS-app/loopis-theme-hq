@@ -1,6 +1,10 @@
 <?php
 /**
- * Status messages for user/visitor.
+ * Front page message depending on role.
+ * 
+ * Passed from page-start.php:
+ * $user_roles
+ * $member_status
  */
  
 if (!defined('ABSPATH')) {
@@ -12,16 +16,16 @@ if (is_user_logged_in()) {
     // Member
     if (in_array('member', $user_roles, true)) {
         echo '<div class="loopis-message success">';
-        echo '<p>Det här är LOOPIS startsida. Här hittar du ditt medlemskap och vanliga frågor m.m.</p>';
-        echo '<p>För att loopa: tryck på ditt område nedan!</p>';
+        echo '<p>Detta är LOOPIS startsida. Här hittar du info om ditt medlemskap och vanliga frågor.</p>';
         echo '</div>';
+        echo '<p>För att loopa; tryck på ditt område nedan.</p>';
     }
 
-    // Member pending or earlier
-    elseif (in_array('member_pending', $user_roles, true) || in_array('member_earlier', $user_roles, true)) { 
+    // Inactive member
+    elseif (array_intersect(array('member_pending', 'member_earlier', 'member_archived'), $user_roles)) {
         echo '<div class="loopis-message information">';
         echo '<p>⏳ Du behöver komplettera ditt medlemskap.</p>';
-            // Missing membership payment prompt
+            // Missing payment prompt
             if (!$member_status['member_payment_complete']) {
                 echo '<p><span class="big-link">💳 <a href="'.esc_url(home_url( '/shop/?option=membership-stripe' )).'">Betala medlemskap</a></span> för att börja loopa.</p>';
             }
@@ -32,19 +36,19 @@ if (is_user_logged_in()) {
         echo '</div>';
     }
 
-    // Member outside
-    elseif (in_array('member_outside', $user_roles, true)) { 
+    // Supporting member
+    elseif (in_array('member_support', $user_roles, true)) { 
         echo '<div class="loopis-message information">';
-        echo '<p>🙏 Tack för ditt stöd!</p>';
+        echo '<p>Du är registrerad som stödmedlem. STORT tack för ditt stöd! 🙏</p>';
         echo '<p>Vi hoppas att du snart kan använda LOOPIS där du bor.</p>';
-        echo '<p><span class="link"><a href="'.esc_url(home_url('/faq/varfor-bagis/')).'">📌 Varför måste jag bo i Bagarmossen?</a></span></p>';
+        echo '<p><span class="link"><a href="'.esc_url(home_url('/faq/var-finns-loopis/')).'">📌 Var finns LOOPIS?</a></span></p>';
         echo '</div>';
     }
 
     // Super Admin
     elseif (is_super_admin()) {
         echo '<div class="admin-block">';
-        echo '<p>😈 Du är inloggad som "Super Admin".</p>';
+        echo '<p>😈 Du är inloggad som multisite "Super Admin".</p>';
         echo '<p><span class="big-link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="big-link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut</a></span></p>';
         echo '</div>';
     } 
@@ -52,7 +56,7 @@ if (is_user_logged_in()) {
      // Administrator
     elseif (in_array('administrator', $user_roles, true)) {
         echo '<div class="admin-block">';
-        echo '<p>Du bör inte göra någonting med detta konto.</p>';
+        echo '<p>🤖 Du bör inte göra någonting med detta konto.</p>';
         echo '<p>Så: <span class="link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut!</a></span></p>';
         echo '</div>';
     }
