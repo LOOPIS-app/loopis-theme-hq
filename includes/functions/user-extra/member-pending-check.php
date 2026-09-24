@@ -25,7 +25,6 @@ function member_pending_check($user_id) {
     $phone_digits = preg_replace('/\D+/', '', $phone);
     $birthyear_digits = preg_replace('/\D+/', '', $birthyear);
     $allowed_genders = array('female', 'male', 'nonbinary', 'other', 'secret');
-    $allowed_active = array('true', 'false', '1', '0', 'yes', 'no', 'on', 'off');
     $current_year = (int) wp_date('Y');
 
     // Validate data
@@ -35,7 +34,7 @@ function member_pending_check($user_id) {
         && (int) $birthyear_digits >= 1900
         && (int) $birthyear_digits <= $current_year;
     $valid_gender = in_array($gender, $allowed_genders, true);
-    $valid_active = in_array(strtolower($active), $allowed_active, true);
+    $valid_active = 'true' === strtolower($active);
 
     // Check if all member data is complete and valid
     if ($valid_postcode

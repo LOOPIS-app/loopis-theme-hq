@@ -170,7 +170,7 @@ if ('success' === $member_form_status) : ?>
                 required
             >
         </div>
-        
+
         <div class="form-row">
             <label for="member-postcode">Postnummer</label>
             <?php if (in_array('wpum_postcode', $member_form_fields, true)) : ?>
@@ -232,7 +232,10 @@ if ('success' === $member_form_status) : ?>
                 name="wpum_active"
                 value="1"
                 <?php checked($wpum_active_checked); ?>
-            ><span> Aktivt</span><br>&nbsp;
+            ><span> Aktivt</span><br>
+            <?php if ( 'false' === (string) $wpum_active ) : ?>
+            <p class="description required">Aktivera för att använda LOOPIS.</p>
+            <?php endif; ?>
         </div>
 
         <button type="submit">Spara uppgifter</button>
