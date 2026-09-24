@@ -58,7 +58,7 @@ function loopis_theme_hq_handle_member_form_post() {
 
     // Define allowed values for select fields.
     $allowed_genders = array('female', 'male', 'nonbinary', 'other', 'secret');
-    $allowed_areas = array('1', '2', '3', '4', '5', 'other');
+
     $current_year = (int) wp_date('Y');
 
     // Validate every field independently so all invalid fields can be reported.
@@ -68,10 +68,9 @@ function loopis_theme_hq_handle_member_form_post() {
         && (int) $birthyear >= 1900
         && (int) $birthyear <= $current_year;
     $is_valid_gender = in_array($gender, $allowed_genders, true);
-    $is_valid_area = in_array($area, $allowed_areas, true);
 
     // Save valid fields, report invalid fields, and return to the form.
-    if (!$is_valid_postcode || !$is_valid_phone || !$is_valid_birthyear || !$is_valid_gender|| !$is_valid_area) {
+    if (!$is_valid_postcode || !$is_valid_phone || !$is_valid_birthyear || !$is_valid_gender) {
         $invalid_fields = array();
 
         if (!$is_valid_postcode) {
@@ -93,6 +92,7 @@ function loopis_theme_hq_handle_member_form_post() {
         // Persist fields that passed validation to avoid unnecessary refilling.
         if ($is_valid_postcode) {
             update_user_meta($user_id, 'wpum_postcode', $postcode);
+            
             // Include function for mapping postal code to postal area.
             include_once LOOPIS_USERS_DIR . '/includes/functions/loopis-get-city.php';
             update_user_meta($user_id, 'wpum_postarea', loopis_get_city($postcode));
