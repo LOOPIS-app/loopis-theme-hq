@@ -55,7 +55,9 @@ if(count($user_blogs)>2){
 
 // Status from handler redirect after submit.
 $member_form_status = sanitize_key(wp_unslash($_GET['member_form'] ?? ''));
-$member_form_fields_raw = sanitize_text_field(wp_unslash($_GET['member_form_fields'] ?? ''));
+$member_form_fields_raw = 'error' === $member_form_status
+    ? sanitize_text_field(wp_unslash($_GET['member_form_fields'] ?? ''))
+    : '';
 $member_form_fields = array();
 
 if (!empty($member_form_fields_raw)) {
