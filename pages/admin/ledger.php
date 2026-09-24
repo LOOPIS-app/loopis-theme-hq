@@ -14,7 +14,7 @@ include_once LOOPIS_THEME_DIR .'/templates/post-list/pagination-sql.php';
 <!-- OUTPUT -->
 <h1>📕 Centrala boken</h1>
 <hr>
-<p class="small"> 💡 Register med användaraktivitet</p>
+<p class="small"> 💡 Register för användaraktivitet i alla områden.</p>
 
 <!--ledger-->
 
@@ -31,7 +31,7 @@ include_once LOOPIS_THEME_DIR .'/templates/post-list/pagination-sql.php';
 		?>
 	</select>
 	<select name="blog_id" id="ledger-blog_id" class="ledger-filter">
-		<option value="">Alla hemsidor</option>
+		<option value="">Alla områden</option>
 		<?php
 		$blog_ids = loopis_ledger_column_distinct('blog_id');
 		foreach ($blog_ids as $blog_id) {

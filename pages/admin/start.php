@@ -19,7 +19,7 @@ $admin_url = home_url('/admin/');
     <div class="column2"></div>
 </div>
 <hr>
-<p class="small">💡 Visar verktyg tillgängliga för <span class="small-link"><a href="<?php echo esc_url( home_url('/user/') ); ?>">👤<?php echo wp_get_current_user()->user_login; ?></a></span></p>
+<p class="small">💡 Visar verktyg tillgängliga för <span class="small-label">👤<?php echo wp_get_current_user()->user_login; ?></span></p>
 
 <!-- Statistics -->
 <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'stats', $admin_url) ); ?>'">
@@ -53,10 +53,10 @@ $admin_url = home_url('/admin/');
 <!-- Pending members count -->
 <?php if (current_user_can('manage_options') || current_user_can('loopis_board')) : ?>
     <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'ledger', $admin_url) ); ?>'">
-        <h5>📖 Boken</h5>
+        <h5>📕 Centrala boken</h5>
         <hr>
         <p class="small">
-            <?php include __DIR__ . '/panels/ledger.php'; ?>
+            <?php include __DIR__ . '/panels/ledger-summary.php'; ?>
         </p>
     </div>
 <?php endif; ?>

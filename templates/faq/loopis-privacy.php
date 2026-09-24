@@ -15,23 +15,29 @@ if (!defined('ABSPATH')) {
 
 <h3>Syfte</h3>
 <hr>
-<p>LOOPIS lagrar dina personuppgifter endast för att upprätthålla ett medlemsregister och möjliggöra våra tjänster. Vi behandlar uppgifterna inom ramen för föreningens syfte och verksamhet i enlighet med våra <span class="link"><a href="<?php echo esc_url(network_home_url( '/faq/stadgar' ));?>">📜 Stadgar</a></span></p>
+<p>LOOPIS lagrar dina personuppgifter endast för att upprätthålla ett medlemsregister och möjliggöra våra tjänster. Vi behandlar uppgifterna inom ramen för föreningens syfte och verksamhet i enlighet med våra <span class="big-link"><a href="<?php echo esc_url(network_home_url( '/faq/stadgar' ));?>">📜 Stadgar</a></span></p>
 
 <h3>Uppgifter</h3>
 <hr>
 <p>LOOPIS lagrar följande personuppgifter:</p>
-<div class="wrapped" style="text-align:left;">
-<p>1⃣ För- och efternamn (för användarnamn och medlemsregister)</p>
-<p>2⃣ E-postadress (för inloggning, notifikationer och medlemsbrev)</p>
-<p>3⃣ Mobilnummer (för sms-kontakt vid överlämning utan skåp.)</p>
-<p>4⃣ Postnummer (för statistik till föreningsstöd)</p>
-<p>5⃣ Födelseår (för statistik till föreningsstöd)</p>
-<p>6⃣ Kön (för statistik till föreningsstöd)</p>
+<div class="wrapped">
+<p class="bold">👤 Förnamn och efternamn</p>
+    <p class="info">- för användarnamn och medlemsregister</p>
+<p class="bold">✉ E-postadress</p>
+    <p class="info">- för inloggning, notifikationer och medlemsbrev</p>
+<p class="bold">📱 Mobilnummer</p>
+    <p class="info">- för påminnelser och sms-kontakt vid överlämning utan skåp.</p>
+<p class="bold">🗺️ Postnummer</p>
+    <p class="info">- för statistik till föreningsstöd</p>
+<p class="bold">🎂 Födelseår</p>
+    <p class="info">- för statistik till föreningsstöd</p>
+<p class="bold">⚧ Kön</p>
+    <p class="info">- för statistik till föreningsstöd</p>
 </div>
 
 <h3>Delning</h3>
 <hr>
-<p>LOOPIS delar aldrig ut dina personuppgifter till några andra organisationer eller företag.</p>
+<p>LOOPIS delar aldrig dina personuppgifter med andra organisationer eller företag.</p>
 
 <h3>Lagring</h3>
 <hr>
@@ -39,7 +45,7 @@ if (!defined('ABSPATH')) {
 
 <h3>Radering</h3>
 <hr>
-<p>För att få dina personuppgifter, maila <span class="big-link"><a href="mailto:info@loopis.org">✉ info@loopis.org</a></span>. Du får då en bekräftelse på att de raderats. Observera att ditt användarkonto och dina innestående regnbågsmynt då också försvinner.</p>
+<p>För att få dina personuppgifter raderade, maila <span class="big-link"><a href="mailto:info@loopis.org">✉ info@loopis.org</a></span>. Du får då en bekräftelse på att de raderats. Observera att ditt användarkonto och dina innestående regnbågsmynt då också försvinner.</p>
 
 <h3>Text och bild</h3>
 <hr>
@@ -47,7 +53,7 @@ if (!defined('ABSPATH')) {
 
 <h3>Kontakt och klagomål</h3>
 <hr>
-<p>Det är den ideella föreningen LOOPIS (org.nr 802542-2117) som ansvarar för lagringen av dina personuppgifter. Om du har frågor, synpunkter eller klagomål kan du kontakta föreningen på <span class="big-link"><a href="mailto:info@loopis.org">✉ info@loopis.org</a></span>. Ansvarig myndighet när det gäller klagomål är <a href="https://www.imy.se/privatperson/utfora-arenden/lamna-ett-klagomal/" target="_blank" rel="noreferrer noopener">Integritetsskyddsmyndigheten</a>.</p>
+<p>Det är den ideella föreningen LOOPIS (org.nr 802542-2117) som ansvarar för lagringen av dina personuppgifter. Om du har frågor, synpunkter eller klagomål kan du kontakta föreningen på <span class="big-link"><a href="mailto:info@loopis.org">✉ info@loopis.org</a></span>. Ansvarig myndighet när det gäller klagomål är <span class="big-link"><a href="https://www.imy.se/privatperson/utfora-arenden/lamna-ett-klagomal/" target="_blank" rel="noreferrer noopener"><i class="fas fa-share"></i> Integritetsskyddsmyndigheten</a></span>.</p>
 
 <h3>Ändringar</h3>
 <hr>

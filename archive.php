@@ -92,8 +92,10 @@ get_header(); ?>
             <p>💢 Inga områden hittades</p>
         <?php endif; ?>
 
-        <?php if ( current_user_can('manage_options') || current_user_can('loopis_admin') || has_category('private') ) : ?>
+        <?php if ( current_user_can('manage_options') || current_user_can('loopis_admin') ) : ?>
+            <div class="admin-block">
             <p class="info">💡 Privata områden visas bara för de som har tillgång.</p>
+            </div>
         <?php endif; ?>
 
 </div><!--page-padding-->
