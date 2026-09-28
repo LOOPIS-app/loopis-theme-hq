@@ -1,5 +1,10 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 1.06 (2026-09-22)
+- Multisite fixes & UI improvements
+- Mail template introduced
+- Dynamic QR code handling introduced
+
 ## 1.05 (2026-09-08)
 - Multisite fixes & general improvements
 - Signup flow improved (including special signup)

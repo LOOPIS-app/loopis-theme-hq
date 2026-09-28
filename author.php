@@ -45,7 +45,7 @@ if ($count_submitted !== 0) { $given_percentage = round(($count_given / $count_s
 <p>Bor i postorten <span class="big-label">🗺 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-city.php'; ?></span></p>
 <p>Loopar i området <span class="big-label">📍 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></span><br> &nbsp;</p>
 <div class="wrapped">
-<h1><img src="<?php echo LOOPIS_THEME_HQ_URI; ?>/assets/img/coin.png" alt="Mynt:" class="symbol"><?php echo $coins; ?></h1>
+<h1><img src="<?php echo LOOPIS_THEME_HQ_URI; ?>/assets/img/coin.png" alt="Mynt:" class="symbol"> <?php echo $coins; ?></h1>
 <p class="small"><?php echo $first_name; ?> kan just nu hämta <?php echo $coins; ?> saker</p>
 <hr>
 <p class="small">💚 <?php echo $count_given; ?> saker lämnade</p>

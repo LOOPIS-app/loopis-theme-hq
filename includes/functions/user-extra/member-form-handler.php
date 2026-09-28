@@ -7,16 +7,22 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * Validate and save submitted member details, then redirect with the result.
+ */
 function loopis_theme_hq_handle_member_form_post() {
+    // Ignore requests that did not come from the member details form.
     if (!isset($_POST['loopis_member_nonce'])) {
         return;
     }
 
+    // Return the user to the form so validation feedback can be displayed.
     $redirect_url = wp_get_referer();
     if (!$redirect_url) {
         $redirect_url = home_url('/user/?view=member-data');
     }
 
+    // Only the logged-in user may update their own member details.
     if (!is_user_logged_in()) {
         wp_safe_redirect(add_query_arg(array(
             'member_form' => 'error',
@@ -25,6 +31,7 @@ function loopis_theme_hq_handle_member_form_post() {
         exit;
     }
 
+    // Verify the form nonce before reading or saving submitted values.
     $nonce = sanitize_text_field(wp_unslash($_POST['loopis_member_nonce']));
     if (!wp_verify_nonce($nonce, 'loopis_member_form')) {
         wp_safe_redirect(add_query_arg(array(
@@ -34,32 +41,36 @@ function loopis_theme_hq_handle_member_form_post() {
         exit;
     }
 
+    // Get current user ID
     $user_id = get_current_user_id();
 
+    // Sanitize raw form values before applying field-specific normalization.
     $postcode_raw = sanitize_text_field(wp_unslash($_POST['wpum_postcode'] ?? ''));
     $phone_raw = sanitize_text_field(wp_unslash($_POST['wpum_phone'] ?? ''));
     $birthyear_raw = sanitize_text_field(wp_unslash($_POST['wpum_birthyear'] ?? ''));
     $gender = sanitize_key(wp_unslash($_POST['wpum_gender'] ?? ''));
-    
     $active = isset($_POST['wpum_active']) ? 'true' : 'false';
 
+    // Normalize numeric fields so formatting characters do not affect validation.
     $postcode = preg_replace('/\D+/', '', $postcode_raw);
     $phone_digits = preg_replace('/\D+/', '', $phone_raw);
     $birthyear = preg_replace('/\D+/', '', $birthyear_raw);
 
+    // Define allowed values for select fields.
     $allowed_genders = array('female', 'male', 'nonbinary', 'other', 'secret');
-    $allowed_areas = array('1', '2', '3', '4', '5', 'other');
+
     $current_year = (int) wp_date('Y');
 
+    // Validate every field independently so all invalid fields can be reported.
     $is_valid_postcode = (bool) preg_match('/^\d{5}$/', $postcode);
     $is_valid_phone = (bool) preg_match('/^\d{10}$/', $phone_digits);
     $is_valid_birthyear = (bool) preg_match('/^\d{4}$/', $birthyear)
         && (int) $birthyear >= 1900
         && (int) $birthyear <= $current_year;
     $is_valid_gender = in_array($gender, $allowed_genders, true);
-    $is_valid_area = in_array($area, $allowed_areas, true);
 
-    if (!$is_valid_postcode || !$is_valid_phone || !$is_valid_birthyear || !$is_valid_gender|| !$is_valid_area) {
+    // Save valid fields, report invalid fields, and return to the form.
+    if (!$is_valid_postcode || !$is_valid_phone || !$is_valid_birthyear || !$is_valid_gender) {
         $invalid_fields = array();
 
         if (!$is_valid_postcode) {
@@ -81,6 +92,7 @@ function loopis_theme_hq_handle_member_form_post() {
         // Persist fields that passed validation to avoid unnecessary refilling.
         if ($is_valid_postcode) {
             update_user_meta($user_id, 'wpum_postcode', $postcode);
+            
             // Include function for mapping postal code to postal area.
             include_once LOOPIS_USERS_DIR . '/includes/functions/loopis-get-city.php';
             update_user_meta($user_id, 'wpum_postarea', loopis_get_city($postcode));
@@ -101,6 +113,7 @@ function loopis_theme_hq_handle_member_form_post() {
 
         update_user_meta($user_id, 'wpum_active', $active);
 
+        // Pass invalid field names through the redirect for field-level messages.
         wp_safe_redirect(add_query_arg(array(
             'member_form' => 'error',
             'member_form_fields' => implode(',', $invalid_fields),
@@ -111,11 +124,13 @@ function loopis_theme_hq_handle_member_form_post() {
     // Store phone in canonical form XXX-XXXXXXX.
     $phone = substr($phone_digits, 0, 3) . '-' . substr($phone_digits, 3);
 
+    // All fields are valid: save the complete member profile.
     update_user_meta($user_id, 'wpum_postcode', $postcode);
     update_user_meta($user_id, 'wpum_phone', $phone);
     update_user_meta($user_id, 'wpum_birthyear', $birthyear);
     update_user_meta($user_id, 'wpum_gender', $gender);
     update_user_meta($user_id, 'wpum_active', $active);
+    
     // Include function for mapping postal code to postal area.
     include_once LOOPIS_USERS_DIR . '/includes/functions/loopis-get-city.php';
     update_user_meta($user_id, 'wpum_postarea', loopis_get_city($postcode));
@@ -125,8 +140,10 @@ function loopis_theme_hq_handle_member_form_post() {
         include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php';
     }
     
+    // Recalculate member status after the profile has been completed.
     member_pending_check($user_id);
 
+    // Return a success state for the form message.
     wp_safe_redirect(add_query_arg('member_form', 'success', $redirect_url));
     exit;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Tab showing summary of user activity
+ * Output summary of user activity
  */
 
 // Exit if accessed directly
@@ -8,8 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Get current user iD
-$user_id = get_current_user_id();
+// Set author user ID
+$user_id = get_queried_object_id(); // redundant?
+$first_name = get_user_meta($user_id, 'first_name', true);
 
 // Get profile economy
 $profile_economy = loopis_ledger_economy($user_id);
@@ -28,33 +29,29 @@ $clover_coins = $profile_economy['clover_coins'];
 $coins = $profile_economy['coins'];
 ?>
 
-<h3>🧮 Min aktivitet</h3>
-<hr>
-<p class="small">💡 Detaljerad information om din aktivitet.</p>
-
-<!--COINS-->
+<!-- COINS -->
 <div class="economy wrapped">
-<p>Regnbågsmynt<span class="right"><img src="<?php echo LOOPIS_THEME_URI; ?>/assets/img/coin.png" alt="coin symbol" style="height:15px; width: auto;"></span></p>
+<p><span class="left text-left">Regnbågsmynt</span> <span class="right"><img src="<?php echo LOOPIS_THEME_URI; ?>/assets/img/coin.png" alt="coin symbol" style="height:15px; width: auto;" /></span></p>
 <hr>
-<p><b><?php echo $payments_membership; ?></b> köp av medlemskap <span class="plus right">+<?php echo $membership_coins; ?></span></p>
-<?php if ( $payments_coins > 0 ) { ?>
-<p><b><?php echo $payments_coins; ?></b> köp av extra mynt <span class="plus right">+<?php echo $bought_coins; ?></span></p>
-<?php } ?>
-<p><b><?php echo $count_given; ?></b> saker lämnade <span class="plus right">+<?php echo $count_given; ?></span></p>
-<p><b><?php echo $count_booked; ?></b> saker paxade <span class="minus right">–<?php echo $count_booked; ?></span></p>
+<p class="group"><span class="left"><b><?php echo $payments_membership; ?></b> köp av medlemskap</span> <span class="plus right">+<?php echo $membership_coins; ?></span></p>
+<p class="group"><span class="left"><b><?php echo $payments_coins; ?></b> köp av mynt</span> <span class="plus right">+<?php echo $bought_coins; ?></span></p>
+<p class="group"><span class="left"><b><?php echo $count_given; ?></b> saker lämnade</span> <span class="plus right">+<?php echo $count_given; ?></span></p>
+<p class="group"><span class="left"><b><?php echo $count_booked; ?></b> saker hämtade/paxade</span>&nbsp; &nbsp;<span class="minus right">–<?php echo $count_booked; ?></span></p>
+<p class="group"><span class="left"><b><?php echo $clovers; ?></b> fyrklöver</span> <span class="plus right">+<?php echo $clover_coins; ?></span></p>
+<p class="group"><span class="left"><b><?php echo $stars; ?></b> guldstjärnor</span> <span class="plus right">+<?php echo $star_coins; ?></span></p>
 <hr>
-<p>&nbsp;<span class="right">Totalt: <b><?php echo $coins - $clover_coins - $star_coins; ?></b></span></p>
+<p>&nbsp;<span class="right">Totalt: <b><?php echo $coins; ?></b></span></p>
 </div>
 
-<!--CLOVERS-->
+<!-- CLOVERS -->
 <div class="economy wrapped">
-<p>Fyrklöver<span class="right">🍀</span></p>
+<p><span class="left">Fyrklöver</span> <span class="right">🍀</span></p>
 <hr>
-<p><b><?php echo $count_submitted; ?></b> annonser skapade <span class="plus right">+<?php echo $count_submitted; ?></span></p>
-<p><b><?php echo $count_booked; ?></b> saker hämtade <span class="plus right">+<?php echo $count_booked; ?></span></p>
+<p><span class="left"><b><?php echo $count_submitted; ?></b> annonser skapade</span>&nbsp; &nbsp;<span class="plus right">+<?php echo $count_submitted; ?></span></p>
+<p><span class="left"><b><?php echo $count_booked; ?></b> saker hämtade</span> <span class="plus right">+<?php echo $count_booked; ?></span></p>
 <hr>
 <p>&nbsp;<span class="right">Totalt: <b><?php echo $clovers; ?></b></span></p>
-<!-- Reward -->
+
 <p class="small">
 <?php if ($clover_coins > 0) { ?>
 → <b><?php echo $clover_coins; ?> mynt</b> i belöning! 🎉
@@ -63,14 +60,14 @@ $coins = $profile_economy['coins'];
 </p>
 </div>
 
-<!--STARS-->
+<!-- STARS -->
 <div class="economy wrapped">
-<p>Guldstjärnor<span class="right">🌟</span></p>
+<p><span class="left">Guldstjärnor</span><span class="right">🌟</span></p>
 <hr>
 <?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-rewards.php'; ?>
 <hr>
 <p>&nbsp;<span class="right">Totalt: <b><?php echo $stars; ?></b></span></p>
-<!--Reward-->
+
 <p class="small">
 <?php if ($star_coins > 0) { ?>
 → <b><?php echo $star_coins; ?> mynt</b> i belöning! 🎉 
@@ -95,5 +92,8 @@ $coins = $profile_economy['coins'];
 <!--Payments-->	
 <h3>📒 Mina kvitton</h3>
 <hr>
-<p>Dina registrerade betalningar till föreningen.</p>
+<p>Dina betalningar till föreningen.</p>
 <?php include_once LOOPIS_THEME_DIR . '/includes/output/user-data/user-payments.php'; ?>
+
+<!--FAQ-->	
+<p><span class="link"><a href="<?php echo esc_url(network_home_url( '/faq/varför-medlemskap' )); ?>">📌 Vad gör LOOPIS med inkomsterna?</a></span></p>

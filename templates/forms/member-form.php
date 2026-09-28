@@ -17,6 +17,11 @@ require_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-form-h
 
 // Set variables for current user meta values
 $user_id = get_current_user_id();
+$user = get_userdata($user_id);
+$user_first_name = get_user_meta($user_id, 'first_name', true);
+$user_last_name = get_user_meta($user_id, 'last_name', true);
+$user_full_name = trim($user_first_name . ' ' . $user_last_name);
+$user_email = $user ? $user->user_email : '';
 $wpum_postcode = get_user_meta($user_id, 'wpum_postcode', true);
 $wpum_phone = get_user_meta($user_id, 'wpum_phone', true);
 $wpum_birthyear = get_user_meta($user_id, 'wpum_birthyear', true);
@@ -50,7 +55,9 @@ if(count($user_blogs)>2){
 
 // Status from handler redirect after submit.
 $member_form_status = sanitize_key(wp_unslash($_GET['member_form'] ?? ''));
-$member_form_fields_raw = sanitize_text_field(wp_unslash($_GET['member_form_fields'] ?? ''));
+$member_form_fields_raw = 'error' === $member_form_status
+    ? sanitize_text_field(wp_unslash($_GET['member_form_fields'] ?? ''))
+    : '';
 $member_form_fields = array();
 
 if (!empty($member_form_fields_raw)) {
@@ -126,26 +133,28 @@ if ('success' === $member_form_status) : ?>
         <?php // Nonce verified in member-form-handler.php before saving. ?>
         <?php wp_nonce_field('loopis_member_form', 'loopis_member_nonce'); ?>
 
-        <div>
-            <label for="member-postcode">Postnummer</label>
-            <?php if (in_array('wpum_postcode', $member_form_fields, true)) : ?>
-                <p class="error"><?php echo esc_html($member_form_field_messages['wpum_postcode']); ?></p>
-            <?php endif; ?>
+        <div class="form-row">
+            <label for="member-name">Namn</label>
             <input
                 type="text"
-                id="member-postcode"
-                name="wpum_postcode"
-                value="<?php echo esc_attr($wpum_postcode); ?>"
-                placeholder="12345"
-                inputmode="numeric"
-                pattern="[0-9]{5}"
-                maxlength="5"
-                title="Ange 5 siffror"
-                required
+                id="member-name"
+                value="<?php echo esc_attr($user_full_name); ?>"
+                disabled
             >
         </div>
 
-        <div>
+        <div class="form-row">
+            <label for="member-email">E-postadress</label>
+            <input
+                type="email"
+                id="member-email"
+                value="<?php echo esc_attr($user_email); ?>"
+                disabled
+            >
+        </div>
+
+
+        <div class="form-row">
             <label for="member-phone">Telefonnummer</label>
             <?php if (in_array('wpum_phone', $member_form_fields, true)) : ?>
                 <p class="error"><?php echo esc_html($member_form_field_messages['wpum_phone']); ?></p>
@@ -164,7 +173,26 @@ if ('success' === $member_form_status) : ?>
             >
         </div>
 
-        <div>
+        <div class="form-row">
+            <label for="member-postcode">Postnummer</label>
+            <?php if (in_array('wpum_postcode', $member_form_fields, true)) : ?>
+                <p class="error"><?php echo esc_html($member_form_field_messages['wpum_postcode']); ?></p>
+            <?php endif; ?>
+            <input
+                type="text"
+                id="member-postcode"
+                name="wpum_postcode"
+                value="<?php echo esc_attr($wpum_postcode); ?>"
+                placeholder="12345"
+                inputmode="numeric"
+                pattern="[0-9]{5}"
+                maxlength="5"
+                title="Ange 5 siffror"
+                required
+            >
+        </div>
+
+        <div class="form-row">
             <label for="member-birthyear">Födelseår</label>
             <?php if (in_array('wpum_birthyear', $member_form_fields, true)) : ?>
                 <p class="error"><?php echo esc_html($member_form_field_messages['wpum_birthyear']); ?></p>
@@ -183,7 +211,7 @@ if ('success' === $member_form_status) : ?>
             >
         </div>
 
-        <div>
+        <div class="form-row">
             <label for="member-gender">Kön</label>
             <?php if (in_array('wpum_gender', $member_form_fields, true)) : ?>
                 <p class="error"><?php echo esc_html($member_form_field_messages['wpum_gender']); ?></p>
@@ -198,7 +226,7 @@ if ('success' === $member_form_status) : ?>
             </select>
         </div>
 
-        <div>
+        <div class="form-row">
             <label for="member-active">Aktivera medlemskap</label>
             <input
                 type="checkbox"
@@ -206,7 +234,10 @@ if ('success' === $member_form_status) : ?>
                 name="wpum_active"
                 value="1"
                 <?php checked($wpum_active_checked); ?>
-            ><span> Aktivera</span><br>&nbsp;
+            ><span> Aktivt</span><br>
+            <?php if ( 'false' === (string) $wpum_active ) : ?>
+            <p class="description required">Aktivera för att använda LOOPIS.</p>
+            <?php endif; ?>
         </div>
 
         <button type="submit">Spara uppgifter</button>
