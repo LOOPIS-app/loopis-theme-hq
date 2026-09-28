@@ -329,7 +329,7 @@ function loopis_theme_hq_signup_location_field($errors) {
             <?php endforeach; ?>
 
             <option value="1">
-                <?php esc_html_e( 'Annat område', 'loopis-theme-hq' ); ?>
+                <?php esc_html_e( 'Stödmedlemskap/annat område', 'loopis-theme-hq' ); ?>
             </option>
         </select>
     </p>
