@@ -9,12 +9,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-// Check cookie for special invite code
-if (empty($_COOKIE['special_invite_payload'])) {
-$login_url = isset($login_url) ? (string) $login_url : wp_login_url(home_url('/shop/?option=membership-stripe'));
-} else {
-    $login_url = isset($login_url) ? (string) $login_url : wp_login_url(home_url('/special-signup/'));
-}
+$login_url = isset($login_url) ? (string) $login_url : wp_login_url(home_url('/start/'));
 
 $user_login = isset($user_login) ? (string) $user_login : '';
 $user_email = isset($user_email) ? (string) $user_email : '';
