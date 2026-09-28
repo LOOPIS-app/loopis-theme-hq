@@ -24,7 +24,7 @@ get_header(); ?>
             }
         }
     
-    // Output greeting + message
+    // Greeting & message for everyone
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/mainsite-greeting.php';
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/mainsite-message.php';
 

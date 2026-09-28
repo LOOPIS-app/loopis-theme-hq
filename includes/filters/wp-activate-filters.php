@@ -100,7 +100,7 @@ add_action('wp_enqueue_scripts', 'loopis_theme_hq_activate_assets');
  * Replace default wp-activate success output with the themed login prompt.
  */
 function loopis_theme_hq_activation_login_bridge() {
-    $login_url = esc_url(wp_login_url(home_url('/shop/?option=membership-stripe')));
+    $login_url = esc_url(wp_login_url(home_url('/start/')));
     $signup_details = loopis_theme_hq_get_activation_signup_details();
 
     $template_html = loopis_theme_hq_render_activate_template('loopis-activate-screen.php', array(
