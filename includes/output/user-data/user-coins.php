@@ -1,6 +1,8 @@
 <?php
 /**
  * Output summary of user coins
+ * 
+ * Variables are passed from context!
  */
 
 // Exit if accessed directly

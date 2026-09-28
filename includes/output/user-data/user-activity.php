@@ -1,32 +1,14 @@
 <?php
 /**
  * Output summary of user activity
+ * 
+ * Variables are passed from context!
  */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-// Set author user ID
-$user_id = get_queried_object_id(); // redundant?
-$first_name = get_user_meta($user_id, 'first_name', true);
-
-// Get profile economy
-$profile_economy = loopis_ledger_economy($user_id);
-$payments_membership = $profile_economy['payments_membership'];
-$payments_coins = $profile_economy['payments_coins'];
-$membership_coins = $profile_economy['membership_coins'];
-$bought_coins = $profile_economy['bought_coins'];
-$count_given = $profile_economy['count_given'];
-$count_booked = $profile_economy['count_booked'];
-$count_submitted = $profile_economy['count_submitted'];
-$count_deleted = $profile_economy['count_deleted'];
-$stars = $profile_economy['stars'];
-$star_coins = $profile_economy['star_coins'];
-$clovers = $profile_economy['clovers'];
-$clover_coins = $profile_economy['clover_coins'];
-$coins = $profile_economy['coins'];
 ?>
 
 <!-- COINS -->
