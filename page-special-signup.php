@@ -40,12 +40,8 @@ if(is_user_logged_in()){
             break;
         }
     }
-    
-    if(!$already_a_member){
-        add_membership($user_id,['description'=>'platform24']);
-    }
     switch_to_blog($blog_id);
-    if (is_user_member_of_blog( $user_id, 1) ) {
+    if (is_user_member_of_blog( $user_id, $blog_id) ) {
         $user = get_user($user_id);
         $user->add_role($role_slug);
     } else{
@@ -53,6 +49,10 @@ if(is_user_logged_in()){
     }
     restore_current_blog();
     update_user_meta($user_id,'primary_blog',$blog_id);
+
+    if(!$already_a_member){
+        add_membership($user_id,['description'=>'platform24', 'blog_id' => $blog_id]);
+    }
     wp_safe_redirect(network_site_url('/p24/'));
     exit;
 }
