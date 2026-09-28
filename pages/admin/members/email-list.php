@@ -9,119 +9,130 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Define available roles
-$available_roles = array(
-    'member' => 'Nuvarande medlemmar',
-    'member_earlier' => 'Tidigare medlemmar',
-);
-
-// Get selected roles from GET or default to all
-$selected_roles = isset($_GET['roles']) ? (array) $_GET['roles'] : array_keys($available_roles);
-$selected_roles = array_map('sanitize_key', $selected_roles);
-$selected_roles = array_intersect($selected_roles, array_keys($available_roles));
-if (empty($selected_roles)) {
-    $selected_roles = array_keys($available_roles);
+// Get available roles and the selected role
+$available_roles = wp_roles()->get_names();
+$selected_role = isset($_GET['role']) ? sanitize_key(wp_unslash($_GET['role'])) : '';
+if (!isset($available_roles[$selected_role])) {
+    $selected_role = '';
 }
 
-// Fetch unique users from selected roles and build rows for table/CSV.
-$users_by_id = array();
-$rows = array();
-$role_counts = array();
-
-foreach ($selected_roles as $role) {
-    $users = get_users(array(
-        'role' => $role,
-        'fields' => array('ID'),
+$available_subsites = array();
+if (is_multisite()) {
+    $sites = get_sites(array(
+        'number' => 0,
+        'archived' => 0,
+        'spam' => 0,
+        'deleted' => 0,
     ));
-
-    $role_counts[$role] = count($users);
-
-    foreach ($users as $user) {
-        $user_id = isset($user->ID) ? (int) $user->ID : 0;
-        if ($user_id <= 0 || isset($users_by_id[$user_id])) {
-            continue;
+    foreach ($sites as $site) {
+        $blog_id = (int) $site->blog_id;
+        if (!is_main_site($blog_id)) {
+            $available_subsites[$blog_id] = get_blog_option($blog_id, 'blogname');
         }
-
-        $user_data = get_userdata($user_id);
-        if (!$user_data || empty($user_data->user_email)) {
-            continue;
-        }
-
-        $first_name = trim((string) get_user_meta($user_id, 'first_name', true));
-        $last_name = trim((string) get_user_meta($user_id, 'last_name', true));
-        $name = trim($first_name . ' ' . $last_name);
-
-        $users_by_id[$user_id] = true;
-        $rows[] = array(
-            'email' => (string) $user_data->user_email,
-            'name' => $name,
-        );
     }
 }
+
+$selected_subsite = isset($_GET['subsite']) ? absint(wp_unslash($_GET['subsite'])) : 0;
+if (!isset($available_subsites[$selected_subsite])) {
+    $selected_subsite = 0;
+}
+
+// Fetch users from the selected role and build rows for table/CSV.
+$rows = array();
+$user_query_args = array(
+    'role' => $selected_role,
+    'blog_id' => get_current_blog_id(),
+    'fields' => array('ID'),
+);
+if ($selected_subsite) {
+    $user_query_args['meta_query'] = array(
+        array(
+            'key' => 'primary_blog',
+            'value' => (string) $selected_subsite,
+        ),
+    );
+}
+$users = $selected_role ? get_users($user_query_args) : array();
+
+foreach ($users as $user) {
+    $user_id = isset($user->ID) ? (int) $user->ID : 0;
+    if ($user_id <= 0) {
+        continue;
+    }
+
+    $user_data = get_userdata($user_id);
+    if (!$user_data || empty($user_data->user_email)) {
+        continue;
+    }
+
+    $first_name = trim((string) get_user_meta($user_id, 'first_name', true));
+    $last_name = trim((string) get_user_meta($user_id, 'last_name', true));
+    $name = trim($first_name . ' ' . $last_name);
+
+    $rows[] = array(
+        'email' => (string) $user_data->user_email,
+        'name' => $name,
+    );
+}
+$total_count = count($rows);
 
 ?>
 
 <h1>✉ Epost-adresser</h1>
 <hr>
-<p class="small">💡 Verktyg för att plocka ut e-postadresser till medlemmar.</p>
+<p class="small">💡 Hämta e-postadresser till medlemmar.</p>
 
 <!-- Role Selection Form -->
-<form method="GET" action="" style="margin-bottom: 20px;">
+<h3>🎚️ Filter</h3>
+<hr>
+<div class="loopis-form loopis-filter">
+<form method="GET" action="">
     <!-- Preserve the view parameter -->
     <input type="hidden" name="view" value="<?php echo esc_attr(isset($_GET['view']) ? $_GET['view'] : ''); ?>">
-    <label for="roles">Välj roller:</label><br>
-    <?php foreach ($available_roles as $role => $label) : ?>
-        <label style="display: inline-block; margin-right: 15px; margin-bottom: 10px;">
-            <input type="checkbox" name="roles[]" value="<?php echo esc_attr($role); ?>" 
-                <?php checked(in_array($role, $selected_roles)); ?>>
-            <?php echo esc_html($label); ?>
-        </label>
-    <?php endforeach; ?>
-    <br>
-    <button type="submit" class="green small" style="margin-top: 10px;">Hämta epostadresser</button>
-</form>
-
-<p style="margin-bottom: 20px;">
-    <button type="button" id="loopis-download-csv" class="small">Ladda ner CSV</button>
-</p>
-
-<?php
-$total_count = count($rows);
-
-echo '<p><strong>Antal medlemmar:</strong><br>';
-foreach ($role_counts as $role => $count) {
-    echo '• ' . esc_html($available_roles[$role]) . ': ' . (int) $count . '<br>';
-}
-echo '• Totalt (unika): ' . (int) $total_count . '</p>';
-echo '<hr>';
-
-if (empty($rows)) {
-    echo '<p>Inga medlemmar hittades för valt urval.</p>';
-    return;
-}
-?>
-
-<table class="widefat striped" style="max-width: 100%;">
-    <thead>
-        <tr>
-            <th>Email</th>
-            <th>Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($rows as $row) : ?>
-            <tr>
-                <td><?php echo esc_html($row['email']); ?></td>
-                <td><?php echo esc_html($row['name']); ?></td>
-            </tr>
+    <select name="role" id="role" required>
+        <option value="" disabled <?php selected($selected_role, ''); ?>>Välj roll</option>
+        <?php foreach ($available_roles as $role => $label) : ?>
+            <option value="<?php echo esc_attr($role); ?>" <?php selected($role, $selected_role); ?>>
+                <?php echo esc_html($label); ?>
+            </option>
         <?php endforeach; ?>
-    </tbody>
-</table>
+    </select>
+    <select name="subsite" id="subsite">
+        <option value="" <?php selected($selected_subsite, 0); ?>>Alla subsites</option>
+        <?php foreach ($available_subsites as $blog_id => $blogname) : ?>
+            <option value="<?php echo esc_attr($blog_id); ?>" <?php selected($blog_id, $selected_subsite); ?>>
+                <?php echo esc_html($blogname); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <button type="submit" class="green small">Visa</button>
+</form>
+</div>
+
+<h3>👥 Output</h3>
+<div class="columns"><div class="column1">↓ <?php echo (int) $total_count; ?> användare</div>
+<div class="column2 small"><a href="#" id="loopis-download-csv">📄Email-List.csv</a></div></div>
+<hr>
+
+<?php if (!empty($rows)) : ?>
+    <table>
+        <tbody>
+            <?php foreach ($rows as $row) : ?>
+                <tr>
+                    <td><?php echo esc_html($row['email']); ?></td>
+                    <td><?php echo esc_html($row['name']); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else : ?>
+    <p>💢 Inga användare</p>
+<?php endif; ?>
 
 <script>
 (function() {
-    var button = document.getElementById('loopis-download-csv');
-    if (!button) {
+    var downloadLink = document.getElementById('loopis-download-csv');
+    if (!downloadLink) {
         return;
     }
 
@@ -132,7 +143,8 @@ if (empty($rows)) {
         return '"' + text.replace(/"/g, '""') + '"';
     }
 
-    button.addEventListener('click', function() {
+    downloadLink.addEventListener('click', function(event) {
+        event.preventDefault();
         var lines = ['Email,Name'];
 
         rows.forEach(function(row) {
