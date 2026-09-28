@@ -45,7 +45,12 @@ if(is_user_logged_in()){
         add_membership($user_id,['description'=>'platform24']);
     }
     switch_to_blog($blog_id);
-    add_user_to_blog($blog_id, $user_id, $role_slug);
+    if (is_user_member_of_blog( $user_id, 1) ) {
+        $user = get_user($user_id);
+        $user->add_role($role_slug);
+    } else{
+        add_user_to_blog($blog_id, $user_id, $role_slug);
+    }
     restore_current_blog();
     update_user_meta($user_id,'primary_blog',$blog_id);
     wp_safe_redirect(network_site_url('/p24/'));
