@@ -880,33 +880,6 @@ function loopis_theme_hq_add_activated_user_to_main_site(
         $selected_blog_id = absint( $meta['loopis_location_blog_id'] );
     }
 
-    if($main_site_id === $selected_blog_id){
-        update_user_meta($user_id, 'primary_blog',  $selected_blog_id);
-        if (is_user_member_of_blog( $user_id, 1) ) {
-            $user = get_user($user_id);
-            $user->set_role('member_support');
-        } else{
-
-            $added = add_user_to_blog(
-            $site_id,
-            $user_id,
-            'member_support'
-            );
-
-            if ( is_wp_error( $added ) ) {
-                error_log(
-                    sprintf(
-                        'LOOPIS: Failed adding user %d to site %d: %s',
-                        $user_id,
-                        $site_id,
-                        $added->get_error_message()
-                    )
-                );
-            }
-        }
-        return;
-    }
-
     $site_ids = array_filter(
         array_unique(
             array(

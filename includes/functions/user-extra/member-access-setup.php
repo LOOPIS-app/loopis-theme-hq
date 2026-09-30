@@ -27,13 +27,13 @@ function member_access_setup($user_id) {
 
     // Switch context before changing and verifying the main-site role.
     switch_to_blog($main_site_id);
+
     $site_user = new WP_User((int) $user_id);
     if (!$site_user || 0 === (int) $site_user->ID) {
             restore_current_blog();
             error_log("LOOPIS: member_access_setup failed loading user {$user_id} on main site {$main_site_id}");
             return false;
         }
-
     // Replace any existing main-site role with the active member role.
     $site_user->set_role('member');
 
@@ -45,11 +45,15 @@ function member_access_setup($user_id) {
             return false;
         }
 
-    restore_current_blog();
 
     // Find subsites where the user still has pending membership access.
     $blogs = get_blogs_where_user_has_role($user_id, 'member_pending');
-
+    //if only one blog (main)
+    if (count($blogs) === 0) {
+        $site_user->set_role('member_support');
+    }
+    restore_current_blog();
+    
     // Add user and set role on subsite.
     foreach($blogs as $blog_id){
         if (!is_user_member_of_blog((int) $user_id, $blog_id)) {
