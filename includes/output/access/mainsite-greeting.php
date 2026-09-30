@@ -40,7 +40,7 @@ if (is_user_logged_in()) {
 
     // Super Admin (capability)
     elseif (is_super_admin()) {
-        echo '<h5>Hej webmaster! 🖤</h5>';
+        echo '<h5>Hej webmaster! 👋</h5>';
     }
 
     // Administrator

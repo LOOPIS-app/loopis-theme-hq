@@ -62,7 +62,7 @@ if ( $the_query->have_posts() ) {
 <?php } else { ?>
 <h3 style="text-align: left;">📍 Mina områden</h3>
 <div class="columns">
-    <div class="column1"><?php if ( $count_total > 1 ) { ?>↓ <?php echo $count_total; ?> <?php echo $count_total === 1 ? 'område' : 'områden'; ?><?php } ?></div>
+    <div class="column1">↓ <?php echo $count_total; ?> <?php echo $count_total === 1 ? 'område' : 'områden'; ?></div>
     <div class="column2"><a href="<?php echo esc_url( home_url( '/areas/' ) ); ?>">→ Visa alla</a></div>
 </div>
 <?php } ?>
