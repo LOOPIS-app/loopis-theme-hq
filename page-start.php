@@ -18,7 +18,7 @@ get_header(); ?>
         $user_firstname = $user->first_name;
         
         // Check member data and payment
-        if (array_intersect(array('member_pending', 'member_earlier', 'member_archived'), $user_roles)) {
+        if (array_intersect(array('member_pending', 'member_earlier', 'member_archived', 'member_support'), $user_roles)) {
             include LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-pending-check.php'; 
             $member_status = member_pending_check($user_id);
             }
