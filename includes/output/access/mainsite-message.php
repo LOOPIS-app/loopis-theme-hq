@@ -54,16 +54,16 @@ if (is_user_logged_in()) {
     // Member supporting
     elseif (in_array('member_support', $user_roles, true)) { 
         echo '<div class="loopis-message information">';
-        echo '<p>🙏 Du är registrerad som stödmedlem. TACK för ditt stöd!</p>';
-        echo '<p>Vi hoppas att du snart kan använda LOOPIS där du bor.</p>';
+        echo '<p>🙏 Du är registrerad som stödmedlem. Stort TACK för ditt stöd!</p>';
         echo '<p><span class="link"><a href="'.esc_url(home_url('/faq/var-finns-loopis/')).'">📌 Var finns LOOPIS?</a></span></p>';
         echo '</div>';
+        echo '<p>Vi hoppas att du snart kan använda LOOPIS där du bor.</p>';
     }
 
     // Super Admin
     elseif (is_super_admin()) {
         echo '<div class="admin-block">';
-        echo '<p>😈 Du är inloggad som multisite "Super Admin".</p>';
+        echo '<p>😈 Du är inloggad som multisite <strong>Super Admin</strong>.</p>';
         echo '<p><span class="big-link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="big-link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut</a></span></p>';
         echo '</div>';
     } 
