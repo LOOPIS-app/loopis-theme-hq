@@ -15,12 +15,12 @@ if (is_user_logged_in()) {
 
     // Member
     if (in_array('member', $user_roles, true)) {
-        echo '<h5>Hej ' . $user_firstname . '! 👋</h5>';
+        echo '<h5>Hej ' . $user_firstname . '! 💚</h5>';
     }
 
     // Member pending
     elseif (in_array('member_pending', $user_roles, true)) { 
-        echo '<h5>Hej ' . $user_firstname . '! 👋</h5>';
+        echo '<h5>Hej ' . $user_firstname . '! 💚</h5>';
     }
 
     // Member earlier

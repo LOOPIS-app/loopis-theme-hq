@@ -917,7 +917,7 @@ function loopis_theme_hq_add_activated_user_to_main_site(
     );
 
     if ( $selected_blog_id === 4){
-        add_membership($user_id,['description'=>'platform24']);
+        add_membership($user_id,['description'=>'platform24', 'blog_id' => $selected_blog_id, 'payment' => 0]);
     }
     
     update_user_meta($user_id, 'primary_blog',  $selected_blog_id);
