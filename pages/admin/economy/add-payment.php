@@ -1,8 +1,8 @@
 <?php
 /**
- * Coin purchases page
- * Register and view member coin purchases
- * Shows all coin transactions with payment details
+ * Page for manually registering purchases (currently only coins!)
+ * 
+ * Add payments and list manually registered payments
  */
 
 if (!defined('ABSPATH')) {
@@ -13,12 +13,12 @@ if (!defined('ABSPATH')) {
 include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action_add_coins.php';
 ?>
 
-<h1>🪙 Köp av mynt</h1>
+<h1>💸 Registrera köp</h1>
 <hr>
-<p class="small">💡 Här registrerar du köp av mynt.</p>
+<p class="small">💡 Här registrerar du köp manuellt, utan Stripe.</p>
 
 <!-- Register New Purchase -->
-<h3>💸 Registrera nytt köp</h3>
+<h3>🪙 Köp av mynt</h3>
 <hr>
 
 <?php
@@ -133,5 +133,5 @@ usort($all_payments, function($a, $b) {
         </p>
     <?php endforeach; ?>
 <?php else : ?>
-    <p>💢 Hittade inga registrerade betalningar för mynt.</p>
+    <p>💢 Hittade inga manuellt registrerade betalningar.</p>
 <?php endif; ?>
