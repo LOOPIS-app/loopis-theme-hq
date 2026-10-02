@@ -67,8 +67,8 @@ $admin_url = home_url('/admin/');
         <h3>💰 Ekonomi</h3>
         <hr>
         <div>
-            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'economy/payments', $admin_url) ); ?>">📒 Alla köp</a></span>&nbsp;
-            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'economy/coins', $admin_url) ); ?>">🪙 Köp av mynt</a></span>&nbsp;
+            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'economy/payments', $admin_url) ); ?>">📒 Registrerade köp</a></span>&nbsp;
+            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'economy/add-payment', $admin_url) ); ?>">💸 Registrera köp manuellt</a></span>&nbsp;
         </div>
     </div>
 <?php endif; ?>
