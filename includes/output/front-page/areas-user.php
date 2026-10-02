@@ -10,15 +10,35 @@ if (!defined('ABSPATH')) {
 }
 
 // Build the list of subsites the current user can access.
+global $wpdb;
 $user_id = get_current_user_id();
 $user_access_blog_ids = array();
 
 if ( $user_id > 0 ) {
-    $user_blogs = get_blogs_of_user( $user_id, true );
-    foreach ( $user_blogs as $user_blog ) {
-        $site_blog_id = isset( $user_blog->userblog_id ) ? (int) $user_blog->userblog_id : 0;
-        if ( $site_blog_id > 0 && ! is_main_site( $site_blog_id ) ) {
-            $user_access_blog_ids[] = $site_blog_id;
+    if ( is_super_admin( $user_id ) ) {
+        $sites = get_sites(array(
+            'number' => 0,
+            'archived' => 0,
+            'spam' => 0,
+            'deleted' => 0,
+        ));
+        foreach ( $sites as $site ) {
+            $site_blog_id = (int) $site->blog_id;
+            if ( ! is_main_site( $site_blog_id ) ) {
+                $user_access_blog_ids[] = $site_blog_id;
+            }
+        }
+    } else {
+        $user_blogs = get_blogs_of_user( $user_id, true );
+        foreach ( $user_blogs as $user_blog ) {
+            $site_blog_id = isset( $user_blog->userblog_id ) ? (int) $user_blog->userblog_id : 0;
+            if ( $site_blog_id > 0 && ! is_main_site( $site_blog_id ) ) {
+                $capabilities_key = $wpdb->get_blog_prefix( $site_blog_id ) . 'capabilities';
+                $site_capabilities = get_user_meta( $user_id, $capabilities_key, true );
+                if ( is_array( $site_capabilities ) && ! empty( $site_capabilities['member'] ) ) {
+                    $user_access_blog_ids[] = $site_blog_id;
+                }
+            }
         }
     }
 }

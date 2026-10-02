@@ -1,6 +1,8 @@
 <?php
 /**
  * Map for front page
+ * 
+ * Not yet implemented.
  */
 ?>
 

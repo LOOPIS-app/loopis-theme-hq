@@ -30,11 +30,22 @@ get_header(); ?>
 
     // Display areas
     if ( is_user_logged_in() ) {
-        include LOOPIS_THEME_HQ_DIR . '/includes/output/areas/user-areas.php';
+        include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/areas-user.php';
     } else {
-        echo '<h2>📍 Var finns LOOPIS?</h2>';
-        echo '<p class="small">💡 Områden där LOOPIS finns - och är på gång.</p>';
-        include LOOPIS_THEME_HQ_DIR . '/includes/output/areas/all-areas.php';
+        echo '<h2>📍Var finns LOOPIS?</h2>';
+        include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/areas-all.php';
+    }
+
+    // Display FAQ posts
+    if ( is_user_logged_in() ) {
+    include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/faq-member.php';
+    } else {
+        include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/faq-visitor.php';
+    }  
+
+    // Display supporters
+    if ( !is_user_logged_in() ) {
+        include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/supporters.php';
     }
     ?>
 
