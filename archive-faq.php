@@ -76,8 +76,8 @@ endif;
 <?php if ( is_user_logged_in() ) : ?>
 <h3>För medlemmar</h3>
 <hr>
-<p><span class="big-link"><i class="fab fa-discord"></i> <a href="https://discord.com/channels/1480883243740954626/1480883244449927231" target="_blank" rel="noreferrer noopener">Discord-server</a></span> för frågor, diskussion, volontärarbete och årsmöten</p>
-<p><span class="big-link"><i class="fab fa-google-drive"></i> <a href="https://drive.google.com/drive/folders/1l1B43flky-zXgQ2wFD24s_32N_pfWHvd?usp=drive_link">Föreningens protokoll</a></span> på Google Drive</p>
+<p><span class="big-link"><i class="fab fa-google-drive"></i> <a href="https://drive.google.com/drive/folders/1l1B43flky-zXgQ2wFD24s_32N_pfWHvd?usp=drive_link">Google Drive</a></span> för föreningens protokoll</p>
+<p><span class="big-link"><i class="fab fa-discord"></i> <a href="https://discord.com/channels/1480883243740954626/1480883244449927231" target="_blank" rel="noreferrer noopener">Discord</a></span> för diskussion, volontärer och årsmöten</p>
 <!--p><span class="big-link"><i class="fab fa-facebook"></i> <a href="https://www.facebook.com/groups/loopis" target="_blank" rel="noreferrer noopener">Facebook-grupp</a></span> för frågor och diskussion</p-->
 <?php endif; ?>
 
