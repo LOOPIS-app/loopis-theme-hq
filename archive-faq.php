@@ -118,18 +118,11 @@ $all_faqs_url = add_query_arg(
 <div class="wrapped">
     <h5>För medlemmar</h5>
     <hr>
-    <p><span class="big-link"><i class="fab fa-google-drive"></i> <a href="https://drive.google.com/drive/folders/1l1B43flky-zXgQ2wFD24s_32N_pfWHvd?usp=drive_link">Google Drive</a></span> för föreningens protokoll</p>
-    <p><span class="big-link"><i class="fab fa-discord"></i> <a href="https://discord.com/channels/1480883243740954626/1480883244449927231" target="_blank" rel="noreferrer noopener">Discord</a></span> för diskussion, volontärer och årsmöten</p>
+    <p><span class="big-link white"><i class="fab fa-google-drive"></i> <a href="https://drive.google.com/drive/folders/1l1B43flky-zXgQ2wFD24s_32N_pfWHvd?usp=drive_link">Google Drive</a></span> för föreningens protokoll</p>
+    <p><span class="big-link white"><i class="fab fa-discord"></i> <a href="https://discord.com/channels/1480883243740954626/1480883244449927231" target="_blank" rel="noreferrer noopener">Discord</a></span> för diskussion, volontärer och årsmöten</p>
 </div><!--wrapped-->
 <?php endif; ?>
 
-<div class="wrapped">
-<h5>Sociala medier</h5>
-<hr>
-<p><span class="big-link"><i class="fab fa-facebook-square"></i> <a href="https://www.facebook.com/loopis.org">Facebook</a></span>&nbsp;
-<span class="big-link"><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/loopis_org">Instagram</a></span>&nbsp;
-<span class="big-link"><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/company/loopis/">Linkedin</a></span></p>
-</div><!--wrapped-->
 <?php endif; ?>
 
 </div><!--page-padding center-->
