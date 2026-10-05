@@ -16,7 +16,16 @@ $faq_terms = get_the_terms(get_the_ID(), 'faq-tag');
     <?php
     if (!empty($faq_terms) && !is_wp_error($faq_terms)) {
         foreach ($faq_terms as $faq_term) {
-            echo '<span class="rounded"><i class="fas fa-hashtag"></i>' . esc_html($faq_term->name) . '</span>';
+            $faq_tag_url = add_query_arg(
+                array(
+                    'post_type' => 'faq',
+                    'faq-search-submitted' => '1',
+                    'faq-search' => '',
+                    'faq-tag' => $faq_term->slug,
+                ),
+                get_post_type_archive_link('faq')
+            );
+            echo '<span class="rounded"><a href="' . esc_url($faq_tag_url) . '"><i class="fas fa-hashtag"></i>' . esc_html($faq_term->name) . '</a></span>';
         }
     }
     ?>
