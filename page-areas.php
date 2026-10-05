@@ -12,10 +12,12 @@ get_header(); ?>
     <h1>📍 Områden</h1>
     <p class="small">💡 Områden där LOOPIS finns - och är på gång.</p>
     
-    <?php include LOOPIS_THEME_HQ_DIR . '/includes/output/areas/all-areas.php'; ?>
+    <?php include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/areas-all.php'; ?>
 
     <?php if ( current_user_can('manage_options') || current_user_can('loopis_admin') ) : ?>
-        <p class="small">💡 Privata områden visas bara för de som har tillgång.</p>
+        <div class="admin-block">
+        <p class="info">💡 Privata områden visas bara för de som har tillgång.</p>
+        </div>
     <?php endif; ?>
 </div><!--page-padding-->
 
