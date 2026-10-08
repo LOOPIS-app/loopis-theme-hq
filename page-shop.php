@@ -31,7 +31,7 @@
 <?php else :
 // Not logged in message
 echo '<h1>🛒 Shoppen</h1><hr>';
-include LOOPIS_THEME_HQ_DIR . '/includes/output/access/role-options-main.php';
+include LOOPIS_THEME_DIR . '/includes/output/access/only-user.php';
 endif; ?>
 
 </div><!--page-padding center-->

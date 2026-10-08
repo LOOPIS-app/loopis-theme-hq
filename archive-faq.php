@@ -12,14 +12,12 @@ get_header(); ?>
 <h1>💡 Vanliga frågor</h1>
 <hr>
 
-<p class="small">🤓 Svar på vanliga frågor om LOOPIS.</p>
-
 <?php
 $faq_search = isset($_GET['faq-search']) ? sanitize_text_field(wp_unslash($_GET['faq-search'])) : '';
 $faq_search_processed = isset($_GET['faq-search-submitted']) || isset($_GET['faq-search']) || isset($_GET['faq-tag']);
 $selected_faq_tag = $faq_search_processed && isset($_GET['faq-tag'])
     ? sanitize_title(wp_unslash($_GET['faq-tag']))
-    : ($faq_search_processed ? '' : 'basics');
+    : '';
 $faq_tags = get_terms([
     'taxonomy'   => 'faq-tag',
     'hide_empty' => false,
@@ -92,12 +90,14 @@ $all_faqs_url = add_query_arg(
     <?php if ($selected_faq_tag_name !== '') : ?>
         <i class="fas fa-hashtag"></i><?php echo esc_html($selected_faq_tag_name); ?>
     <?php elseif ($faq_search_processed) : ?>
-        📋 Sökresultat
+        🔍 "<?php echo esc_html($faq_search); ?>"
+    <?php else : ?>
+        🔍 Alla frågor
     <?php endif; ?>
 </h3>
 <div class="columns">
     <div class="column1">↓ <?php echo (int) $faq_query->found_posts; ?> frågor</div>
-    <div class="column2 small"><a href="<?php echo esc_url($all_faqs_url); ?>">→ Visa alla</a></div>
+    <div class="column2 small"><a href="<?php echo esc_url(home_url('/faq/'));?>">→ Visa alla</a></div>
 </div>
 <hr>
 
