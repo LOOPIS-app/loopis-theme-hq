@@ -1,8 +1,8 @@
 <?php
 /**
- * Page for manually registering purchases (currently only coins!)
+ * Page for manually registering purchases
  * 
- * Add payments and list manually registered payments
+ * Should be improved with selecting cash payments as well.
  */
 
 if (!defined('ABSPATH')) {
@@ -11,13 +11,14 @@ if (!defined('ABSPATH')) {
 
 // Extra php functions
 include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action_add_coins.php';
+include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action_add_membership.php';
 ?>
 
 <h1>💸 Registrera köp</h1>
 <hr>
 <p class="small">💡 Här registrerar du köp manuellt, utan Stripe.</p>
 
-<!-- Register New Purchase -->
+<!-- Register payment for coins -->
 <h3>🪙 Köp av mynt</h3>
 <hr>
 
@@ -39,7 +40,6 @@ $member_users = get_users(array('role' => 'member'));
     <button name="add_payment" type="submit" class="blue small" style="display: none;">☑ Betalat</button>
 </form>
 </div>
-<p class="info">Välj en medlem och tryck på knappen.</p>
 
 <?php
 // Process payment
@@ -61,10 +61,67 @@ document.getElementById('selected_member').addEventListener('change', function()
 });
 </script>
 
+<!-- Register payment for membership -->
+<h3>👤 Köp av medlemskap</h3>
+<hr>
+
+<?php
+$pending_members = get_users(array(
+    'role'    => 'member_pending',
+    'blog_id' => get_current_blog_id(),
+    'orderby' => 'registered',
+    'order'   => 'DESC',
+));
+?>
+
+<div class="loopis-form loopis-filter">
+    <form method="post" action="">
+        <?php wp_nonce_field('admin_add_membership'); ?>
+        <select id="selected_pending_member" name="selected_pending_member">
+            <option value="">Välj konto</option>
+            <?php foreach ($pending_members as $pending_member) : ?>
+                <option value="<?php echo esc_attr($pending_member->ID); ?>">
+                    <?php echo esc_html($pending_member->display_name . ' (' . $pending_member->user_email . ')'); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <button name="add_membership" type="submit" class="blue small" style="display: none;">☑ Betalat</button>
+    </form>
+</div>
+
+<?php
+if (isset($_POST['add_membership'])) {
+    check_admin_referer('admin_add_membership');
+
+    $user_id = isset($_POST['selected_pending_member'])
+        ? absint(wp_unslash($_POST['selected_pending_member']))
+        : 0;
+    $pending_member_ids = wp_list_pluck($pending_members, 'ID');
+
+    if (!$user_id || !in_array($user_id, array_map('intval', $pending_member_ids), true)) {
+        wp_die(esc_html__('Välj en giltig blivande medlem.', 'loopis'));
+    }
+
+    admin_action_add_membership($user_id);
+}
+?>
+
+<!-- Show button when user is selected -->
+<script>
+document.getElementById('selected_pending_member').addEventListener('change', function() {
+    var paymentButton = this.form.querySelector('button[name="add_membership"]');
+    if (this.value !== '') {
+        paymentButton.style.display = 'inline-block';
+    } else {
+        paymentButton.style.display = 'none';
+    }
+});
+</script>
+
 <!-- List of Payments -->
 <?php
 $member_users = get_users(array(
-    'role'   => 'member',
+    'role__in' => array('member', 'member_pending'),
     'fields' => array('ID', 'display_name')
 ));
 
@@ -78,11 +135,11 @@ foreach ($member_users as $user) {
 
     if (!empty($meta_values)) {
         foreach ($meta_values as $row) {
-            $payment_type = $row['wpum_payment_type'][0]['value'];
-            if ($payment_type === 'Mynt') {
+            $payment_method = $row['wpum_payment_method'][0]['value'] ?? '';
+            if ($payment_method !== 'stripe') {
+                $payment_type = $row['wpum_payment_type'][0]['value'];
                 $payment_date = $row['wpum_payment_date'][0]['value'];
                 $payment_amount = $row['wpum_payment_amount'][0]['value'];
-                $payment_method = $row['wpum_payment_method'][0]['value'];
                 $payment_received_coins = $row['wpum_received_coins'][0]['value'];
                 
                 $all_payments[] = array(
@@ -125,7 +182,7 @@ usort($all_payments, function($a, $b) {
                 <a href="<?php echo esc_url($author_url); ?>" class="link grey">
                     <i class="fas fa-receipt"></i><?php echo esc_html($payment['payment_date']); ?>: 
                     <?php echo esc_html($payment['display_name']); ?> - 
-                    <?php echo esc_html($payment['payment_received_coins']); ?> mynt - 
+                    <?php echo esc_html($payment['payment_type']); ?> - 
                     <?php echo esc_html($payment['payment_amount']); ?>kr 
                     (<?php echo esc_html($payment['payment_method']); ?>)
                 </a>
