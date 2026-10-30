@@ -2,7 +2,7 @@
 /**
  * Page for manually registering purchases
  * 
- * Should be improved with selecting cash payments as well.
+ * TODO: Add option for cash/swish payment.
  */
 
 if (!defined('ABSPATH')) {
@@ -17,6 +17,8 @@ include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/admin-extra/admin_action
 <h1>💸 Registrera köp</h1>
 <hr>
 <p class="small">💡 Här registrerar du köp manuellt, utan Stripe.</p>
+
+<p><b>Alternativ för att registrera köp med kontanter kommer snart...</b></p>
 
 <!-- Register payment for coins -->
 <h3>🪙 Köp av mynt</h3>

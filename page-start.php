@@ -24,7 +24,7 @@ get_header(); ?>
             }
         }
     
-    // Greeting & message for everyone
+    // Greeting & message
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/mainsite-greeting.php';
     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/mainsite-message.php';
 
@@ -33,6 +33,7 @@ get_header(); ?>
         include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/areas-user.php';
     } else {
         echo '<h2>📍Var finns LOOPIS?</h2>';
+        echo '<hr>';
         include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/areas-all.php';
     }
 
@@ -49,6 +50,6 @@ get_header(); ?>
     }
     ?>
 
-</div><!--page-padding center-->
+</div><!--page-padding-->
 
 <?php get_footer(); ?>

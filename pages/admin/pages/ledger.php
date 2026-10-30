@@ -12,9 +12,9 @@ include_once LOOPIS_THEME_DIR .'/templates/post-list/pagination-sql.php';
 ?>
 
 <!-- OUTPUT -->
-<h1>📕 Centrala boken</h1>
+<h1>📕 Loggbok</h1>
 <hr>
-<p class="small"> 💡 Register för användaraktivitet i alla områden.</p>
+<p class="small"> 💡 Användaraktivitet i alla områden.</p>
 
 <!--ledger-->
 

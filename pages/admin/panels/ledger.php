@@ -44,7 +44,7 @@ $total_booked = (int) $wpdb->get_var($wpdb->prepare(
 echo 'Senaste sju dagarna:<br>';
 $events = ($total_events == 0) 
     ? '💢 0 händelser <br>'
-    : '✏️ ' . $total_events . ' händelser ('.round($total_events/7).' per dag) <br>';
+    : '⚡️ ' . $total_events . ' händelser ('.round($total_events/7).' per dag) <br>';
 $submitted = ($total_submitted == 0) 
     ? '💢 0 annonser <br>'
     : '💚 ' . $total_submitted . ' annonser ('. round($total_submitted/7).' per dag) <br>';

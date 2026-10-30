@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 <hr>
 <p>→ Titta på <span class="big-link white"><a href="<?php echo esc_url(home_url('/faq/'));?>">💡 Vanliga frågor</a></span></p>
 <?php if ( is_user_logged_in() ) { ?>
-<p>→ Gå till ditt område</p>
+<p>→ Gå till ditt område <span class="big-link white">📍 <?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></span></p>
 <?php } else { ?>
 <p>→ Skriv till <span class="big-link white"><a rel="noreferrer noopener" href="mailto:info@loopis.app" target="_blank">✉️ info@loopis.app</a></span></p>
 <?php } ?>

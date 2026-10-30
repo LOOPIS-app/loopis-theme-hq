@@ -11,10 +11,13 @@ get_header(); ?>
 
 <h1>💡 Vanliga frågor</h1>
 <hr>
+<p class="small">💡 Här hittar du svar på vanliga frågor.</p>
 
 <?php
 $faq_search = isset($_GET['faq-search']) ? sanitize_text_field(wp_unslash($_GET['faq-search'])) : '';
 $faq_search_processed = isset($_GET['faq-search-submitted']) || isset($_GET['faq-search']) || isset($_GET['faq-tag']);
+// True on plain /faq, listing all faq posts
+$faq_all = !$faq_search_processed;
 $selected_faq_tag = $faq_search_processed && isset($_GET['faq-tag'])
     ? sanitize_title(wp_unslash($_GET['faq-tag']))
     : '';
@@ -69,6 +72,8 @@ $all_faqs_url = add_query_arg(
 );
 ?>
 
+<h3>🔍 Sök</h3>
+<hr>
 <form class="loopis-form" id="search-form" method="get" action="<?php echo esc_url(get_post_type_archive_link('faq')); ?>">
     <input type="hidden" name="post_type" value="faq">
     <input type="hidden" name="faq-search-submitted" value="1">
@@ -84,27 +89,30 @@ $all_faqs_url = add_query_arg(
         </select>
     <?php endif; ?>
     <input type="submit" class="green small" value="Sök">
+    <a href="<?php echo esc_url(home_url('/faq/'));?>"><i class="fas fa-times"></i></a>
 </form>
 
-<h3 style="text-align: left;">
+<h3>
     <?php if ($selected_faq_tag_name !== '') : ?>
         <i class="fas fa-hashtag"></i><?php echo esc_html($selected_faq_tag_name); ?>
     <?php elseif ($faq_search_processed) : ?>
-        🔍 "<?php echo esc_html($faq_search); ?>"
+        💡 Din sökning: <em><?php echo esc_html($faq_search); ?></em>
     <?php else : ?>
-        🔍 Alla frågor
+        💡 Alla frågor
     <?php endif; ?>
 </h3>
+<?php if (!$faq_all) : ?>
 <div class="columns">
     <div class="column1">↓ <?php echo (int) $faq_query->found_posts; ?> frågor</div>
-    <div class="column2 small"><a href="<?php echo esc_url(home_url('/faq/'));?>">→ Visa alla</a></div>
+    <div class="column2 small"></div>
 </div>
+<?php endif; ?>
 <hr>
 
-<div class="post-list" style="line-height: 2.2;">
+<div class="span-list">
     <?php if ($faq_query->have_posts()) : ?>
         <?php while ($faq_query->have_posts()) : $faq_query->the_post(); ?>
-            <span class="big-link"><a href="<?php echo esc_url(get_permalink()); ?>"><?php echo esc_html(get_the_title()); ?></a></span>&nbsp;
+            <span class="mega-link"><a href="<?php echo esc_url(get_permalink()); ?>"><?php echo esc_html(get_the_title()); ?></a></span>
         <?php endwhile; ?>
     <?php else : ?>
         <p>💢 Inga FAQ hittades.</p>
