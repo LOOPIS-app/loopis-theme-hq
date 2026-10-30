@@ -8,18 +8,13 @@
         <span class="emoji">🐙</span>
         <span class="text">Översikt</span>
         </a>
-
-        <a href="<?php echo esc_url( add_query_arg('view', 'members', $admin_url) ); ?>" class="footer-item">
-        <span class="emoji">👥</span>
-        <span class="text">Medlemmar</span>
-        </a>
         
-        <a href="<?php echo esc_url( add_query_arg('view', 'economy', $admin_url) ); ?>" class="footer-item">
-        <span class="emoji">💰</span>
-        <span class="text">Ekonomi</span>
+        <a href="<?php echo esc_url( add_query_arg('view', 'pages/search-member', $admin_url) ); ?>" class="footer-item">
+        <span class="emoji">👤</span>
+        <span class="text">Sök medlem</span>
         </a>
                 
-        <a href="<?php echo esc_url( add_query_arg('view', 'stats', $admin_url) ); ?>" class="footer-item">
+        <a href="<?php echo esc_url( add_query_arg('view', 'pages/stats/overview', $admin_url) ); ?>" class="footer-item">
         <span class="emoji">📊</span>
         <span class="text">Statistik</span>
         </a>
