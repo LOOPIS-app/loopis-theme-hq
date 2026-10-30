@@ -8,9 +8,9 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-$admin_url = home_url('/admin/');
-
 ?>
+
+<?php $admin_url = home_url('/admin/'); ?>
 
 <div class="columns">
     <div class="column1">
@@ -22,11 +22,11 @@ $admin_url = home_url('/admin/');
 <p class="small">💡 Visar verktyg tillgängliga för <span class="small-label">👤<?php echo wp_get_current_user()->user_login; ?></span></p>
 
 <!-- Statistics -->
-<div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'stats', $admin_url) ); ?>'">
+<div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'pages/stats/overview', $admin_url) ); ?>'">
     <h5>📊 Statistik</h5>
     <hr>
-    <p class="small">
-        <?php include __DIR__ . '/panels/statistics.php'; ?>
+    <p>
+        <?php include __DIR__ . '/panels/stats.php'; ?>
     </p>
 </div>
 
@@ -34,41 +34,41 @@ $admin_url = home_url('/admin/');
 <div class="wrapped">
     <h5>📲 Trafik i app</h5>
     <hr>
-    <p class="small">
+    <p>
         <?php include __DIR__ . '/panels/traffic-app.php'; ?>
     </p>
 </div>
 
 <!-- Pending members count -->
-<?php if (current_user_can('loopis_admin') || current_user_can('loopis_board')) : ?>
-    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'members/activation', $admin_url) ); ?>'">
-        <h5>👻 Nya medlemmar?</h5>
+<?php if (current_user_can('loopis_admin') || current_user_can('loopis_board') || current_user_can('loopis_economy')) : ?>
+    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'pages/members', $admin_url) ); ?>'">
+        <h5>🎉 Nya medlemmar</h5>
         <hr>
-        <p class="small">
-            <?php include __DIR__ . '/panels/members-pending.php'; ?>
+        <p>
+            <?php include __DIR__ . '/panels/members.php'; ?>
         </p>
     </div>
 <?php endif; ?>
 
 <!-- Pending members count -->
-<?php if (current_user_can('manage_options') || current_user_can('loopis_board')) : ?>
-    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'ledger', $admin_url) ); ?>'">
-        <h5>📕 Centrala boken</h5>
+<?php if (current_user_can('loopis_board')) : ?>
+    <div class="wrapped link" onclick="location.href='<?php echo esc_url( add_query_arg('view', 'pages/ledger', $admin_url) ); ?>'">
+        <h5>📕 Loggbok</h5>
         <hr>
-        <p class="small">
-            <?php include __DIR__ . '/panels/ledger-summary.php'; ?>
+        <p>
+            <?php include __DIR__ . '/panels/ledger.php'; ?>
         </p>
     </div>
 <?php endif; ?>
 
 <!-- Economy -->
-<?php if (current_user_can('manage_options') || current_user_can('loopis_economy')) : ?>
+<?php if (current_user_can('loopis_economy')) : ?>
     <div>
         <h3>💰 Ekonomi</h3>
         <hr>
-        <div>
-            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'economy/payments', $admin_url) ); ?>">📒 Registrerade köp</a></span>&nbsp;
-            <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'economy/add-payment', $admin_url) ); ?>">💸 Registrera köp manuellt</a></span>&nbsp;
+        <div class="span-list">
+            <span class="mega-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/payments', $admin_url) ); ?>">📒 Visa köp</a></span>
+            <span class="mega-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/payment-add', $admin_url) ); ?>">💸 Registrera köp</a></span>
         </div>
     </div>
 <?php endif; ?>
@@ -77,25 +77,17 @@ $admin_url = home_url('/admin/');
 <?php if (current_user_can('loopis_admin') || current_user_can('loopis_board')) : ?>
     <h3>👤 Medlemmar</h3>
     <hr>
-    <div>
-        <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'members/registry', $admin_url) ); ?>">🗃 Medlemsregister</a></span>&nbsp;
-        <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'members/email-list', $admin_url) ); ?>">✉ Epost-adresser</a></span>&nbsp;
-        <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'members/reward', $admin_url) ); ?>">🙏 Belöna</a></span>&nbsp;
-        <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'members/rewards', $admin_url) ); ?>">🌟 Belöningar</a></span>&nbsp;
+    <div class="span-list">
+        <span class="mega-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/search-member', $admin_url) ); ?>">🔍 Sök medlem</a></span>
+        <span class="mega-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/email-list', $admin_url) ); ?>">✉ Epost-adresser</a></span>
+        <span class="mega-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/reward', $admin_url) ); ?>">🙏 Belöna</a></span>
+        <span class="mega-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/rewards', $admin_url) ); ?>">🌟 Belöningar</a></span>
     </div>
 <?php endif; ?>
 
 <!-- More Section -->
 <h3>🛠 Mer</h3>
 <hr>
-<div>
-    <span class="big-link"><a href="<?php echo esc_url( add_query_arg('view', 'ledger', $admin_url) ); ?>">📕 Centrala boken</a></span>&nbsp;
+<div class="span-list">
+    <span class="mega-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/access', $admin_url) ); ?>">🚧 Tillgång</a></span>
 </div> 
-
-<!-- Access List -->
- <p>&nbsp;</p>
-    <div class="wrapped">
-        <h5>🚧 Vilka har tillgång?</h5>
-        <hr>
-        <?php include __DIR__ . '/panels/access.php'; ?>
-    </div>
