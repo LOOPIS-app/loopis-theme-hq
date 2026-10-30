@@ -28,6 +28,8 @@ $user = wp_get_current_user();
 <p>🚦 Medlemskap: <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-active.php'; ?></b></p>
 </div>
 
-<p><span class="big-link"><a href="<?php echo esc_url(get_author_posts_url($user_id)); ?>">👥 Se din profil</a></span></p>
-<p><span class="big-link"><a href="<?php echo esc_url(home_url('/wp-login.php?action=lostpassword')); ?>">🔑 Byt lösenord</a></span></p>
-<p><span class="big-link"><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">🚪 Logga ut</a></span></p>
+<div class="span-list">
+<span class="mega-link"><a href="<?php echo esc_url(home_url('/user/?view=member-data')); ?>">📋 Medlemsregister</a></span><br>
+<span class="mega-link"><a href="<?php echo esc_url(get_author_posts_url($user_id)); ?>">👥 Se din profil</a></span><br>
+<span class="mega-link"><a href="<?php echo esc_url(home_url('/wp-login.php?action=lostpassword')); ?>">🔑 Byt lösenord</a></span><br>
+<span class="mega-link"><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">🚪 Logga ut</a></span><br>

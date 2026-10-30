@@ -10,7 +10,8 @@ get_header(); ?>
 <div class="page-padding center">
 
     <h1>📍 Områden</h1>
-    <p class="small">💡 Områden där LOOPIS finns - och är på gång.</p>
+    <hr>
+    <p class="small">💡 Platser där LOOPIS finns idag.</p>
     
     <?php include LOOPIS_THEME_HQ_DIR . '/includes/output/front-page/areas-all.php'; ?>
 

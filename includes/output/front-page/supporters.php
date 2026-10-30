@@ -14,6 +14,7 @@
   gap: 24px 36px;
   padding: 24px;
   border: 1.5px dashed #78b159;
+  background-color: #EFF6EC;
   border-radius: 10px;
 }
 
@@ -26,8 +27,9 @@
 }
 </style>
 
-<h5>💚 Tack</h5>
-
+<h2>💚 Tack</h2>
+<hr>
+<p class="small">💡 För stöd och samarbete.</p >
 <div class="supporters">
 <img src="<?php echo esc_url(LOOPIS_THEME_HQ_URI . '/assets/img/supporters/ps.png'); ?>" class="supporter" style="zoom: 0.9; filter: grayscale(10%);" alt="Postkodlotteriets stiftelse">
 <img src="<?php echo esc_url(LOOPIS_THEME_HQ_URI . '/assets/img/supporters/sh.png'); ?>" class="supporter" style="zoom: 1.2;" alt="Stockholmshem">

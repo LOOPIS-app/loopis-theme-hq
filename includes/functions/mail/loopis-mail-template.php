@@ -1,6 +1,6 @@
 <?php
 /**
- * Support notification mail content template.
+ * Mail notification template.
  * 
  * @param string $mail_intro The introductory text for the mail
  * @param string $mail_outro The concluding text for the mail
@@ -41,5 +41,5 @@ function loopis_mail_ping(string $name = 'LOOPIS', string $post_link='/', string
 }
 
 function loopis_mail_location(string $location_name = 'Skåpet'){
-    return '📍 Plats för överlämning: ' . $location_name;
+    return '📍 Överlämning: ' . $location_name;
 }

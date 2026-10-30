@@ -24,10 +24,10 @@ if (!defined('ABSPATH')) {
     <div class="column2"><a href="<?php echo esc_url(home_url('/faq/'));?>">→ Visa alla</a></div>
 </div>
 <hr>
-<div class="post-list" style="line-height: 2.2;">
+<div class="span-list">
 <?php if ($faq_query->have_posts()) : ?>
     <?php while ($faq_query->have_posts()) : $faq_query->the_post(); ?>
-            <span class="big-link"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></span>&nbsp;
+            <span class="mega-link"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></span>
         <?php endwhile; ?>
 
     <?php wp_reset_postdata(); ?>
