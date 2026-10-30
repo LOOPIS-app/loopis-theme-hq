@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) { exit; }
 if (defined('LOOPIS_MAINTENANCE') && LOOPIS_MAINTENANCE) { require_once __DIR__ . '/includes/maintenance/maintenance.php'; }
 
 // Define theme version
-define('LOOPIS_THEME_HQ_VERSION', '1.06'); // Update version number here + in style.css
+define('LOOPIS_THEME_HQ_VERSION', '1.07'); // Update version number here + in style.css
 
 /**
  * Load theme translations.
