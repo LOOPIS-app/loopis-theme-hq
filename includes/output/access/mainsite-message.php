@@ -64,7 +64,7 @@ if (is_user_logged_in()) {
     elseif (is_super_admin()) {
         echo '<div class="admin-block">';
         echo '<p>😈 Du är inloggad som multisite super admin.</p>';
-        echo '<p><span class="big-link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="big-link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut</a></span></p>';
+        echo '<p><span class="big-link"><a href="'.esc_url( home_url( '/wp-admin/' ) ).'">🔧 WP-admin</a></span> <span class="big-link"><a href="'.esc_url( get_loopis_logout_url() ).'">🚪 Logga ut</a></span></p>';
         echo '</div>';
     } 
 
@@ -72,7 +72,7 @@ if (is_user_logged_in()) {
     elseif (in_array('administrator', $user_roles, true)) {
         echo '<div class="admin-block">';
         echo '<p>🤖 Du bör inte göra någonting med detta konto.</p>';
-        echo '<p>Så: <span class="link"><a href="'.esc_url( wp_logout_url(home_url()) ).'">🚪 Logga ut!</a></span></p>';
+        echo '<p>Så: <span class="link"><a href="'.esc_url( get_loopis_logout_url() ).'">🚪 Logga ut!</a></span></p>';
         echo '</div>';
     }
 
