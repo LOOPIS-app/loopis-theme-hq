@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 
 function loopis_mail_headers(): array {
     return array(
-        'From: LOOPIS <info@loopis.app>',
+        'From: LOOPIS <ping@loopis.app>',
         'Content-Type: text/html; charset=UTF-8',
         'Content-Language: sv-SE',
         'X-Emoji-Service: twemoji'
