@@ -32,4 +32,5 @@ $user = wp_get_current_user();
 <span class="mega-link"><a href="<?php echo esc_url(home_url('/user/?view=member-data')); ?>">📋 Medlemsregister</a></span><br>
 <span class="mega-link"><a href="<?php echo esc_url(get_author_posts_url($user_id)); ?>">👥 Se din profil</a></span><br>
 <span class="mega-link"><a href="<?php echo esc_url(home_url('/wp-login.php?action=lostpassword')); ?>">🔑 Byt lösenord</a></span><br>
-<span class="mega-link"><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">🚪 Logga ut</a></span><br>
+<span class="mega-link"><a href="<?php echo esc_url(get_loopis_logout_url()); ?>">🚪 Logga ut</a></span><br>
+</div>
