@@ -753,7 +753,46 @@ function loopis_theme_hq_store_signup_names_on_activation($user_id, $password, $
         }
     }
 }
+
+
 add_action('wpmu_activate_user', 'loopis_theme_hq_store_signup_names_on_activation', 2, 3);
+/**
+ * Set display name to Firstname Lastname
+ */
+function loopis_theme_hq_set_signup_display_name( $user_id, $password, $meta ) {
+    if ( ! is_array( $meta ) ) {
+        error_log( 'Signup display name: activation meta was not an array.' );
+        return;
+    }
+
+    $first_name = isset( $meta['first_name'] )
+        ? loopis_theme_hq_normalize_person_name( (string) $meta['first_name'] )
+        : '';
+
+    $last_name = isset( $meta['last_name'] )
+        ? loopis_theme_hq_normalize_person_name( (string) $meta['last_name'] )
+        : '';
+
+    
+    $display_name = trim( ucfirst($first_name) . ' ' . ucfirst($last_name) );
+
+    if ( '' === $display_name ) {
+        // Temporary diagnostic: logs keys only, not the names themselves.
+        error_log( 'Signup display name: name fields missing; meta keys: ' . implode( ', ', array_keys( $meta ) ) );
+        return;
+    }
+
+    $updated = wp_update_user( [
+        'ID'           => (int) $user_id,
+        'display_name' => $display_name,
+    ] );
+
+    if ( is_wp_error( $updated ) ) {
+        error_log( 'Signup display name update failed: ' . $updated->get_error_message() );
+    }
+}
+
+add_action( 'wpmu_activate_user', 'loopis_theme_hq_set_signup_display_name', 20, 3 );
 
 
 /**

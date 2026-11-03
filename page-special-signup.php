@@ -42,7 +42,7 @@ if(is_user_logged_in()){
     }
     switch_to_blog($blog_id);
     if (is_user_member_of_blog( $user_id, $blog_id) ) {
-        $user = get_user($user_id);
+        $user = get_userdata($user_id);
         $user->add_role($role_slug);
     } else{
         add_user_to_blog($blog_id, $user_id, $role_slug);
