@@ -61,11 +61,6 @@ $can_access_all_private_areas = current_user_can('manage_options') || current_us
     ?>
 
 <!-- Output -->    
-<div class="columns">
-    <div class="column1">↓ <?php echo $count_total; ?> <?php echo $count_total === 1 ? 'område' : 'områden'; ?></div>
-    <div class="column2"></div>
-</div>
-<hr>
 
 <!-- Area posts -->
 <div class="post-list">

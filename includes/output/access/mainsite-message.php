@@ -18,7 +18,7 @@ if (is_user_logged_in()) {
         echo '<div class="loopis-message success">';
         echo '<p>Detta är LOOPIS startsida. Här hittar du info om ditt medlemskap och vanliga frågor.</p>';
         echo '</div>';
-        echo '<p>Vill du loopa? Tryck på ditt område nedan.</p>';
+        echo '<p>Tryck på ditt område nedan för att loopa.</p>';
     }
 
     // Member pending
@@ -78,8 +78,8 @@ if (is_user_logged_in()) {
 
     // Not logged in
     } else {
-    echo '<p><span class="big-link"><a href="'.esc_url(get_loopis_login_url()).'">👤 Logga in</a></span> om du är medlem.</p>';
-    echo '<p><span class="big-link"><a href="'.esc_url(get_signup_url()).'">📋 Bli medlem</a></span> för att kunna logga in.</p>';
-    echo '<p><span class="big-link"><a href="'.esc_url(home_url('/faq/hur-funkar-loopis/')).'">📌 Nyfiken?</a></span> Läs hur LOOPIS funkar.</p>';
+    echo '<p><span class="mega-link"><a href="'.esc_url(get_loopis_login_url()).'">👤 Logga in</a></span> om du är medlem.<br>';
+    echo '<span class="mega-link"><a href="'.esc_url(get_signup_url()).'">📋 Bli medlem</a></span> för att kunna logga in.<br>';
+    echo '<span class="mega-link"><a href="'.esc_url(home_url('/faq/hur-funkar-loopis/')).'">📌 Nyfiken?</a></span> Läs hur LOOPIS funkar.</p>';
     include LOOPIS_THEME_HQ_DIR . '/templates/faq/loopis-concept.php';
 }

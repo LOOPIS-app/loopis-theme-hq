@@ -11,10 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Get current user ID
 $user_id = get_current_user_id();
 $user = wp_get_current_user();
-
-$wpum_active = get_user_meta($user_id, 'wpum_active', true);
-if ( $wpum_active === 'true' ) { $active ="✅ Medlemskap: <b>Aktivt</b>"; }
-else { $active ="⛔ Medlemskap: <span class='bold required'>Ej aktivt</span>"; }
 ?>
 
 <h3>⚙ Mina inställningar</h3>
@@ -29,9 +25,11 @@ else { $active ="⛔ Medlemskap: <span class='bold required'>Ej aktivt</span>"; 
 <p>✉ E-postadress: <b><?php echo antispambot($user->user_email); ?></b></p>
 <p>📱 Mobilnummer: <b><?php echo antispambot($user->wpum_phone); ?></b></p>
 <p>🗺️ Postnummer: <b><?php echo antispambot($user->wpum_postcode); ?></b></p>
-<p><?php echo $active; ?></p>
+<p>🚦 Medlemskap: <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-active.php'; ?></b></p>
 </div>
 
-<p><span class="big-link"><a href="<?php echo esc_url(get_author_posts_url($user_id)); ?>">👥 Se din profil</a></span></p>
-<p><span class="big-link"><a href="<?php echo esc_url(home_url('/wp-login.php?action=lostpassword')); ?>">🔑 Byt lösenord</a></span></p>
-<p><span class="big-link"><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">🚪 Logga ut</a></span></p>
+<div class="span-list">
+<span class="mega-link"><a href="<?php echo esc_url(home_url('/user/?view=member-data')); ?>">📋 Medlemsregister</a></span><br>
+<span class="mega-link"><a href="<?php echo esc_url(get_author_posts_url($user_id)); ?>">👥 Se din profil</a></span><br>
+<span class="mega-link"><a href="<?php echo esc_url(home_url('/wp-login.php?action=lostpassword')); ?>">🔑 Byt lösenord</a></span><br>
+<span class="mega-link"><a href="<?php echo esc_url(wp_logout_url(home_url())); ?>">🚪 Logga ut</a></span><br>

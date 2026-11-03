@@ -935,36 +935,3 @@ function loopis_theme_hq_disable_default_welcome_user_notification($user_id, $pa
     return $user_id;
 }
 add_filter('wpmu_welcome_user_notification', 'loopis_theme_hq_disable_default_welcome_user_notification', 10, 3);
-
-/**
- * Send welcome mail using the chosen signup password instead of core's random one.
- */
-function loopis_theme_hq_send_custom_welcome_user_notification($user_id, $password, $meta) {
-    if (!is_array($meta) || empty($meta['loopis_signup_password_enc'])) {
-        return;
-    }
-
-    $decrypted_password = loopis_theme_hq_decrypt_signup_password((string) $meta['loopis_signup_password_enc']);
-    if ('' === $decrypted_password) {
-        return;
-    }
-
-    $user = get_userdata((int) $user_id);
-    if (!$user || empty($user->user_email)) {
-        return;
-    }
-
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-headers.php';
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-signup-welcome-mail.php';
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-footer.php';
-
-    $first_name = !empty($meta['first_name']) ? sanitize_text_field((string) $meta['first_name']) : '';
-    $username = isset($user->user_login) ? (string) $user->user_login : '';
-
-    $message = loopis_signup_welcome_mail($first_name, $username, $decrypted_password);
-    $message .= loopis_mail_footer();
-
-    $subject = '💚 Välkommen till LOOPIS!';
-    wp_mail((string) $user->user_email, wp_specialchars_decode($subject), $message, loopis_mail_headers());
-}
-add_action('wpmu_activate_user', 'loopis_theme_hq_send_custom_welcome_user_notification', 10, 3);

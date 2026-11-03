@@ -74,18 +74,14 @@ if ( $the_query->have_posts() ) {
 ?>
 
 <!-- Output -->
-    <?php if ( $count_total === 1 ) { ?>
 <div class="columns">
+    <?php if ( $count_total > 1 ) { ?>
+    <div class="column1"><h3>📍 Mina områden</h3></div>    
+    <?php } else { ?>
     <div class="column1"><h3>📍 Mitt område</h3></div>
+    <?php } ?>
     <div class="column2"><a href="<?php echo esc_url( home_url( '/areas/' ) ); ?>">→ Visa alla</a></div>
 </div>
-<?php } else { ?>
-<h3 style="text-align: left;">📍 Mina områden</h3>
-<div class="columns">
-    <div class="column1">↓ <?php echo $count_total; ?> <?php echo $count_total === 1 ? 'område' : 'områden'; ?></div>
-    <div class="column2"><a href="<?php echo esc_url( home_url( '/areas/' ) ); ?>">→ Visa alla</a></div>
-</div>
-<?php } ?>
 <hr>
 
 <!-- Area posts -->
@@ -95,7 +91,7 @@ if ( $the_query->have_posts() ) {
             <?php get_template_part( 'templates/post-list/area-post-linked' ); ?>
         <?php } ?>
     <?php } else { ?>
-    <p>💢 Du är inte medlem i något område.</p>
+    <p>💢 Du är inte ansluten till något område.</p>
     <?php } ?>
 </div><!--post-list-->
 
