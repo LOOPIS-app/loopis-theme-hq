@@ -39,7 +39,7 @@ if (is_user_logged_in()) {
     // Member archived (or earlier)
     elseif (array_intersect(array('member_archived', 'member_earlier'), $user_roles)) {
         echo '<div class="loopis-message information">';
-        echo '<p>🕸️ Du behöver förnya ditt medlemskap.</p>';
+        echo '<p>⌛️ Du behöver förnya ditt medlemskap.</p>';
             // Missing payment prompt
             if (!$member_status['member_payment_complete']) {
                 echo '<p><span class="big-link">💳 <a href="'.esc_url(home_url( '/shop/?option=membership-stripe' )).'">Medlemsavgift</a></span> är ej betalad.</p>';
