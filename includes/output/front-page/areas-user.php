@@ -90,7 +90,6 @@ if ( $the_query->have_posts() ) {
         <?php while ( $the_query->have_posts() ) { $the_query->the_post(); ?>
             <?php get_template_part( 'templates/post-list/area-post-linked' ); ?>
         <?php } ?>
-        <p class="info">🚛 För att byta område, skicka ett mail till <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
     <?php } else { ?>
     <p>💢 Du är inte ansluten till något område just nu.</p>
     <p class="info">🤔 Om något är fel, skicka ett mail till <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
