@@ -15,6 +15,9 @@ if (!$loopis_is_signup_request) {
     return;
 }
 
+// Load area selector form
+require_once LOOPIS_THEME_HQ_DIR . '/includes/forms/area-selector.php';
+
 // Enqueue LOOPIS styles
 function loopis_theme_hq_signup_assets() {
     wp_enqueue_style('dashicons');
@@ -181,166 +184,11 @@ function loopis_theme_hq_signup_extra_name_fields($errors) {
             <span class="error"><?php echo esc_html($postcode_error); ?></span>
         <?php endif; ?>
         <input type="text" name="wpum_postcode" id="wpum_postcode" value="<?php echo esc_attr($postcode); ?>" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required />
+        <span class="description">Ange postnummer för din hemadress (fem siffror).</span>
     </p>
     <?php
 }
 add_action('signup_extra_fields', 'loopis_theme_hq_signup_extra_name_fields');
-
-/**
- * Return private subsites (areas).
- */
-function loopis_theme_hq_get_private_sites() {
-    global $wpdb;
-
-    $table = $wpdb->base_prefix . 'loopis_areas';
-
-    $site_ids = $wpdb->get_col(
-        "SELECT DISTINCT blog_id
-         FROM {$table}
-         WHERE privacy = 1"
-    );
-
-    return array_map('absint', $site_ids ?: array());
-}
-
-/**
- * Return selectable subsites (areas).
- */
-function loopis_theme_hq_get_signup_locations() {
-    if ( ! is_multisite() ) {
-        return array();
-    }
-    $not_in = loopis_theme_hq_get_private_sites();
-    $not_in[] = get_main_site_id();
-    return get_sites(
-        array(
-            'network_id' => get_current_network_id(),
-            'public'     => 1,
-            'archived'   => 0,
-            'spam'       => 0,
-            'deleted'    => 0,
-            'site__not_in' => $not_in,
-            'number'     => 100,
-            'orderby'    => 'domain',
-            'order'      => 'ASC',
-        )
-    );
-}
-
-/**
- * Check whether a subsite is an allowed signup area.
- */
-function loopis_theme_hq_is_valid_signup_location( $blog_id ) {
-    $blog_id = absint( $blog_id );
-
-    if ( $blog_id <= 0 || ! is_multisite() ) {
-        return false;
-    }
-
-    $site = get_site( $blog_id );
-
-    if ( ! $site ) {
-        return false;
-    }
-
-    if ( (int) $site->network_id !== (int) get_current_network_id() ) {
-        return false;
-    }
-
-    if ( $site->archived || $site->spam || $site->deleted ) {
-        return false;
-    }
-
-    return true;
-}
-
-/**
- * Check whether the special invite cookie is set.
- */
-function loopis_theme_hq_has_special_location_cookie() {
-    return isset( $_COOKIE['special_invite_payload'] );
-}
-
-function loopis_theme_hq_get_location_safe() {
-    if ( loopis_theme_hq_has_special_location_cookie() ) {
-        $encoded_blog_id = wp_unslash(
-            $_COOKIE['special_invite_payload']
-        );
-
-        $decoded_blog_id = base64_decode( $encoded_blog_id, true );
-
-        if (
-            false === $decoded_blog_id ||
-            ! ctype_digit( (string) $decoded_blog_id )
-        ) {
-            return 0;
-        }
-
-        return absint( $decoded_blog_id );
-    }else{
-        return isset( $_POST['loopis_location_blog_id'] )
-        ? absint( wp_unslash( $_POST['loopis_location_blog_id'] ) )
-        : 0;
-    }
-}
-
-/**
- * Render area selector on the signup form.
- */
-function loopis_theme_hq_signup_location_field($errors) {
-    if ( loopis_theme_hq_has_special_location_cookie() ) {
-        return;
-    }
-    $selected_blog_id = loopis_theme_hq_get_location_safe();
-    $location_error = is_wp_error($errors) ? $errors->get_error_message('loopis_location_blog_id') : '';
-
-    $locations = loopis_theme_hq_get_signup_locations();
-    ?>
-
-    <p>
-        <label for="loopis_location_blog_id">
-            <?php esc_html_e( 'Område', 'loopis-theme-hq' ); ?>
-        </label>
-        <?php if ('' !== $location_error) : ?>
-            <span class="error"><?php echo esc_html($location_error); ?></span>
-        <?php endif; ?>
-
-        <select
-            name="loopis_location_blog_id"
-            id="loopis_location_blog_id"
-            required
-        >
-            <option value="">
-                <?php esc_html_e( 'Välj ditt område', 'loopis-theme-hq' ); ?>
-            </option>
-
-            <?php foreach ( $locations as $location ) : ?>
-                <?php
-                $blog_id  = (int) $location->blog_id;
-                $blogname = get_blog_option( $blog_id, 'blogname' );
-                ?>
-
-                <option
-                    value="<?php echo esc_attr( $blog_id ); ?>"
-                    <?php selected( $selected_blog_id, $blog_id ); ?>
-                >
-                    <?php echo esc_html( $blogname ); ?>
-                </option>
-            <?php endforeach; ?>
-
-            <option value="1">
-                <?php esc_html_e( 'Stödmedlemskap/annat område', 'loopis-theme-hq' ); ?>
-            </option>
-        </select>
-    </p>
-
-    <?php
-}
-
-add_action(
-    'signup_extra_fields',
-    'loopis_theme_hq_signup_location_field'
-);
 
 /**
  * Hide the default username input and keep it auto-generated in the form.
@@ -642,7 +490,6 @@ function loopis_theme_hq_validate_signup_name_fields($result) {
     $postcode = isset($_POST['wpum_postcode']) ? loopis_theme_hq_normalize_postcode(wp_unslash($_POST['wpum_postcode'])) : '';
     $signup_password = isset($_POST['signup_password']) ? (string) wp_unslash($_POST['signup_password']) : '';
     $signup_password_confirm = isset($_POST['signup_password_confirm']) ? (string) wp_unslash($_POST['signup_password_confirm']) : '';
-    $location_blog_id = loopis_theme_hq_get_location_safe();
 
     if ('' === $first_name) {
         $result['errors']->add('first_name', __('Please enter your first name.', 'loopis-theme-hq'));
@@ -664,16 +511,6 @@ function loopis_theme_hq_validate_signup_name_fields($result) {
 
     if ($signup_password !== $signup_password_confirm) {
         $result['errors']->add('generic', __('Password confirmation does not match.', 'loopis-theme-hq'));
-    }
-
-    if ( ! loopis_theme_hq_is_valid_signup_location( $location_blog_id ) ) {
-        $result['errors']->add(
-            'loopis_location_blog_id',
-            __(
-                'Please select a valid location.',
-                'loopis-theme-hq'
-            )
-        );
     }
 
     $generated_username = loopis_theme_hq_generate_available_signup_username($first_name, $last_name);
@@ -704,11 +541,7 @@ function loopis_theme_hq_signup_user_meta($meta) {
     $last_name = isset($_POST['last_name']) ? loopis_theme_hq_normalize_person_name(wp_unslash($_POST['last_name'])) : '';
     $postcode = isset($_POST['wpum_postcode']) ? loopis_theme_hq_normalize_postcode(wp_unslash($_POST['wpum_postcode'])) : '';
     $signup_password = isset($_POST['signup_password']) ? (string) wp_unslash($_POST['signup_password']) : '';
-    $location_blog_id = loopis_theme_hq_get_location_safe();
 
-    if ( loopis_theme_hq_is_valid_signup_location( $location_blog_id ) ) {
-        $meta['loopis_location_blog_id'] = $location_blog_id;
-    }
     if ('' !== $first_name) {
         $meta['first_name'] = $first_name;
     }
@@ -901,6 +734,8 @@ add_action('wpmu_activate_user', 'loopis_theme_hq_apply_signup_password_on_activ
 
 /**
  * Ensure newly activated users are added to the main site in multisite.
+ *
+ * Note: Area selection is now handled separately for logged-in users via areas-user.php
  */
 function loopis_theme_hq_add_activated_user_to_main_site(
     $user_id,
@@ -913,26 +748,10 @@ function loopis_theme_hq_add_activated_user_to_main_site(
 
     $user_id = (int) $user_id;
     $main_site_id = 1;
-    $selected_blog_id = 2; // Select Bagarmossen for earlier registrations without area selection
 
-    if ( is_array( $meta ) && ! empty( $meta['loopis_location_blog_id'] ) ) {
-        $selected_blog_id = absint( $meta['loopis_location_blog_id'] );
-    }
+    $site_ids = array( $main_site_id );
 
-    $site_ids = array_filter(
-        array_unique(
-            array(
-                $main_site_id,
-                $selected_blog_id,
-            )
-        )
-    );
-
-    if ( $selected_blog_id === 4){
-        add_membership($user_id,['description'=>'platform24', 'blog_id' => $selected_blog_id, 'payment' => 0]);
-    }
-    
-    update_user_meta($user_id, 'primary_blog',  $selected_blog_id);
+    update_user_meta($user_id, 'primary_blog', $main_site_id);
 
     foreach ( $site_ids as $site_id ) {
         if ( ! loopis_theme_hq_is_valid_signup_location( $site_id ) ) {

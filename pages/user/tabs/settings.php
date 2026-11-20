@@ -42,28 +42,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 </div>
 <p class="info">💡 För att byta område, kontakta <span class="link white"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
 </div>
-
-<div class="clear"></div>
-
-<div class="wrapped">
-<h5>✉️ Mailutskick</h5>
-<hr>
-<div style="text-align: left; padding: 5px">
-    <form class="loopis-form" method="post" action="" novalidate>
-		<p>
-      <label for="tips"><input type="checkbox" id="tips" name="tips" value="yes"> 🎁 Tips på nya annonser</label>
-    </p>
-    <p>
-      <label for="pings"><input type="checkbox" id="pings" name="pings" value="yes" checked disabled> 🔔 Notifikationer för annonser</label>
-      <input type="hidden" name="pings" value="yes">
-    </p>
-    <p>
-      <label for="news"><input type="checkbox" id="news" name="news" value="yes" checked disabled> 🌈 Information från föreningen</label>
-      <input type="hidden" name="news" value="yes">
-    </p>
-		<input type="submit" class="small" value="Spara" style="display: block; margin: 0 auto; margin-top: 10px;">
-	</form>
-	</div>
-<p class="info">💡 Notifikationer för annonser är obligatoriska.</p>
-<p class="info">💡 Information från föreningen är obligatoriskt.</p>
-</div>

@@ -61,8 +61,9 @@ function member_pending_check($user_id) {
 
     // Setup roles if both member data and membership payment are complete
     if ($member_data_complete && $member_payment_complete) {
-        include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-access-setup.php';
-        member_access_setup($user_id);
+        $user = new WP_User($user_id);
+        $user->remove_role('member_pending');
+        $user->add_role('member');
     }
 
     // Return the results as an associative array

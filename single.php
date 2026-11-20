@@ -3,16 +3,14 @@
  * Template for single post (area).
  */
 
-get_header(); ?>
+get_header();
 
-<!-- Get variables -->
-<?php
-wp_reset_postdata(); // added here when removed from functions.php
-$current = get_current_user_id();
-$author = get_the_author_meta('ID');
+// Get current user
+$user_id = get_current_user_id();
+$user_roles = wp_get_current_user()->roles;
+
+// Get post meta (custom fields)
 $post_id = get_the_ID();
-
-// Get post meta
 $thumbnail_id = get_post_thumbnail_id($post_id);
 $area_subdirectory = get_post_meta($post_id, 'area_subdirectory', true) ?: '#';
 $area_blog_id = get_post_meta($post_id, 'area_blog_id', true) ?: '';
@@ -27,7 +25,7 @@ $area_circulated_things = '' === trim((string) $area_circulated_things_raw) ? 'A
 $area_launch_timestamp = strtotime($area_launch_date);
 $current_timestamp = current_time('timestamp');
 
-// Format launch date text
+// Format launch date text for display
 if (!$area_launch_timestamp) {
 	$area_launch_text = 'Lanseringsdatum saknas';
 } elseif ($area_launch_timestamp > $current_timestamp) {
@@ -48,7 +46,7 @@ if (!$area_launch_timestamp) {
 include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/visitor-extra/subsite-member-count.php';
 $area_members_count = subsite_member_count($area_blog_id);
 
-// Check if the current user can access the private area
+// Check user access to private areas
 $can_access_private_area = current_user_can('manage_options') || current_user_can('loopis_admin');
 if (!$can_access_private_area && is_user_logged_in() && $area_blog_id !== '') {
 	$can_access_private_area = is_user_member_of_blog(get_current_user_id(), (int) $area_blog_id);
@@ -58,18 +56,24 @@ if (!$can_access_private_area && is_user_logged_in() && $area_blog_id !== '') {
 <!-- THE POST -->
 <div class="page-padding center">
 	<p><span class="rounded"><a href="<?php echo esc_url(home_url('/areas')); ?>">📍 Områden</a></span>
+	
+	<!-- Post categories -->
 	<?php
-	$single_categories = array_reverse(get_the_category());
-	if (!empty($single_categories)) :
-		foreach ($single_categories as $single_category) :
-			$category_link = get_category_link($single_category->term_id);
+	$categories = array_reverse(get_the_category());
+	if (!empty($categories)) :
+		foreach ($categories as $category) :
+			$category_link = get_category_link($category->term_id);
 			?>
-			<span class="rounded"><a href="<?php echo esc_url($category_link); ?>"><?php echo esc_html($single_category->name); ?></a></span>
+			<span class="rounded"><a href="<?php echo esc_url($category_link); ?>"><?php echo esc_html($category->name); ?></a></span>
 		<?php endforeach;
-	endif;
-	?></p>
+	endif; ?>
+	</p>
+
+	<!-- Post title-->
 	<h1 class="wrap"><?php the_title(); ?></h1>
 	<hr>
+
+	<!-- Post meta-->
 	<div class="post-meta">
 		<p>🗺 <?php echo esc_html($area_city); ?> (<?php echo esc_html($locker_postal_code); ?>)<br>
 		🎉 <?php echo esc_html($area_launch_text); ?><br>
@@ -79,38 +83,38 @@ if (!$can_access_private_area && is_user_logged_in() && $area_blog_id !== '') {
 		<?php endif; ?>
 	</div><!--post-meta-->
 
-	<!-- Output area description (post content)-->
+	<!-- Post content-->
 	<div class="post-content">
 		<?php the_content(); ?>
 
-	<!-- Join! -->
-	<?php if (!is_user_logged_in()) { ?>
-	<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Bli medlem!</a></p>
-	<?php } ?>
+		<!-- Join -->
+		<?php if (!has_category('private') && !is_user_logged_in()) { ?>
+		<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Bli medlem!</a></p>
+		<?php } ?>
 
-	<!-- Special signup -->
-	<?php if (has_category('private') && !is_user_logged_in()) { ?>
-	<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Skapa konto!</a></p>
-	<?php } ?>
-	
-	<!-- Go to private area -->
-	<?php if (has_category('private') && $can_access_private_area) { ?>
-	<p><span class="mega-link" style="background:#f5f5f5;"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
-	<?php } ?>
+		<!-- Go to area -->
+		<?php if (has_term('active', 'category') && !has_category('private')) { ?>
+		<p><span class="mega-link" style="background:#f5f5f5;"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
+		<?php } ?>
+
+		<!-- Join private area -->
+		<?php if (has_category('private') && !is_user_logged_in()) { ?>
+		<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Bli medlem!</a></p>
+		<p class="info">💡 Den som är admin för LOOPIS på <?php the_title(); ?> ger dig en rabattkod för gratis medlemskap.</p>
+		<?php } ?>
 		
-	<!-- Go to area -->
-	<?php if (has_term('active', 'category') && !has_category('private')) { ?>
-	<p><span class="mega-link" style="background:#f5f5f5;"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
-	<?php } ?>
-
-
-	<!-- Output area photo (featured image) -->
+		<!-- Go to private area -->
+		<?php if (has_category('private') && $can_access_private_area) { ?>
+		<p><span class="mega-link" style="background:#f5f5f5;"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
+		<?php } ?>
+			
+		<!-- Area photo (featured image) -->
 		<?php if ($thumbnail_id){ echo wp_get_attachment_image($thumbnail_id, 'large'); } ?>
 
-<!-- POST OPTIONS -->
-<a href="#" id="copy_url" class="option">🔗 Kopiera länk</a>
+		<!-- Post options -->
+		<a href="#" id="copy_url" class="option">🔗 Kopiera länk</a>
 
-			</div><!--post-content-->				
-		</div><!--post-padding-->								
+	</div><!--post-content-->				
+</div><!--post-padding-->								
 
 <?php get_footer(); ?>
