@@ -32,6 +32,7 @@ $count_given = $profile_economy['count_given'];
 $count_booked = $profile_economy['count_booked'];
 $count_submitted = $profile_economy['count_submitted'];
 $count_deleted = $profile_economy['count_deleted'];
+$count_cancelled = $profile_economy['count_regret'];
 $stars = $profile_economy['stars'];
 $star_coins = $profile_economy['star_coins'];
 $clovers = $profile_economy['clovers'];
@@ -49,7 +50,7 @@ if ($count_submitted !== 0) { $given_percentage = round(($count_given / $count_s
 <p class="small"><?php echo $first_name; ?> kan just nu hämta <?php echo $coins; ?> saker</p>
 <hr>
 <p class="small">💚 <?php echo $count_given; ?> saker lämnade</p>
-<p class="small">❤ <?php echo $count_booked; ?> saker hämtade</p>
+<p class="small">❤ <?php echo ($count_booked-$count_cancelled); ?> saker hämtade</p>
 <p class="small">🍀 <?php echo $clovers; ?> fyrklöver</p>
 <p class="small">⭐ <?php echo $stars; ?> guldstjärnor</p>
 </div><!-- wrapped -->

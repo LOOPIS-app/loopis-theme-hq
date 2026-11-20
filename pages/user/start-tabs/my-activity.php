@@ -23,6 +23,7 @@ $bought_coins = $profile_economy['bought_coins'];
 $count_given = $profile_economy['count_given'];
 $count_booked = $profile_economy['count_booked'];
 $count_submitted = $profile_economy['count_submitted'];
+$count_cancelled = $profile_economy['count_regret'];
 $count_deleted = $profile_economy['count_deleted'];
 $stars = $profile_economy['stars'];
 $star_coins = $profile_economy['star_coins'];

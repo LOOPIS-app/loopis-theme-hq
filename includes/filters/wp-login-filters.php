@@ -320,9 +320,7 @@ add_filter('gettext', 'loopis_theme_hq_login_register_text', 10, 3);
  * Style forgot-password email as LOOPIS HTML mail.
  */
 function loopis_theme_hq_style_password_reset_email($defaults, $key, $user_login, $user_data) {
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-headers.php';
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-password-reset-mail.php';
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-footer.php';
+    loopis_get_mail();
 
     $reset_url = add_query_arg(
         array(
