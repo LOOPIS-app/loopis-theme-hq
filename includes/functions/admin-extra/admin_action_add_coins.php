@@ -10,9 +10,7 @@
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
-include_once  LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-footer.php';
-include_once  LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-template.php';
-include_once  LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-headers.php';
+loopis_get_mail();
 
 function admin_action_add_coins(int $user_id) {
     // add the coins! 

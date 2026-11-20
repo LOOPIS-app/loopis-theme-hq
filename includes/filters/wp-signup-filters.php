@@ -804,9 +804,7 @@ add_filter('wpmu_signup_user_notification', '__return_false');
  * Send customized multisite verification email
  */
 function loopis_theme_hq_send_custom_signup_verification_email($user_login, $user_email, $key, $meta) {
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-headers.php';
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-signup-activation-mail.php';
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-footer.php';
+    loopis_get_mail();
 
     // Get user data
     $activation_url = esc_url(site_url('wp-activate.php?key=' . rawurlencode((string) $key)));
