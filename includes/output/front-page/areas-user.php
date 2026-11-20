@@ -91,7 +91,8 @@ if ( $the_query->have_posts() ) {
             <?php get_template_part( 'templates/post-list/area-post-linked' ); ?>
         <?php } ?>
     <?php } else { ?>
-    <p>💢 Du är inte ansluten till något område.</p>
+    <p>💢 Du är inte ansluten till något område just nu.</p>
+    <p class="info">🤔 Om något är fel, skicka ett mail till <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
     <?php } ?>
 </div><!--post-list-->
 

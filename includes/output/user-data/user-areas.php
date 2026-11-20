@@ -1,0 +1,99 @@
+<?php
+/**
+ * List of area blog posts corresponding to subsites where the current user has access.
+ * 
+ * The posts link to the corresponding subsite.
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Build the list of subsites the current user can access.
+global $wpdb;
+$user_id = get_current_user_id();
+$user_access_blog_ids = array();
+
+if ( $user_id > 0 ) {
+    if ( is_super_admin( $user_id ) ) {
+        $sites = get_sites(array(
+            'number' => 0,
+            'archived' => 0,
+            'spam' => 0,
+            'deleted' => 0,
+        ));
+        foreach ( $sites as $site ) {
+            $site_blog_id = (int) $site->blog_id;
+            if ( ! is_main_site( $site_blog_id ) ) {
+                $user_access_blog_ids[] = $site_blog_id;
+            }
+        }
+    } else {
+        $user_blogs = get_blogs_of_user( $user_id, true );
+        foreach ( $user_blogs as $user_blog ) {
+            $site_blog_id = isset( $user_blog->userblog_id ) ? (int) $user_blog->userblog_id : 0;
+            if ( $site_blog_id > 0 && ! is_main_site( $site_blog_id ) ) {
+                $capabilities_key = $wpdb->get_blog_prefix( $site_blog_id ) . 'capabilities';
+                $site_capabilities = get_user_meta( $user_id, $capabilities_key, true );
+                if ( is_array( $site_capabilities ) && ! empty( $site_capabilities['member'] ) ) {
+                    $user_access_blog_ids[] = $site_blog_id;
+                }
+            }
+        }
+    }
+}
+
+$user_access_blog_ids = array_values( array_unique( array_map( 'intval', $user_access_blog_ids ) ) );
+
+// Get posts with matching "area_blog_id" for the sites the current user can access.
+$args = array(
+    'post_type'      => 'post',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => 'date',
+    'order'          => 'ASC',
+    'meta_query'     => array(
+        array(
+            'key'     => 'area_blog_id',
+            'value'   => ! empty( $user_access_blog_ids ) ? $user_access_blog_ids : array( 0 ),
+            'compare' => 'IN',
+            'type'    => 'NUMERIC',
+        ),
+    ),
+);
+
+$the_query = new WP_Query( $args );
+
+// Count total posts for the current user's accessible areas.
+$count_total = 0;
+if ( $the_query->have_posts() ) {
+    foreach ( $the_query->posts as $area_post ) {
+        $count_total++;
+    }
+}
+?>
+
+<!-- Output -->
+<div class="columns">
+    <?php if ( $count_total > 1 ) { ?>
+    <div class="column1"><h3>📍 Mina områden</h3></div>    
+    <?php } else { ?>
+    <div class="column1"><h3>📍 Mitt område</h3></div>
+    <?php } ?>
+    <div class="column2"><a href="<?php echo esc_url( home_url( '/areas/' ) ); ?>">→ Visa alla</a></div>
+</div>
+<hr>
+
+<!-- Area posts -->
+<div class="post-list">
+    <?php if ( $the_query->have_posts() ) { ?>
+        <?php while ( $the_query->have_posts() ) { $the_query->the_post(); ?>
+            <?php get_template_part( 'templates/post-list/area-post-linked' ); ?>
+        <?php } ?>
+    <?php } else { ?>
+    <p>💢 Du är inte ansluten till något område just nu.</p>
+    <p class="info">🤔 Om något är fel, skicka ett mail till <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
+    <?php } ?>
+</div><!--post-list-->
+
+<?php wp_reset_postdata();

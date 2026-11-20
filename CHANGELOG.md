@@ -1,8 +1,10 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 1.09 (2026-11-18)
+- Minor UI fixes and version bump
+
 ## 1.08 (2026-11-03)
-- Tag filter added
-- User mention plugin replaced
+- Minor UI fixes and version bump
 
 ## 1.07 (2026-10-30)
 - Admin area revision
