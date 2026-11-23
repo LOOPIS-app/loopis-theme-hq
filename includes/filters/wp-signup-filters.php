@@ -586,9 +586,8 @@ function loopis_theme_hq_store_signup_names_on_activation($user_id, $password, $
         }
     }
 }
-
-
 add_action('wpmu_activate_user', 'loopis_theme_hq_store_signup_names_on_activation', 2, 3);
+
 /**
  * Set display name to Firstname Lastname
  */
@@ -624,7 +623,6 @@ function loopis_theme_hq_set_signup_display_name( $user_id, $password, $meta ) {
         error_log( 'Signup display name update failed: ' . $updated->get_error_message() );
     }
 }
-
 add_action( 'wpmu_activate_user', 'loopis_theme_hq_set_signup_display_name', 20, 3 );
 
 
@@ -733,52 +731,21 @@ add_action('wpmu_activate_user', 'loopis_theme_hq_apply_signup_password_on_activ
 
 
 /**
- * Ensure newly activated users are added to the main site in multisite.
- *
- * Note: Area selection is now handled separately for logged-in users via areas-user.php
+ * Add user to main site with role 'member_pending'
  */
 function loopis_theme_hq_add_activated_user_to_main_site(
     $user_id,
     $password,
     $meta
 ) {
-    if ( ! is_multisite() ) {
-        return;
-    }
 
     $user_id = (int) $user_id;
     $main_site_id = 1;
 
-    $site_ids = array( $main_site_id );
+    add_user_to_blog($main_site_id, $user_id, 'member_pending');
 
-    update_user_meta($user_id, 'primary_blog', $main_site_id);
-
-    foreach ( $site_ids as $site_id ) {
-        if ( ! loopis_theme_hq_is_valid_signup_location( $site_id ) ) {
-            continue;
-        }
-
-        if ( is_user_member_of_blog( $user_id, $site_id ) ) {
-            continue;
-        }
-
-        $added = add_user_to_blog(
-            $site_id,
-            $user_id,
-            'member_pending'
-        );
-
-        if ( is_wp_error( $added ) ) {
-            error_log(
-                sprintf(
-                    'LOOPIS: Failed adding user %d to site %d: %s',
-                    $user_id,
-                    $site_id,
-                    $added->get_error_message()
-                )
-            );
-        }
-    }
+    // Delete the default primary_blog meta for the user, since we want a manual selection from the user later.
+    update_user_meta($user_id, 'primary_blog', '');
 }
 add_action('wpmu_activate_user', 'loopis_theme_hq_add_activated_user_to_main_site', 5, 3);
 

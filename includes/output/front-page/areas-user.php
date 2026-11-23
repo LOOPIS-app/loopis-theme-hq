@@ -93,19 +93,9 @@ if ( $the_query->have_posts() ) {
         <?php } ?>
     <?php } else { ?>
     
-    <?php if ( in_array( 'member_pending', $user_roles, true ) ) { ?>
-    <p>⏳ Komplettera ditt medlemskap för att välja område.</p>
-    <?php } ?>
-
-    <?php if ( in_array( 'member', $user_roles, true ) ) { ?>
-    <p>💡 Dags att välja område:</p>
-    <?php 
-    require_once LOOPIS_THEME_HQ_DIR . '/includes/forms/area-selector.php';
-    loopis_theme_hq_render_area_selector_form();
-    ?>
-    <?php } ?>
-
-    <!--p class="info">🤔 Om något är fel, skicka ett mail till <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p-->
+    <!-- No area choosen yet -->
+    <p>💢 Inget område tillgängligt.</p>
+    <p class="info">Kontakta <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span> om något är fel.</p> 
     <?php } ?>
 </div><!--post-list-->
 

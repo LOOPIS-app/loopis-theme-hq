@@ -1,8 +1,8 @@
 <?php
 /**
- * Area/Location Selection Form
+ * Area selection form
  *
- * Provides area selection functionality for both signup and logged-in users.
+ * Provides area selection for logged-in users without an area.
  *
  * @package LOOPIS_Theme
  * @subpackage Forms
@@ -13,49 +13,60 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Handle area selector form submission.
+ * Handle area selector form submission via AJAX.
  */
-function loopis_theme_hq_handle_area_selector_submission() {
-    if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) ) {
-        return;
+function loopis_handle_area_selector_submission_ajax() {
+    error_log('LOOPIS AJAX: Request received');
+    error_log('LOOPIS AJAX: POST data: ' . print_r($_POST, true));
+
+    // Check nonce
+    if ( !isset($_POST['nonce']) ) {
+        error_log('LOOPIS AJAX: Nonce missing');
+        wp_send_json_error( 'Nonce missing' );
     }
 
-    if ( ! isset( $_POST['loopis_area_selector_nonce'] ) ) {
-        return;
+    $nonce = sanitize_text_field( wp_unslash( $_POST['nonce'] ) );
+    error_log('LOOPIS AJAX: Nonce value: ' . $nonce);
+
+    if ( !wp_verify_nonce( $nonce, 'loopis_area_selector_nonce' ) ) {
+        error_log('LOOPIS AJAX: Nonce verification failed');
+        wp_send_json_error( 'Nonce verification failed' );
     }
 
-    if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['loopis_area_selector_nonce'] ) ), 'loopis_area_selector_nonce' ) ) {
-        wp_die( 'Security check failed.' );
-    }
+    error_log('LOOPIS AJAX: Nonce verified');
 
-    if ( ! isset( $_POST['loopis_location_blog_id'] ) ) {
-        return;
+    if ( ! isset( $_POST['blog_id'] ) ) {
+        error_log('LOOPIS AJAX: blog_id missing');
+        wp_send_json_error( 'Missing blog_id' );
     }
 
     $user_id = get_current_user_id();
     if ( $user_id <= 0 ) {
-        return;
+        error_log('LOOPIS AJAX: User not logged in');
+        wp_send_json_error( 'Not logged in' );
     }
 
-    $blog_id = absint( wp_unslash( $_POST['loopis_location_blog_id'] ) );
+    $blog_id = absint( wp_unslash( $_POST['blog_id'] ) );
+    error_log('LOOPIS AJAX: User ' . $user_id . ' attempting to join blog ' . $blog_id);
 
-    if ( ! loopis_theme_hq_is_valid_signup_location( $blog_id ) ) {
-        return;
+    if ( ! loopis_is_valid_signup_location( $blog_id ) ) {
+        error_log('LOOPIS AJAX: Invalid blog_id ' . $blog_id);
+        wp_send_json_error( 'Invalid blog_id' );
     }
 
+    error_log('LOOPIS AJAX: Calling area_access_setup');
     require_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/area-access-setup.php';
     area_access_setup( $user_id, $blog_id );
 
-    wp_safe_remote_post( wp_get_referer() );
-    wp_safe_redirect( wp_get_referer() );
-    exit;
+    error_log('LOOPIS AJAX: Success');
+    wp_send_json_success( array( 'message' => 'Area selected successfully' ) );
 }
-add_action( 'init', 'loopis_theme_hq_handle_area_selector_submission' );
+add_action( 'wp_ajax_loopis_select_area', 'loopis_handle_area_selector_submission_ajax' );
 
 /**
  * Return private subsites (areas).
  */
-function loopis_theme_hq_get_private_sites() {
+function loopis_get_private_sites() {
     global $wpdb;
 
     $table = $wpdb->base_prefix . 'loopis_areas';
@@ -72,11 +83,11 @@ function loopis_theme_hq_get_private_sites() {
 /**
  * Return selectable subsites (areas).
  */
-function loopis_theme_hq_get_signup_locations() {
+function loopis_get_signup_locations() {
     if ( ! is_multisite() ) {
         return array();
     }
-    $not_in = loopis_theme_hq_get_private_sites();
+    $not_in = loopis_get_private_sites();
     $not_in[] = get_main_site_id();
     return get_sites(
         array(
@@ -96,7 +107,7 @@ function loopis_theme_hq_get_signup_locations() {
 /**
  * Check whether a subsite is an allowed signup area.
  */
-function loopis_theme_hq_is_valid_signup_location( $blog_id ) {
+function loopis_is_valid_signup_location( $blog_id ) {
     $blog_id = absint( $blog_id );
 
     if ( $blog_id <= 0 || ! is_multisite() ) {
@@ -121,60 +132,26 @@ function loopis_theme_hq_is_valid_signup_location( $blog_id ) {
 }
 
 /**
- * Check whether the special invite cookie is set.
- */
-function loopis_theme_hq_has_special_location_cookie() {
-    return isset( $_COOKIE['special_invite_payload'] );
-}
-
-/**
- * Get location safely from cookie or POST data.
- */
-function loopis_theme_hq_get_location_safe() {
-    if ( loopis_theme_hq_has_special_location_cookie() ) {
-        $encoded_blog_id = wp_unslash(
-            $_COOKIE['special_invite_payload']
-        );
-
-        $decoded_blog_id = base64_decode( $encoded_blog_id, true );
-
-        if (
-            false === $decoded_blog_id ||
-            ! ctype_digit( (string) $decoded_blog_id )
-        ) {
-            return 0;
-        }
-
-        return absint( $decoded_blog_id );
-    }else{
-        return isset( $_POST['loopis_location_blog_id'] )
-        ? absint( wp_unslash( $_POST['loopis_location_blog_id'] ) )
-        : 0;
-    }
-}
-
-/**
  * Render area selector form.
  *
+ * Shows public areas available for logged-in users to select.
+ * This form handles manual area selection only - private area access via cookies
+ * is handled separately in area-access-setup-private.php
+ *
  * @param WP_Error|null $errors Optional errors object for displaying validation errors.
- * @param bool          $skip_if_cookie If true, skip rendering if special invite cookie is set. Default true.
  */
-function loopis_theme_hq_render_area_selector_form( $errors = null, $skip_if_cookie = true ) {
-    if ( $skip_if_cookie && loopis_theme_hq_has_special_location_cookie() ) {
-        return;
-    }
-
-    $selected_blog_id = loopis_theme_hq_get_location_safe();
+function loopis_render_area_selector_form( $errors = null ) {
+    $selected_blog_id = isset( $_POST['loopis_location_blog_id'] ) ? absint( wp_unslash( $_POST['loopis_location_blog_id'] ) ) : 0;
     $location_error = ( $errors && is_wp_error( $errors ) ) ? $errors->get_error_message('loopis_location_blog_id') : '';
 
-    $locations = loopis_theme_hq_get_signup_locations();
+    $locations = loopis_get_signup_locations();
     ?>
 
     <div class="loopis-form-wrapper">
         <form class="loopis-form" method="POST" id="loopis-area-selector-form">
-            <p>
+            <p class="red">⚠️ Du ska kunna hämta och lämna saker inom 1-3 dygn. Du bör därför bo eller arbeta i eller nära området.</p>
                 <label for="loopis_location_blog_id">
-                    <?php esc_html_e( 'Område', 'loopis-theme-hq' ); ?>
+                    <?php esc_html_e( 'Dags att välja område?', 'loopis-theme-hq' ); ?>
                 </label>
                 <?php if ('' !== $location_error) : ?>
                     <span class="error"><?php echo esc_html($location_error); ?></span>
@@ -186,7 +163,7 @@ function loopis_theme_hq_render_area_selector_form( $errors = null, $skip_if_coo
                     required
                 >
                     <option value="">
-                        <?php esc_html_e( 'Välj ditt område', 'loopis-theme-hq' ); ?>
+                        <?php esc_html_e( 'Välj område', 'loopis-theme-hq' ); ?>
                     </option>
 
                     <?php foreach ( $locations as $location ) : ?>
@@ -202,12 +179,8 @@ function loopis_theme_hq_render_area_selector_form( $errors = null, $skip_if_coo
                             <?php echo esc_html( $blogname ); ?>
                         </option>
                     <?php endforeach; ?>
-
-                    <option value="1">
-                        <?php esc_html_e( 'Stödmedlemskap/annat område', 'loopis-theme-hq' ); ?>
-                    </option>
                 </select>
-            </p>
+            
             <?php wp_nonce_field( 'loopis_area_selector_nonce', 'loopis_area_selector_nonce' ); ?>
             <button type="submit" class="loopis-button" id="loopis-area-submit" style="display: <?php echo $selected_blog_id > 0 ? 'inline-block' : 'none'; ?>;">
                 <?php esc_html_e( 'Välj område', 'loopis-theme-hq' ); ?>

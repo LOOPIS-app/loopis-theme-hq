@@ -18,7 +18,6 @@ if (is_user_logged_in()) {
         echo '<div class="loopis-message success">';
         echo '<p>Detta är LOOPIS startsida. Här hittar du info om ditt medlemskap och vanliga frågor.</p>';
         echo '</div>';
-        echo '<p>Tryck på ditt område nedan för att loopa.</p>';
     }
 
     // Member pending

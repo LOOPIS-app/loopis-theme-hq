@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <span class="mega-link"><a href="<?php echo esc_url(get_loopis_logout_url()); ?>">🚪 Logga ut</a></span><br>
 </div>
 
+<!-- Member registry -->
 <div class="wrapped">
 <h5>📋 Medlemsregister</h5>
 <hr>
@@ -34,11 +35,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="clear"></div>
 
+<!-- Area section -->
+<?php if (in_array('member', $user_roles, true)) : ?>
 <div class="wrapped">
 <h5>📍 Område</h5>
 <hr>
-<div style="font-size: 16px; text-align: left; padding: 5px">
-<p>📍 Ditt område: <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
+<?php $primary_blog = get_usermeta($user_id, 'primary_blog', true); ?>
+<?php if ( empty($primary_blog) ) : ?>
+	<div style="font-size: 16px; padding: 5px">
+	<p> Du har inte valt område ännu.</p>
+	<p><span class="mega-link white"><a href="<?php echo esc_url(home_url('/user/?view=member-area')); ?>">📍 Välj område</a></span></p>
+	</div>
+	<?php else : ?>
+	<div style="font-size: 16px; padding: 5px">
+	<p>✅ Ditt område: <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
+	</div>
+	<p class="info">🚛 För att byta område, kontakta <span class="link white"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
+<?php endif; ?>
 </div>
-<p class="info">💡 För att byta område, kontakta <span class="link white"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
 </div>
+<?php endif; ?>

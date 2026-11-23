@@ -12,6 +12,12 @@
     <h1>📋 Mitt medlemskap</h1>
     
 <?php if ( is_user_logged_in() ) : 
+
+    // Get current user ID
+    $user_id = get_current_user_id();
+    $user = wp_get_current_user();
+    $user_roles = (array) $user->roles;
+
     // Dynamic page loader 
     $page_dir = LOOPIS_THEME_HQ_DIR . '/pages/user/';
 

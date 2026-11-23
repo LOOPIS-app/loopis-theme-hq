@@ -88,19 +88,17 @@ if (!$can_access_private_area && is_user_logged_in() && $area_blog_id !== '') {
 		<?php the_content(); ?>
 
 		<!-- Join -->
-		<?php if (!has_category('private') && !is_user_logged_in()) { ?>
-		<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Bli medlem!</a></p>
-		<?php } ?>
+		<?php if (!is_user_logged_in()) : ?>
+			<?php if (has_category('private') ) { ?>
+			<p><b>💡 Admin för LOOPIS på <?php the_title(); ?> ger dig en länk för gratis medlemskap.</b></p>
+			<?php } else { ?>
+			<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Bli medlem</a></p>
+			<?php } ?>
+		<?php endif; ?>
 
 		<!-- Go to area -->
-		<?php if (has_term('active', 'category') && !has_category('private')) { ?>
+		<?php if (!has_category('private') ) { ?>
 		<p><span class="mega-link" style="background:#f5f5f5;"><a href="<?php echo esc_url(home_url('/' . $area_subdirectory)); ?>">→ Gå till område</a></span></p>
-		<?php } ?>
-
-		<!-- Join private area -->
-		<?php if (has_category('private') && !is_user_logged_in()) { ?>
-		<p><a class="button" href="<?php echo esc_url(get_signup_url()); ?>">Bli medlem!</a></p>
-		<p class="info">💡 Den som är admin för LOOPIS på <?php the_title(); ?> ger dig en rabattkod för gratis medlemskap.</p>
 		<?php } ?>
 		
 		<!-- Go to private area -->

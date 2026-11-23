@@ -59,7 +59,7 @@ function member_pending_check($user_id) {
         }
     } 
 
-    // Setup roles if both member data and membership payment are complete
+    // Switch role if both member data and membership payment are complete
     if ($member_data_complete && $member_payment_complete) {
         $user = new WP_User($user_id);
         $user->remove_role('member_pending');

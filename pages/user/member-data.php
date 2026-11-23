@@ -19,5 +19,5 @@ if (!defined('ABSPATH')) {
 // Include member form
 include LOOPIS_THEME_HQ_DIR . '/includes/forms/member-form.php'; ?>
 
-<p>För att byta namn eller epost-adress: <span class="big-link"><a href="mailto:info@loopis.app">✉ info@loopis.app</a></span></p>
+<p>För att byta namn eller epost-adress: <span class="big-link"><a href="mailto:info@loopis.app">✉ admin@loopis.app</a></span></p>
 <p>Läs hur vi hanterar personuppgifter: <span class="big-link"><a href="<?php echo esc_url(home_url('/privacy/')); ?>">🗄 Integritet</a></span></p>
