@@ -1,6 +1,6 @@
 <?php
 /**
- * Dynamic content for pages using url /user/?view=
+ * Dynamic content for pages using url /user/?view=filename
  * 
  * Content is shared to "LOOPIS Theme"
  */
@@ -11,7 +11,7 @@
 <div class="page-padding center">
     <h1>📋 Mitt medlemskap</h1>
     
-<?php if ( is_user_logged_in() ) : 
+    <?php if ( is_user_logged_in() ) : 
 
     // Get current user ID
     $user_id = get_current_user_id();
