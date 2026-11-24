@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Include extra functions
-require_once LOOPIS_THEME_HQ_DIR . '/includes/functions/user-extra/member-form-handler.php';
+require_once LOOPIS_THEME_HQ_DIR . '/includes/forms/member-form-handler.php';
 
 // Set variables for current user meta values
 $user_id = get_current_user_id();
@@ -121,6 +121,7 @@ $member_form_error_message = $member_form_field_messages['general'];
 if ('success' === $member_form_status) : ?>
     <div class="loopis-message success">
         <p>Uppgifterna sparades.</p>
+        <p>Gå tillbaka till <span class="big-link"><a href="<?php echo esc_url(home_url('/start')); ?>">🗺️ Startsidan</a></span></p>
     </div>
 <?php elseif ($member_form_show_general_error) : ?>
     <div class="loopis-message warning">
