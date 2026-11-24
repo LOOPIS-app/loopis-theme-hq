@@ -26,6 +26,6 @@ $password = isset($password) ? (string) $password : '';
 Logga in för att avsluta din registrering.</p>
 <p>👤 Användarnamn: <b><?php echo esc_html($user_login); ?></b></p>
 <p>✉️ E-post: <b><?php echo esc_html($user_email); ?></b></p>
-<p>🔑 Lösenord: <b><?php echo esc_html($password); ?></b></p>
+<p>🔑 Lösenord: <b><?php echo str_repeat('*', strlen($password)); ?></b></p>
 <?php include LOOPIS_THEME_HQ_DIR . '/templates/links/log-in-button.php'; ?>
 </div>

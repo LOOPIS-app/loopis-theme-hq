@@ -1,13 +1,8 @@
 <?php
 /**
- * Filters and actions affecting multisite login /wp-login.php.
+ * Customized multisite user login on /wp-login.php
  * 
  * Created by CoPilot, prompted by Johan.
- * 
- * Notice: Heavy customization bdecause the default WP login page is using login_head instead of wp_head.
- * 
- * @package LOOPIS_Theme
- * @subpackage Frontend
  */
 
 // Skip loading login-only hooks on non-login requests.
@@ -18,7 +13,7 @@ if (!$loopis_is_login_request) {
 }
 
 // Render a named slot from dedicated templates in templates/wp-login.
-function loopis_theme_hq_login_template_slot($slot) {
+function loopis_login_render_template_slot($slot) {
     $slot_map = array(
         'message' => 'loopis-login-title.php',
         'custom_html_1' => 'loopis-login-custom-1.php',
@@ -43,7 +38,7 @@ function loopis_theme_hq_login_template_slot($slot) {
 
 
 // Enqueue LOOPIS styles for /wp-login.php
-function loopis_theme_hq_login_assets() {
+function loopis_login_enqueue_assets() {
 
     wp_enqueue_style('loopis-theme-hq-style', LOOPIS_THEME_URI . '/assets/css/base.css', array(), filemtime(LOOPIS_THEME_DIR . '/assets/css/base.css'));
     wp_enqueue_style('loopis-theme-hq-responsive', LOOPIS_THEME_URI . '/assets/css/responsive.css', array('loopis-theme-hq-style'), filemtime(LOOPIS_THEME_DIR . '/assets/css/responsive.css'));
@@ -55,24 +50,24 @@ function loopis_theme_hq_login_assets() {
     wp_enqueue_style('loopis-theme-hq-google-fonts', 'https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,600;1,300;1,400&subset=latin&display=swap', array(), null );
 
     }
-add_action('login_enqueue_scripts', 'loopis_theme_hq_login_assets');
+add_action('login_enqueue_scripts', 'loopis_login_enqueue_assets');
 
 // Set logo link target on login page.
-function loopis_theme_hq_login_headerurl() {
+function loopis_login_set_headerurl() {
     return home_url('/start/');
 }
-add_filter('login_headerurl', 'loopis_theme_hq_login_headerurl');
+add_filter('login_headerurl', 'loopis_login_set_headerurl');
 
 // Set logo link title text on login page.
-function loopis_theme_hq_login_headertext() {
+function loopis_login_set_headertext() {
     return 'Logga in';
 }
-add_filter('login_headertext', 'loopis_theme_hq_login_headertext');
+add_filter('login_headertext', 'loopis_login_set_headertext');
 
 /**
  * Redirect all users after login unless an explicit redirect target is provided.
  */
-function loopis_theme_hq_login_redirect($redirect_to, $requested_redirect_to, $user) {
+function loopis_login_set_redirect($redirect_to, $requested_redirect_to, $user) {
     if (!($user instanceof WP_User)) {
         return $redirect_to;
     }
@@ -83,17 +78,17 @@ function loopis_theme_hq_login_redirect($redirect_to, $requested_redirect_to, $u
 
     return home_url('/start/');
 }
-add_filter('login_redirect', 'loopis_theme_hq_login_redirect', 10, 3);
+add_filter('login_redirect', 'loopis_login_set_redirect', 10, 3);
 
 // Inject LOOPIS heading and helper text above the login form.
-function loopis_theme_hq_login_message($message) {
+function loopis_login_inject_message($message) {
     $action = isset($_REQUEST['action']) ? sanitize_key($_REQUEST['action']) : 'login';
     $supported_actions = array('login', 'lostpassword', 'rp', 'resetpass', 'register');
     if (!in_array($action, $supported_actions, true)) {
         return $message;
     }
 
-    $template_message = loopis_theme_hq_login_template_slot('message');
+    $template_message = loopis_login_render_template_slot('message');
 
     if ('' === $template_message) {
         $template_message = '<h1>👤 Logga in</h1><hr><p class="small">💡 För medlemmar.</p>';
@@ -101,40 +96,30 @@ function loopis_theme_hq_login_message($message) {
 
     return $template_message . $message;
 }
-add_filter('login_message', 'loopis_theme_hq_login_message');
+add_filter('login_message', 'loopis_login_inject_message');
 
 // wp-login.php uses login_head/login_footer, so load Twemoji through login_head.
 add_action('login_head', 'use_twemoji');
 
 // Optional custom HTML block rendered between "Forgot password" and register link.
-function loopis_theme_hq_login_custom_html_1() {
-    $template_html = loopis_theme_hq_login_template_slot('custom_html_1');
-
-    if ('' === $template_html) {
-        return '<br><h3>💔 Inte medlem?</h3><hr><p class="small">💡 Registrera dig och betala 50 kr.</p>';
-    }
-
+function loopis_login_render_custom_block_1() {
+    $template_html = loopis_login_render_template_slot('custom_html_1');
     return $template_html;
 }
 
 // Optional custom HTML block rendered between register link and back-to-blog.
-function loopis_theme_hq_login_custom_html_2() {
-    $template_html = loopis_theme_hq_login_template_slot('custom_html_2');
-
-    if ('' === $template_html) {
-        return '<p><span class="big-link"><a href="/faq/varför-medlemskap">📌 Varför måste jag vara medlem?</a></span></p>';
-    }
-
+function loopis_login_render_custom_block_2() {
+    $template_html = loopis_login_render_template_slot('custom_html_2');
     return $template_html;
 }
 
 // Post-process login page markup to add icons and improve nav/button structure.
-function loopis_theme_hq_login_nav_icons() {
+function loopis_login_render_nav_icons() {
     ?>
     <script type="text/javascript">
     (function() {
-        var customHtml1 = <?php echo wp_json_encode(loopis_theme_hq_login_custom_html_1()); ?>;
-        var customHtml2 = <?php echo wp_json_encode(loopis_theme_hq_login_custom_html_2()); ?>;
+        var customHtml1 = <?php echo wp_json_encode(loopis_login_render_custom_block_1()); ?>;
+        var customHtml2 = <?php echo wp_json_encode(loopis_login_render_custom_block_2()); ?>;
         var nav = document.getElementById('nav');
         var registerLink = null;
         var lostPasswordLink = null;
@@ -175,19 +160,19 @@ function loopis_theme_hq_login_nav_icons() {
             '#nav a[href*="action=retrievepassword"]'
         ]);
 
-        function wrapInBigLink(link) {
-            if (!link || (link.parentElement && link.parentElement.classList.contains('big-link'))) {
+        function wrapInMegaLink(link) {
+            if (!link || (link.parentElement && link.parentElement.classList.contains('mega-link'))) {
                 return;
             }
 
             var wrapper = document.createElement('span');
-            wrapper.className = 'big-link';
+            wrapper.className = 'mega-link';
             link.parentNode.insertBefore(wrapper, link);
             wrapper.appendChild(link);
         }
 
-        function getBigLinkNode(link) {
-            if (link && link.parentElement && link.parentElement.classList.contains('big-link')) {
+        function getMegaLinkNode(link) {
+            if (link && link.parentElement && link.parentElement.classList.contains('mega-link')) {
                 return link.parentElement;
             }
 
@@ -210,22 +195,22 @@ function loopis_theme_hq_login_nav_icons() {
             lostPasswordLink.dataset.loopisEmojiApplied = '1';
         }
 
-        wrapInBigLink(registerLink);
-        wrapInBigLink(lostPasswordLink);
-        wrapInBigLink(backToBlogLink);
+        wrapInMegaLink(registerLink);
+        wrapInMegaLink(lostPasswordLink);
+        wrapInMegaLink(backToBlogLink);
 
         // Move register link into its own paragraph.
         if (registerLink && !registerParagraph) {
             registerParagraph = document.createElement('p');
             registerParagraph.id = 'loopis-login-register';
-            registerParagraph.appendChild(getBigLinkNode(registerLink));
+            registerParagraph.appendChild(getMegaLinkNode(registerLink));
         }
 
         // Move lost-password link into its own paragraph.
         if (lostPasswordLink && !lostPasswordParagraph) {
             lostPasswordParagraph = document.createElement('p');
             lostPasswordParagraph.id = 'loopis-login-lostpassword';
-            lostPasswordParagraph.appendChild(getBigLinkNode(lostPasswordLink));
+            lostPasswordParagraph.appendChild(getMegaLinkNode(lostPasswordLink));
         }
 
         // Build and order a dedicated block below the form.
@@ -305,21 +290,21 @@ function loopis_theme_hq_login_nav_icons() {
     </script>
     <?php
 }
-add_action('login_footer', 'loopis_theme_hq_login_nav_icons');
+add_action('login_footer', 'loopis_login_render_nav_icons');
 
 // Translate "Register" link text to Swedish on the login page.
-function loopis_theme_hq_login_register_text($translated, $text, $domain) {
+function loopis_login_translate_register_text($translated, $text, $domain) {
     if ('Register' === $text && 'default' === $domain) {
         return 'Bli medlem';
     }
     return $translated;
 }
-add_filter('gettext', 'loopis_theme_hq_login_register_text', 10, 3);
+add_filter('gettext', 'loopis_login_translate_register_text', 10, 3);
 
 /**
  * Style forgot-password email as LOOPIS HTML mail.
  */
-function loopis_theme_hq_style_password_reset_email($defaults, $key, $user_login, $user_data) {
+function loopis_login_style_password_reset_email($defaults, $key, $user_login, $user_data) {
     include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-headers.php';
     include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-password-reset-mail.php';
     include_once LOOPIS_THEME_HQ_DIR . '/includes/functions/mail/loopis-mail-footer.php';
