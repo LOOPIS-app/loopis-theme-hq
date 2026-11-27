@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="economy wrapped">
 <p><span class="left">Guldstjärnor</span><span class="right">🌟</span></p>
 <hr>
-<?php include LOOPIS_THEME_DIR . '/includes/output/user-data/user-rewards.php'; ?>
+<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-rewards.php'; ?>
 <hr>
 <p>&nbsp;<span class="right">Totalt: <b><?php echo $stars; ?></b></span></p>
 
@@ -67,15 +67,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 💡 Samla <?php echo $remaining; ?> fyrklöver så får du ett mynt!<br>
 <?php } ?>
 </p>
-
-<!--FAQ-->	
-<p><span class="link"><a href="<?php echo esc_url(network_home_url( '/faq/hur-funkar-beloningar' )); ?>">📌 Hur funkar belöningar?</a></span></p>
-
-<!--Payments-->	
-<h3>📒 Mina kvitton</h3>
-<hr>
-<p>Dina betalningar till föreningen.</p>
-<?php include_once LOOPIS_THEME_DIR . '/includes/output/user-data/user-payments.php'; ?>
-
-<!--FAQ-->	
-<p><span class="link"><a href="<?php echo esc_url(network_home_url( '/faq/varför-medlemskap' )); ?>">📌 Vad gör LOOPIS med inkomsterna?</a></span></p>

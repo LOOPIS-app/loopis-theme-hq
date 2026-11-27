@@ -20,6 +20,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 <p class="small">🍀 <?php echo $clovers; ?> fyrklöver</p>
 <p class="small">🌟 <?php echo $stars; ?> guldstjärnor</p>
 </div><!-- wrapped -->
-
-<!--FAQ-->
-<p><span class="link"><a href="<?php echo esc_url(network_home_url('/faq/hur-funkar-regnbagsmynt')); ?>">📌 Hur funkar regnbågsmynt?</a></span></p>

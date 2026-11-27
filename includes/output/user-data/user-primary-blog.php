@@ -17,7 +17,7 @@ $primary_blog_name = $primary_blog_id ? get_blog_details($primary_blog_id) : nul
 if ( empty($primary_blog_id) ) {
     echo esc_html('Ej valt');
 } elseif ( $primary_blog_id == 1 ) {
-    echo esc_html('Stöttar nytt område');
+    echo esc_html('Väntar...');
 } else {
     echo esc_html($primary_blog_name->blogname);
 }
