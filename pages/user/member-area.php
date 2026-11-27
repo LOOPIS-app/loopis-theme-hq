@@ -32,36 +32,65 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['loopis_location_blo
         }
     }
 }
-
 ?>
 
 <h3>📍 Välj område</h3>
 <hr>
-<p class="small">💡 För dig som bor i eller nära ett av LOOPIS områden.</p>
+<p class="small">💡 För dig som har ett LOOPIS-område nära.</p>
 
-<?php if (in_array('member', $user_roles, true)) {
+<?php
+// Member output
+if (in_array('member', $user_roles, true)) : ?>
 
-// Get current area selection
-$primary_blog = get_usermeta($user_id, 'primary_blog', true); ?>
+    <?php
+    // Member with a subsite as primary blog
+    if ( $user_primary_blog > '1' ) { ?>
+    <div class="loopis-message success">
+	<p>✅ Ditt valda LOOPIS-område: 📍 <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
+    </div>
+    <p class="info">🚛 För att byta område behöver du kontakta <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
 
-<?php if ($primary_blog) : ?>
-	<p>✅ Ditt område: <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
-    <p class="info">🚛 För att byta område, kontakta <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
-    
-    <?php else :
-    // Render area selector form
-    include_once LOOPIS_THEME_HQ_DIR . '/includes/forms/area-selector.php';
-    loopis_render_area_selector_form(); ?>
+    <?php 
+    // Member with the mainsite as primary blog
+    } elseif ( $user_primary_blog == '1' ) { ?>
+    <div class="loopis-message success">
+    <p><b>⏳ Du väntar på ett nytt LOOPIS-område?</b></p>
+    </div>
+        <?php
+        include_once LOOPIS_THEME_HQ_DIR . '/includes/forms/area-selector.php';
+        loopis_render_area_selector_form(); ?>
 
-    <h3>🙋 Stötta nytt område</h3>
-    <hr>
-    <p class="small">💡 För dig som vill ha LOOPIS i ett nytt område.</p>
-    <span class="mega-link"><a href="<?php echo esc_url(home_url('/postareas')); ?>">⚡️ Stötta nytt område</a></span>
+    <?php
+     // Member with no primary blog
+     // Should not happen because it is set to 1 on start page if the users postarea doesn't match any existing blog
+    } elseif ( empty($user_primary_blog) ) { ?>
+    <div class="loopis-message success">
+    <p>⏳ Du har inte valt något LOOPIS-område...</p>
+    </div>
+            <?php
+        include_once LOOPIS_THEME_HQ_DIR . '/includes/forms/area-selector.php';
+        loopis_render_area_selector_form(); ?>
 
-    <!--p><span class="link"><a href="<?php echo esc_url( home_url( '/faq/hur-startar-man-loopis' ) ); ?>">📌 Hur startar man LOOPIS?</a></span></p-->
-    <?php endif; ?>
-        <p class="info">Frågor om våra områden? Skriv till <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
-<?php } else { 
-    // Not yet member
-     include LOOPIS_THEME_HQ_DIR . '/includes/output/access/mainsite-message.php'; 
-} 
+    <?php } ?>
+
+    <?php
+    // Info about choosing 
+    if ( $user_primary_blog == '1' || empty($user_primary_blog) ) { ?>
+        
+        <div class="loopis-message warning">
+        <h5>⚠️ Innan du väljer!</h5>
+        <hr>
+        <p><b>Välj bara ett område om du vill använda det!</b></p>
+        <p>Du ska kunna hämta och lämna saker i ditt område inom 1-3 dygn.</p>
+        </div>
+
+        <p>Vänta med att välja om du vill ha ett område närmre dig:</p>
+        <p><span class="mega-link"><a href="<?php echo esc_url(home_url('stats/?view=pages/postareas')); ?>">⚡️ Stötta område</a></span></p>
+
+        <p class="info">💡 Frågor om våra områden? Skriv till <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
+    <?php } ?>
+
+    <?php else : 
+    // Not yet member output
+    include LOOPIS_THEME_HQ_DIR . '/includes/output/access/mainsite-message.php'; 
+    endif; 

@@ -44,6 +44,9 @@ function loopis_theme_hq_handle_member_form_post() {
     // Get current user ID
     $user_id = get_current_user_id();
 
+    // Get the current postcode to check if it has changed
+    $current_postcode = get_user_meta($user_id, 'wpum_postcode', true);
+
     // Sanitize raw form values before applying field-specific normalization.
     $postcode_raw = sanitize_text_field(wp_unslash($_POST['wpum_postcode'] ?? ''));
     $phone_raw = sanitize_text_field(wp_unslash($_POST['wpum_phone'] ?? ''));
@@ -55,6 +58,9 @@ function loopis_theme_hq_handle_member_form_post() {
     $postcode = preg_replace('/\D+/', '', $postcode_raw);
     $phone_digits = preg_replace('/\D+/', '', $phone_raw);
     $birthyear = preg_replace('/\D+/', '', $birthyear_raw);
+
+    // Check if postcode has changed
+    $postcode_changed = ($postcode !== $current_postcode);
 
     // Define allowed values for select fields.
     $allowed_genders = array('female', 'male', 'nonbinary', 'other', 'secret');
@@ -92,10 +98,7 @@ function loopis_theme_hq_handle_member_form_post() {
         // Persist fields that passed validation to avoid unnecessary refilling.
         if ($is_valid_postcode) {
             update_user_meta($user_id, 'wpum_postcode', $postcode);
-            
-            // Include function for mapping postal code to postal area.
-            include_once LOOPIS_USERS_DIR . '/includes/functions/loopis-get-city.php';
-            update_user_meta($user_id, 'wpum_postarea', loopis_get_city($postcode));
+            loopis_theme_hq_update_postcode_if_changed($user_id, $postcode, $current_postcode);
         }
 
         if ($is_valid_phone) {
@@ -131,9 +134,8 @@ function loopis_theme_hq_handle_member_form_post() {
     update_user_meta($user_id, 'wpum_gender', $gender);
     update_user_meta($user_id, 'wpum_active', $active);
     
-    // Include function for mapping postal code to postal area.
-    include_once LOOPIS_USERS_DIR . '/includes/functions/loopis-get-city.php';
-    update_user_meta($user_id, 'wpum_postarea', loopis_get_city($postcode));
+    // Update postarea and primary_blog if postcode has changed
+    loopis_theme_hq_update_postcode_if_changed($user_id, $postcode, $current_postcode);
     
     // Check if both member data and membership payment are complete.
     if(!function_exists('member_pending_check')) {
@@ -146,4 +148,18 @@ function loopis_theme_hq_handle_member_form_post() {
     // Return a success state for the form message.
     wp_safe_redirect(add_query_arg('member_form', 'success', $redirect_url));
     exit;
+}
+
+/**
+ * Update postcode-related user meta if postcode has changed.
+ * 
+ * When a user changes their postcode, update their postarea (city) via loopis_get_city()
+ */
+function loopis_theme_hq_update_postcode_if_changed( $user_id, $postcode, $current_postcode ) {
+    if ( $postcode === $current_postcode ) {
+        return;
+    }
+
+    include_once LOOPIS_USERS_DIR . '/includes/functions/loopis-get-city.php';
+    update_user_meta( $user_id, 'wpum_postarea', loopis_get_city( $postcode ) );
 }

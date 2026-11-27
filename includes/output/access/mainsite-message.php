@@ -23,7 +23,7 @@ if (is_user_logged_in()) {
         } elseif ( $user_primary_blog == '1' ) {
             // Member with mainsite as primary blog
             echo '<div class="loopis-message success">';
-            echo '<p>LOOPIS finns inte i ditt område ännu... Vi meddelar dig när ni är 100 medlemmar. Hjälp till att bli fler! </p>';
+            echo '<p>LOOPIS finns inte i ditt område ännu. Vi meddelar dig när ni är 100 medlemmar. Hjälp till att bli fler! </p>';
             echo '<span class="mega-link"><a href="'.esc_url(home_url('stats/?view=pages/postareas')).'">⚡️ Stötta område</a></span></p>';
             echo '</div>';
         } elseif ( $user_primary_blog > '1' ) {

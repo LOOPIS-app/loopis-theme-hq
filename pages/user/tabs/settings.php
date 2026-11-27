@@ -40,18 +40,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wrapped">
 <h5>📍 Område</h5>
 <hr>
-<?php $primary_blog = get_usermeta($user_id, 'primary_blog', true); ?>
-<?php if ( empty($primary_blog) ) : ?>
-	<div style="font-size: 16px; padding: 5px">
-	<p> Du har inte valt område ännu.</p>
+<?php
+    // Member with a subsite as primary blog
+    if ( $user_primary_blog > '1' ) { ?>
+	<p>✅ Ditt valda LOOPIS-område: 📍 <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
+    
+    <?php 
+    // Member with the mainsite as primary blog
+    } elseif ( $user_primary_blog == '1' ) { ?>
+    <p>⏳ Du väntar på ett nytt LOOPIS-område...</p>
+    <p><span class="mega-link white"><a href="<?php echo esc_url(home_url('/user/?view=member-area')); ?>">📍 Välj område</a></span></p>
+
+    <?php
+     // Member with no primary blog (should not happen)
+    } elseif ( empty($user_primary_blog) ) { ?>
+    <p>⏳ Du har inte valt något LOOPIS-område...</p>
 	<p><span class="mega-link white"><a href="<?php echo esc_url(home_url('/user/?view=member-area')); ?>">📍 Välj område</a></span></p>
-	</div>
-	<?php else : ?>
-	<div style="font-size: 16px; padding: 5px">
-	<p>✅ Ditt område: <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
-	</div>
-	<p class="info">🚛 För att byta område, kontakta <span class="link white"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
-<?php endif; ?>
+    <?php } ?>
+	
 </div>
-</div>
+<?php if ( $user_primary_blog > '1' ) { ?>
+<p class="info">🚛 För att byta område, kontakta <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
+<?php } ?>
+
 <?php endif; ?>

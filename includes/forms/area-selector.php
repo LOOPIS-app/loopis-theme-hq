@@ -149,9 +149,8 @@ function loopis_render_area_selector_form( $errors = null ) {
 
     <div class="loopis-form-wrapper">
         <form class="loopis-form" method="POST" id="loopis-area-selector-form">
-            <p class="red">⚠️ Du ska kunna hämta och lämna saker inom 1-3 dygn. Du bör därför bo eller arbeta i eller nära området.</p>
                 <label for="loopis_location_blog_id">
-                    <?php esc_html_e( 'Dags att välja område?', 'loopis-theme-hq' ); ?>
+                    <?php esc_html_e( 'Välj ett område att använda:', 'loopis-theme-hq' ); ?>
                 </label>
                 <?php if ('' !== $location_error) : ?>
                     <span class="error"><?php echo esc_html($location_error); ?></span>
@@ -176,7 +175,7 @@ function loopis_render_area_selector_form( $errors = null ) {
                             value="<?php echo esc_attr( $blog_id ); ?>"
                             <?php selected( $selected_blog_id, $blog_id ); ?>
                         >
-                            <?php echo esc_html( $blogname ); ?>
+                            📍 <?php echo esc_html( $blogname ); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

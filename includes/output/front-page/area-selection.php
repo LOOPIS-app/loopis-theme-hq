@@ -1,6 +1,9 @@
 <?php
 /**
  * Prompt user with no primary blog selected to choose an area.
+ * 
+ * The users postarea is used to check if a corresponding LOOPIS area (blog title) exists.
+ * If no corresponding blog title exists, the users primary_blog is set to '1'.
  */
 
 if (!defined('ABSPATH')) {
@@ -17,8 +20,7 @@ if ( loopis_has_special_invite_cookie() ) {
 if ( empty($user_primary_blog) ) { ?>
 <h3>💚 Välkommen!</h3>
 <hr>
-<p>Nu är du medlem i föreningen LOOPIS.<br>
-Vi är så glada att du är med! 🥳</p>
+<p>Nu är du medlem i föreningen LOOPIS. 🥳</p>
 <?php } ?>
 
 <?php
@@ -35,11 +37,11 @@ $blog_post = !empty($blog_posts) ? $blog_posts[0] : null;
 
 // Blog post found?
 if ($blog_post) { ?>
-    <p>LOOPIS finns i ditt område! För att ansluta dig:<br>
+    <p><b>LOOPIS finns i ditt område!</b> För att använda det:<br>
     <span class="mega-link"><a href="<?php echo esc_url(home_url('/user/?view=member-area')); ?>">📍 Välj område</a></span></p> 
 <?php } else { ?>
-    <p>LOOPIS finns inte i ditt område ännu...<br>
-        Hjälp till att bli fler medlemmar! 🥰<br>
+    <p>LOOPIS finns inte i ditt område ännu?<br>
+        Hjälp till att bli fler medlemmar! 📈<br>
     <span class="mega-link"><a href="<?php echo esc_url(home_url('stats/?view=pages/postareas')); ?>">⚡️ Stötta område</a></span></p>
 <?php 
 

@@ -18,11 +18,11 @@ $user_primary_blog = get_user_meta($user_id, 'primary_blog', true);
 }
 
 // Get all users with their postarea and count them
-$users = get_users(array('fields' => 'ID'));
+$all_users = get_users(array('fields' => 'ID'));
 
 // Count users per postarea
 $postarea_counts = array();
-foreach ($users as $user_id) {
+foreach ($all_users as $user_id) {
     $postarea_meta = get_user_meta($user_id, 'wpum_postarea', true);
     
     if (!empty($postarea_meta)) {
@@ -35,20 +35,39 @@ foreach ($users as $user_id) {
 
 // Sort by count descending
 arsort($postarea_counts);
-?>
 
-    <h1>👥 Postområde</h1>
+if ( is_user_logged_in() ) {
+// Get the count for the current user's postarea
+$user_postarea_count = isset($postarea_counts[$user_postarea]) ? $postarea_counts[$user_postarea] : 0;
+$user_postarea_remaining = 100 - $user_postarea_count;
+} ?>
+
+    <h1>📈 Områden</h1>
     <hr>
     <p class="small">💡 Antal medlemmar per postområde.</p>
     
-    <p>Det behövs 100 medlemmar i ditt postområde för att starta LOOPIS.</p>
+    <p>Det behövs 100 medlemmar i ett postområde för att starta LOOPIS.</p>
     
     <?php if ( is_user_logged_in() ) : ?>
-    <p>Ditt postområde <strong><?php echo esc_html($user_postarea); ?></strong> har just nu <strong><?php echo isset($postarea_counts[$user_postarea]) ? esc_html($postarea_counts[$user_postarea]) : 0; ?> medlemmar.</strong></p>
+    <div class="wrapped">
+        <h5>📍 <?php echo esc_html($user_postarea); ?></h5>
+        <hr>
+        <p>👥 Ditt postområde har <b><?php echo esc_html($user_postarea_count . ' ' . ($user_postarea_count != 1 ? 'medlemmar' : 'medlem')); ?></b>.</p>
+        <?php if ($user_postarea_count < 100) { ?>
+        <p>⚡️ Ni behöver bli ytterligare <b><?php echo esc_html($user_postarea_remaining) . ' ' . ($user_postarea_remaining != 1 ? 'medlemmar' : 'medlem'); ?></b>.</p>
+        <?php } ?>
+        <?php if ($user_postarea_count >= 100) { ?>
+        <p>💚 Hurra för dig och dina grannar!</p>
+        <?php } ?>
+    </div>
     <?php endif; ?>
 
-    <span class="mega-link"><a href="<?php echo esc_url('https://staging.loopis.app/faq/hur-startar-man-loopis');?>">📌 Hur startar man LOOPIS?</a></span><br>
-    <span class="mega-link"><a href="<?php echo esc_url('https://staging.loopis.app/faq/rekrytering');?>">📡 Hjälp till att rekrytera</a></span><br>
+    <?php if ( !is_user_logged_in() || $user_postarea_count < 100 ) : ?>
+    <div class="span-list">
+        <span class="mega-link"><a href="<?php echo esc_url('https://staging.loopis.app/faq/rekrytering');?>">📡 Hjälp till att rekrytera</a></span><br>
+        <span class="mega-link"><a href="<?php echo esc_url('https://staging.loopis.app/faq/hur-startar-man-loopis');?>">📌 Hur startar man LOOPIS?</a></span>
+    </div>
+    <?php endif; ?>
 
     <div class="columns"><div class="column1">↓ Postområde</div>
     <div class="column2 small">Medlemmar ↓</div></div>

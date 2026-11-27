@@ -69,17 +69,18 @@ $postarea_members_count = get_postarea_member_count($user_postarea);
 
 <!-- Requested area -->
 <div class="columns">
-    <div class="column1"><h3>📈 Mitt område...</h3></div>
+    <div class="column1"><h3>📍 Mitt område...</h3></div>
     <div class="column2"><a href="<?php echo esc_url( home_url( '/areas/' ) ); ?>">→ Visa aktiva</a></div>
 </div>
 <hr>
 <div class="post-list">
-    <div class="post-list-post-big">
+    <div class="post-list-post-big" onclick="window.location.href='<?php echo esc_url(home_url('/stats/?view=pages/postareas')); ?>';">
         <div class="post-list-post-thumbnail-big"><?php the_post_thumbnail('thumbnail'); ?></div>
         <div class="post-list-post-title-big"><?php echo esc_html($user_postarea); ?></div>
         <div class="post-list-post-meta">
             <p>🧡 Efterfrågat</p>
-            <p>👥 <?php echo esc_html($postarea_members_count); ?> medlemmar</p>
+            <p>👥 <?php echo esc_html($postarea_members_count); if ($postarea_members_count != 1) { echo ' medlemmar'; } else { echo ' medlem'; } ?></p>
+            <p>📈 Väntar på 100 medlemmar...</p>
         </div>
     </div>
 </div><!--post-list-->
