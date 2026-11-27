@@ -46,7 +46,8 @@ if (in_array('member', $user_roles, true)) : ?>
     // Member with a subsite as primary blog
     if ( $user_primary_blog > '1' ) { ?>
     <div class="loopis-message success">
-	<p>✅ Ditt valda LOOPIS-område: 📍 <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
+	<p>✅ Ditt valda LOOPIS-område:</p>
+    <p><span class="mega-link">📍<?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog-link.php'; ?></span></p>
     </div>
     <p class="info">🚛 För att byta område behöver du kontakta <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
 

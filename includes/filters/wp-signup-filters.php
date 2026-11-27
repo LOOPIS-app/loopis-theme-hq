@@ -178,7 +178,7 @@ function loopis_signup_render_name_fields($errors) {
             <span class="error"><?php echo esc_html($postcode_error); ?></span>
         <?php endif; ?>
         <input type="text" name="wpum_postcode" id="wpum_postcode" value="<?php echo esc_attr($postcode); ?>" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required />
-        <span class="description">Ange postnummer för din hemadress (fem siffror).</span>
+        <span class="description">Ange ditt postnummer (fem siffror).</span>
     </p>
     <?php
 }

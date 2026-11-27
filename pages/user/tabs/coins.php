@@ -31,4 +31,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 <p><button type="button" class="green" onclick="window.location.href='<?php echo esc_url(add_query_arg('option', 'coins-stripe', network_home_url('/shop/'))); ?>'">Köp mynt</button></p>
 
 <!--FAQ-->
-<p><span class="link"><a href="<?php echo esc_url(network_home_url('/faq/hur-funkar-regnbagsmynt')); ?>">📌 Hur funkar regnbågsmynt?</a></span></p>
+<p><span class="big-link"><a href="<?php echo esc_url(network_home_url('/faq/hur-funkar-regnbagsmynt')); ?>">📌 Hur funkar regnbågsmynt?</a></span></p>

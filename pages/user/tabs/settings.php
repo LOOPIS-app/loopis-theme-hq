@@ -43,7 +43,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php
     // Member with a subsite as primary blog
     if ( $user_primary_blog > '1' ) { ?>
-	<p>✅ Ditt valda LOOPIS-område: 📍 <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
+	<p>✅ Ditt valda LOOPIS-område:</p>
+    <p><span class="mega-link white">📍 <?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog-link.php'; ?></span></p>
     
     <?php 
     // Member with the mainsite as primary blog
