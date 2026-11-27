@@ -19,7 +19,7 @@
     $page_dir = LOOPIS_THEME_HQ_DIR . '/pages/stats/';
 
     // Get the 'option' parameter from URL
-    $page_option = isset($_GET['view']) ? sanitize_text_field($_GET['view']) : 'start';
+    $page_option = isset($_GET['view']) ? sanitize_text_field($_GET['view']) : 'pages/postareas';
 
     $php_file = $page_dir . $page_option . '.php';
 
