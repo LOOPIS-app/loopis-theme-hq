@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <p class="small">Du kan just nu paxa och hämta <?php echo $coins; ?> saker.</p>
 <hr>
 <p class="small">💚 <?php echo $count_given; ?> saker lämnade</p>
-<p class="small">❤ <?php echo $count_booked; ?> saker hämtade (inkl. paxade)</p>
+<p class="small">❤ <?php echo ($count_booked-$count_cancelled); ?> saker hämtade (inkl. paxade)</p>
 <p class="small">🍀 <?php echo $clovers; ?> fyrklöver</p>
 <p class="small">🌟 <?php echo $stars; ?> guldstjärnor</p>
 </div><!-- wrapped -->
