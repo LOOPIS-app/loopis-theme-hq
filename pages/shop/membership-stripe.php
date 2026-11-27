@@ -29,9 +29,9 @@ $is_member_pending = in_array('member_pending', $user_roles, true);
 
 <?php elseif ('success' === $checkout_status) : ?>
 
-    <p><strong>✅ Betalning mottagen!</strong></p>
-    <div class="loopis-message information">
-    <p>Du behöver nu komplettera vårt <span class="big-link">📋 <a href="<?php echo esc_url(home_url('/user/?option=member-data')); ?>">Medlemsregister</a></span> och välja område.</p>
+    <div class="loopis-message success">
+        <p>✅ Betalning mottagen!</p>
+        <p>Gå tillbaka till <span class="big-link"><a href="<?php echo esc_url(home_url('/start')); ?>">🗺️ Startsidan</a></span></p>
     </div>
     <script>
     (function() {
@@ -55,14 +55,16 @@ $is_member_pending = in_array('member_pending', $user_roles, true);
     </script>
 
 <?php elseif ($is_member) : ?>
-
-    <p>✅ Du är redan medlem.</p>
+    <div class="loopis-message success">
+        <p>✅ Ditt medlemskap är betalt.</p>
+        <p>Gå tillbaka till <span class="big-link"><a href="<?php echo esc_url(home_url('/start')); ?>">🗺️ Startsidan</a></span></p>
+    </div>
 
 <?php elseif ('cancelled' === $checkout_status) : ?>
-
-    <p><strong>⚠ Betalningen avbröts.</strong> Du kan försöka igen när du är redo.</p>
-    <p><a href="<?php echo esc_url(add_query_arg('option', 'membership-stripe', home_url('/shop/'))); ?>" class="button-primary">↻ Försök igen</a></p>
-
+    <div class="loopis-message warning">
+        <p><strong>⚠ Betalningen avbröts.</strong> Du kan försöka igen när du är redo.</p>
+        <p><a href="<?php echo esc_url(add_query_arg('option', 'membership-stripe', home_url('/shop/'))); ?>" class="button-primary">↻ Försök igen</a></p>
+    </div>
 <?php elseif ($is_member_pending) : ?>
 
     <p>Tryck på knappen för att betala din medlemsavgift.</p>
@@ -126,6 +128,6 @@ if (defined('LOOPIS_TEST') && LOOPIS_TEST) {
 <?php else : ?>
 
     <p>Ditt konto verkar inte ha rätt behörighet för att betala här.</p>
-    <p class="info">Kontakta <a href="mailto:info@loopis.app">info@loopis.app</a> om du behöver hjälp.</p>
+    <p class="info">Kontakta <a href="mailto:admin@loopis.app">admin@loopis.app</a> om du behöver hjälp.</p>
 
 <?php endif; ?>

@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <span class="mega-link"><a href="<?php echo esc_url(get_loopis_logout_url()); ?>">🚪 Logga ut</a></span><br>
 </div>
 
+<!-- Member registry -->
 <div class="wrapped">
 <h5>📋 Medlemsregister</h5>
 <hr>
@@ -34,36 +35,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="clear"></div>
 
+<!-- Area section -->
+<?php if (in_array('member', $user_roles, true)) : ?>
 <div class="wrapped">
 <h5>📍 Område</h5>
 <hr>
-<div style="font-size: 16px; text-align: left; padding: 5px">
-<p>📍 Ditt område: <b><?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog.php'; ?></b></p>
-</div>
-<p class="info">💡 För att byta område, kontakta <span class="link white"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
-</div>
+<?php
+    // Member with a subsite as primary blog
+    if ( $user_primary_blog > '1' ) { ?>
+	<p>✅ Ditt valda LOOPIS-område:</p>
+    <p><span class="mega-link white">📍 <?php include LOOPIS_THEME_HQ_DIR . '/includes/output/user-data/user-primary-blog-link.php'; ?></span></p>
+    
+    <?php 
+    // Member with the mainsite as primary blog
+    } elseif ( $user_primary_blog == '1' ) { ?>
+    <p>⏳ Du väntar på ett nytt LOOPIS-område...</p>
+    <p><span class="mega-link white"><a href="<?php echo esc_url(home_url('/user/?view=member-area')); ?>">📍 Välj område</a></span></p>
 
-<div class="clear"></div>
-
-<div class="wrapped">
-<h5>✉️ Mailutskick</h5>
-<hr>
-<div style="text-align: left; padding: 5px">
-    <form class="loopis-form" method="post" action="" novalidate>
-		<p>
-      <label for="tips"><input type="checkbox" id="tips" name="tips" value="yes"> 🎁 Tips på nya annonser</label>
-    </p>
-    <p>
-      <label for="pings"><input type="checkbox" id="pings" name="pings" value="yes" checked disabled> 🔔 Notifikationer för annonser</label>
-      <input type="hidden" name="pings" value="yes">
-    </p>
-    <p>
-      <label for="news"><input type="checkbox" id="news" name="news" value="yes" checked disabled> 🌈 Information från föreningen</label>
-      <input type="hidden" name="news" value="yes">
-    </p>
-		<input type="submit" class="small" value="Spara" style="display: block; margin: 0 auto; margin-top: 10px;">
-	</form>
-	</div>
-<p class="info">💡 Notifikationer för annonser är obligatoriska.</p>
-<p class="info">💡 Information från föreningen är obligatoriskt.</p>
+    <?php
+     // Member with no primary blog (should not happen)
+    } elseif ( empty($user_primary_blog) ) { ?>
+    <p>⏳ Du har inte valt något LOOPIS-område...</p>
+	<p><span class="mega-link white"><a href="<?php echo esc_url(home_url('/user/?view=member-area')); ?>">📍 Välj område</a></span></p>
+    <?php } ?>
+	
 </div>
+<?php if ( $user_primary_blog > '1' ) { ?>
+<p class="info">🚛 För att byta område, kontakta <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
+<?php } ?>
+
+<?php endif; ?>

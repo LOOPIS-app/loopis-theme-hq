@@ -12,6 +12,7 @@ if (!defined('ABSPATH')) {
 // Build the list of subsites the current user can access.
 global $wpdb;
 $user_id = get_current_user_id();
+$user_roles = wp_get_current_user()->roles;
 $user_access_blog_ids = array();
 
 if ( $user_id > 0 ) {
@@ -91,8 +92,10 @@ if ( $the_query->have_posts() ) {
             <?php get_template_part( 'templates/post-list/area-post-linked' ); ?>
         <?php } ?>
     <?php } else { ?>
-    <p>💢 Du är inte ansluten till något område just nu.</p>
-    <p class="info">🤔 Om något är fel, skicka ett mail till <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span></p>
+    
+    <!-- No area choosen yet -->
+    <p>💢 Inget område tillgängligt.</p>
+    <p class="info">Kontakta <span class="link"><a href="mailto:admin@loopis.app">✉️ admin@loopis.app</a></span> om något är fel.</p> 
     <?php } ?>
 </div><!--post-list-->
 

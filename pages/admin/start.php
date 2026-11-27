@@ -90,4 +90,17 @@ if (!defined('ABSPATH')) {
 <hr>
 <div class="span-list">
     <span class="mega-link"><a href="<?php echo esc_url( add_query_arg('view', 'pages/access', $admin_url) ); ?>">🚧 Tillgång</a></span>
+    <span class="mega-link"><a href="<?php echo esc_url(home_url('/stats')); ?>">📊 Postområden</a></span>
 </div> 
+
+<!-- Webmaster Section -->
+<?php if ( current_user_can('manage_options') ) : ?>
+<div class="admin-block">
+<h5>😈 Webmaster</h5>
+<hr>
+<div class="span-list">
+    <span class="mega-link"><a href="https://loopis.app/?author=X">👤 URL för user_id X</a></span>
+    <span class="mega-link"><a href="<?php echo esc_url( admin_url() )?>">👩‍💻 Gå till WP-admin</a></span>
+</div>
+</div>
+<?php endif; ?>

@@ -1,5 +1,11 @@
 # 📋 Changelog for "LOOPIS Theme HQ"
 
+## 1.10 (2026-11-27)
+- Revision of signup: area-selection removed + filters refined
+- Revision of startpage: area-selection using primary_blog
+- New public page for /stats
+- All files for user data output moved to mainsite.
+
 ## 1.09 (2026-11-18)
 - Minor UI fixes and version bump
 

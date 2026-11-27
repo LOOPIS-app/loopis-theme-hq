@@ -33,11 +33,6 @@ if (is_user_logged_in()) {
         echo '<h5>Välkommen tillbaka ' . $user_firstname . '! 👋</h5>';
     }
 
-    // Member support
-    elseif (in_array('member_support', $user_roles, true)) {
-        echo '<h5>Hej ' . $user_firstname . '! 👋</h5>';
-    }
-
     // Super Admin (capability)
     elseif (is_super_admin()) {
         echo '<h5>Hej webmaster! 👋</h5>';

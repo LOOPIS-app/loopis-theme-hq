@@ -21,8 +21,9 @@ $checkout_status = isset($_GET['checkout']) ? sanitize_key($_GET['checkout']) : 
 
 <?php if ('success' === $checkout_status) : ?>
 
-<div class="loopis-message success"><p>✅ Betalning mottagen!</p>
-<p>Du har fått fem nya mynt att paxa saker för.</p>
+<div class="loopis-message success">
+    <p>✅ Betalning mottagen!</p>
+    <p>Du har fått fem nya mynt att paxa saker för.</p>
 </div>
 
 <p><span class="link"><a href="<?php echo esc_url(add_query_arg('option', 'coins-stripe', home_url('/shop/'))); ?>">🛒 Köp 5 mynt till</a></span></p>
